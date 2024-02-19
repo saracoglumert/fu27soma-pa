@@ -11,3 +11,6 @@ https://github.com/bcgov/von-network/blob/main/docs/UsingVONNetwork.md#building-
 https://github.com/hyperledger/aries-cloudagent-python/blob/main/docs/demo/AriesOpenAPIDemo.md#sending-a-message-from-alice-to-faber
 
 https://github.com/hyperledger/aries-cloudagent-python/blob/main/docs/demo/README.md
+
+Architecture problems
+https://github.com/hyperledger/aries-cloudagent-python/issues/2124
