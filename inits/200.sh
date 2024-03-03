@@ -9,14 +9,22 @@ apt install zsh -y
 curl -sSL https://get.docker.com/ | sh
 sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 
-# Get Application
+# Get Resources
+mkdir res
+cd res
 git clone https://github.com/bcgov/von-network
+git clone https://github.com/bcgov/indy-tails-server.git
+cd ..
 
 # Create Scripts
 # Script - Start
 touch start
-echo './von-network/manage build' >> start
-echo './von-network/manage start' >> start
-# Script - Stop
-touch stop
-echo './von-network/manage stop' >> stop
+echo './res/von-network/manage build' >> start
+echo './res/von-network/manage start' >> start
+echo './res/indy-tails-server/docker/manage start' >> start
+chmod +x start
+
+# Script - Start
+touch test
+echo './res/indy-tails-server/docker/manage test' >> test
+chmod +x test
