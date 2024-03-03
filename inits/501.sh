@@ -6,8 +6,8 @@ apt upgrade -y
 apt install git -y
 apt install curl -y
 apt install zsh -y
-sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 curl -sSL https://get.docker.com/ | sh
+sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 
 # Get Application
 git clone https://github.com/bcgov/von-network
@@ -17,6 +17,6 @@ git clone https://github.com/bcgov/von-network
 touch start
 echo './von-network/manage build' >> start
 echo './von-network/manage start' >> start
-# Script-Stop
+# Script - Stop
 touch stop
 echo './von-network/manage stop' >> stop
