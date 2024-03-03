@@ -25,3 +25,38 @@ echo './aries-cloudagent-python/demo/run_demo faber -- events --no-auto --bg' >>
 chmod +x start
 
  curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | tee /etc/apt/sources.list.d/ngrok.list && apt update && apt install ngrok
+
+
+PORTS="8000 8001" ./run_docker start \
+  --auto-provision \
+  --label Alice \
+  -it http 0.0.0.0 8000 \
+  -ot http \
+  --admin 0.0.0.0 11000 \
+  --admin-insecure-mode \
+  --genesis-url http://localhost:9000/genesis \
+  --seed Alice000000000000000000000000000 \
+  --endpoint http://localhost:8000/ \
+  --debug-connections \
+  --public-invites \
+  --auto-provision \
+  --wallet-type askar \
+  --wallet-name Alice \
+  --wallet-key secret
+
+
+
+
+
+
+
+
+# Connections
+debug-connections: true
+auto-accept-invites: true
+auto-accept-requests: true
+auto-ping-connection: true
+
+log-level: info
+
+tails-server-base-url: http://localhost:6543 
