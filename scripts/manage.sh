@@ -31,6 +31,8 @@ pct exec $ID_SERVER -- sh init.sh
 pct exec $ID_NODE1 -- sh init.sh
 pct exec $ID_NODE2 -- sh init.sh
 
+pct exec $ID_SERVER
+
 }
 
 DESTROY () {
