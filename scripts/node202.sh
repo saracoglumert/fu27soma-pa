@@ -7,7 +7,6 @@ apt install curl -y
 apt install zsh -y
 apt install python3-pip -y
 curl -sSL https://get.docker.com/ | sh
-sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
 
 # Get Application
 pip3 install aries-cloudagent
@@ -27,23 +26,23 @@ chmod +x start
 touch args.yaml
 cat <<EOT >> args.yaml
 auto-provision: true
-label: faber
+label: alice
 
 inbound-transport:
-   - [http, 0.0.0.0, 9040]
+   - [http, 0.0.0.0, 9010]
 
 outbound-transport: http
 
 wallet-type: askar
 wallet-storage-type: default
-wallet-name: faber-wallet
-wallet-key: faber-wallet-key
+wallet-name: alice-wallet
+wallet-key: alice-wallet-key
 
 admin-insecure-mode: true
 
-admin: [0.0.0.0, 9041]
+admin: [0.0.0.0, 9011]
 
-endpoint: http://localhost:9040
+endpoint: http://localhost:9010
 
 genesis-url: http://10.10.136.200:9000/genesis
 
@@ -57,3 +56,4 @@ log-level: info
 
 tails-server-base-url: http://localhost:6543 
 EOT
+chmod +x start
