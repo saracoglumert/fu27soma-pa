@@ -10,10 +10,10 @@ apt install python3-pip
 curl -sSL https://get.docker.com/ | sh
 
 # Install Dep
-pip3 install aries-cloudagent -y
-pip3 install aries_askar -y
-pip3 install indy_credx -y
-pip3 install indy_vdr -y
+pip3 install aries-cloudagent
+pip3 install aries_askar
+pip3 install indy_credx
+pip3 install indy_vdr
 
 # Get Resources
 mkdir res

@@ -6,7 +6,6 @@ apt install git -y
 apt install curl -y
 apt install zsh -y
 apt install python3-pip -y
-curl -sSL https://get.docker.com/ | sh
 
 # Get Application
 pip3 install aries-cloudagent
