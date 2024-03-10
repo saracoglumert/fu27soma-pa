@@ -6,25 +6,44 @@ apt upgrade -y
 apt install git -y
 apt install curl -y
 apt install zsh -y
+apt install python3-pip
 curl -sSL https://get.docker.com/ | sh
-sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+
+# Install Dep
+pip3 install aries-cloudagent -y
+pip3 install aries_askar -y
+pip3 install indy_credx -y
+pip3 install indy_vdr -y
 
 # Get Resources
 mkdir res
 cd res
 git clone https://github.com/bcgov/von-network
 git clone https://github.com/bcgov/indy-tails-server.git
+git clone https://github.com/hyperledger/aries-cloudagent-python
 cd ..
 
 # Create Scripts
-# Script - Start
-touch start
-echo './res/von-network/manage build' >> start
-echo './res/von-network/manage start 10.10.136.200 WEB_SERVER_HOST_PORT=9000 LEDGER_INSTANCE_NAME="Thesis"' >> start
-echo './res/indy-tails-server/docker/manage start' >> start
-chmod +x start
+# Script - start_server
+touch start_server
+cat <<EOT >> start_server
+./res/von-network/manage build
+./res/von-network/manage start
+./res/indy-tails-server/docker/manage start
+EOT
+chmod +x start_server
 
-# Script - Start
-touch test
-echo './res/indy-tails-server/docker/manage test' >> test
-chmod +x test
+# Script - start_faber
+touch start_faber
+cat <<EOT >> start_faber
+./res/aries-cloudagent-python/demo/run_demo faber
+EOT
+chmod +x start_faber
+
+# Script - start_alice
+touch start_alice
+cat <<EOT >> start_alice
+./res/aries-cloudagent-python/demo/run_demo alice
+EOT
+chmod +x start_alice

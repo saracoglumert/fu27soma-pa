@@ -7,7 +7,7 @@ apt install curl -y
 apt install zsh -y
 apt install python3-pip -y
 curl -sSL https://get.docker.com/ | sh
-sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
 
 # Get Application
 pip3 install aries-cloudagent
