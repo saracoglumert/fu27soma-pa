@@ -22,31 +22,31 @@ fi
 
 BUILD () {
 echo 'Creating containers (press to continue)'
-pause
+read
 pct create $ID_SERVER $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_SERVER" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$IP_SERVER,type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ssh-public-keys /root/.ssh/authorized_keys --ostype debian --password="$CONF_ROOTPASS" --start 1
 pct create $ID_NODE1 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE1" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$IP_NODE1,type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ssh-public-keys /root/.ssh/authorized_keys --ostype debian --password="$CONF_ROOTPASS" --start 1
 pct create $ID_NODE2 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE2" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$IP_NODE2,type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ssh-public-keys /root/.ssh/authorized_keys --ostype debian --password="$CONF_ROOTPASS" --start 1
 
 echo 'Fetch scripts (press to continue)'
-pause
+read
 wget https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node200.sh -O res/node200.sh
 wget https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node201.sh -O res/node201.sh
 wget https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node202.sh -O res/node202.sh
 
 echo 'Push scripts (press to continue)'
-pause
+read
 pct push $ID_SERVER res/node200.sh ~/init.sh
 pct push $ID_NODE1 res/node201.sh ~/init.sh
 pct push $ID_NODE2 res/node202.sh ~/init.sh
 
 echo 'Run scripts (press to continue)'
-pause
+read
 pct exec $ID_SERVER -- sh init.sh
 pct exec $ID_NODE1 -- sh init.sh
 pct exec $ID_NODE2 -- sh init.sh
 
 echo 'Start containers (press to continue)'
-pause
+read
 pct exec $ID_SERVER -- sh start
 pct exec $ID_NODE1 -- sh start
 pct exec $ID_NODE2 -- sh start
