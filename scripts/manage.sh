@@ -10,9 +10,9 @@ IP_SERVER="10.10.136.200/24"
 IP_NODE1="10.10.136.201/24"
 IP_NODE2="10.10.136.202/24"
 
+CONF_GATEWAY="10.10.136.254"
 CONF_MEMORY="1024"
 CONF_ROOTPASS="12345"
-CONF_GATEWAY="10.10.136.254"
 CONF_TEMPLATE_PATH="/var/lib/vz/template/cache/debian-11-standard_11.7-1_amd64.tar.zst"
 CONF_TEMPLATE_URL='http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst'
 

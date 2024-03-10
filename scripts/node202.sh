@@ -1,27 +1,28 @@
+# init
 echo 'en_US.UTF-8 UTF-8' >>  /etc/locale.gen
 locale-gen
 apt update -y
 apt upgrade -y
 apt install git -y
 apt install curl -y
-apt install zsh -y
 apt install python3-pip -y
 
-# Get Application
+# dependencies
 pip3 install aries-cloudagent
 pip3 install aries_askar
 pip3 install indy_credx
 pip3 install indy_vdr
 
-# Create Scripts
-# Script - Start
+# scripts
+# start
 touch start
 cat <<EOT >> start
 aca-py start --arg-file args.yaml
 EOT
 chmod +x start
 
-# File - Arguments
+# files
+# arguments
 touch args.yaml
 cat <<EOT >> args.yaml
 auto-provision: true

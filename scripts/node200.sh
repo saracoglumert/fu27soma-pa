@@ -5,17 +5,16 @@ apt update -y
 apt upgrade -y
 apt install git -y
 apt install curl -y
-apt install zsh -y
-apt install python3-pip
+apt install python3-pip -y
 curl -sSL https://get.docker.com/ | sh
 
-# Install Dep
+# dependencies
 pip3 install aries-cloudagent
 pip3 install aries_askar
 pip3 install indy_credx
 pip3 install indy_vdr
 
-# Get Resources
+# resources
 mkdir res
 cd res
 git clone https://github.com/bcgov/von-network
@@ -23,8 +22,8 @@ git clone https://github.com/bcgov/indy-tails-server.git
 git clone https://github.com/hyperledger/aries-cloudagent-python
 cd ..
 
-# Create Scripts
-# Script - start
+# scripts
+# start
 touch start
 cat <<EOT >> start_server
 ./res/von-network/manage build
@@ -33,14 +32,14 @@ cat <<EOT >> start_server
 EOT
 chmod +x start
 
-# Script - start_faber
+# start_faber
 touch start_faber
 cat <<EOT >> start_faber
 ./res/aries-cloudagent-python/demo/run_demo faber
 EOT
 chmod +x start_faber
 
-# Script - start_alice
+# start_alice
 touch start_alice
 cat <<EOT >> start_alice
 ./res/aries-cloudagent-python/demo/run_demo alice
