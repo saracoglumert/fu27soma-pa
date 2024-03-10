@@ -24,14 +24,14 @@ git clone https://github.com/hyperledger/aries-cloudagent-python
 cd ..
 
 # Create Scripts
-# Script - start_server
-touch start_server
+# Script - start
+touch start
 cat <<EOT >> start_server
 ./res/von-network/manage build
 ./res/von-network/manage start
 ./res/indy-tails-server/docker/manage start
 EOT
-chmod +x start_server
+chmod +x start
 
 # Script - start_faber
 touch start_faber
