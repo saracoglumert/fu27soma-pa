@@ -10,7 +10,7 @@
 | **Parameters**    | **Value**                       |
 |-------------------|---------------------------------|
 | **OS**            | Debian 11                       |
-| **Configuration** | 16 GB Disk / 2GB Memory / 4 core|
+| **Configuration** | 16 GB / 2GB / 4 core            |
 | **Hostname**      | server.local                    |
 | **IP**            | 10.10.136.200                   |
 | **User**          | root                            |
@@ -21,7 +21,7 @@
 | **Parameters**    | **Value**                       |
 |-------------------|---------------------------------|
 | **OS**            | Debian 11                       |
-| **Configuration** | 8 GB Disk / 1GB Memory / 1 core |
+| **Configuration** | 8 GB / 1GB / 1 core             |
 | **Hostname**      | node1.local                     |
 | **IP**            | 10.10.136.201                   |
 | **User**          | root                            |
@@ -34,7 +34,7 @@
 | **Parameters**    | **Value**                       |
 |-------------------|---------------------------------|
 | **OS**            | Debian 11                       |
-| **Configuration** | 8 GB Disk / 1GB Memory / 1 core |
+| **Configuration** | 8 GB / 1GB / 1 core             |
 | **Hostname**      | node2.local                     |
 | **IP**            | 10.10.136.202                   |
 | **User**          | root                            |
@@ -46,7 +46,7 @@
 | **Parameters**    | **Value**                       |
 |-------------------|---------------------------------|
 | **OS**            | Debian 11                       |
-| **Configuration** | 8 GB Disk / 2GB Memory / 4 core |
+| **Configuration** | 16 GB / 4GB / 4 core            |
 | **Hostname**      | node2.local                     |
 | **IP**            | 10.10.136.250                   |
 | **User**          | root                            |

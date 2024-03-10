@@ -1,10 +1,6 @@
-ssh-keygen -R raspberrypi.local
-
 LEDGER_URL=http://test.bcovrin.vonx.io
 
 
-
-# Important Links
 
 https://github.com/bcgov/von-network/blob/main/docs/UsingVONNetwork.md#building-and-starting
 

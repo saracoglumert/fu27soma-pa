@@ -20,7 +20,7 @@ cd ..
 # Script - Start
 touch start
 echo './res/von-network/manage build' >> start
-echo './res/von-network/manage start' >> start
+echo './res/von-network/manage start 10.10.136.200 WEB_SERVER_HOST_PORT=9000 LEDGER_INSTANCE_NAME="Thesis"' >> start
 echo './res/indy-tails-server/docker/manage start' >> start
 chmod +x start
 
