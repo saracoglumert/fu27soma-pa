@@ -17,13 +17,15 @@ CONF_ROOTPASS="12345"
 CONF_TEMPLATE_PATH="/var/lib/vz/template/cache/debian-11-standard_11.7-1_amd64.tar.zst"
 CONF_TEMPLATE_URL='http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst'
 
-# init
-if ! test -f $CONF_TEMPLATE_PATH; then
-  wget $CONF_TEMPLATE_URL -O $CONF_TEMPLATE_PATH
-fi
-ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_SERVER"
-ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_NODE1"
-ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_NODE2"
+INIT () {
+  if ! test -f $CONF_TEMPLATE_PATH; then
+    wget $CONF_TEMPLATE_URL -O $CONF_TEMPLATE_PATH
+  fi
+  ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_SERVER"
+  ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_NODE1"
+  ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_NODE2"
+}
+
 
 BUILD () {
   # Ask
@@ -81,27 +83,23 @@ STOP () {
 
 DESTROY () {
   # Stop containers
-  pct stop $ID_SERVER
-  pct stop $ID_NODE1
-  pct stop $ID_NODE2
+  STOP
   # Destroy containers
   pct destroy $ID_SERVER
   pct destroy $ID_NODE1
   pct destroy $ID_NODE2
 }
 
+INIT
 if [ "$1" == "build" ]; then
   BUILD
 fi
-
 if [ "$1" == "start" ]; then
   START
 fi
-
 if [ "$1" == "stop" ]; then
   STOP
 fi
-
 if [ "$1" == "destroy" ]; then
   DESTROY
 fi
