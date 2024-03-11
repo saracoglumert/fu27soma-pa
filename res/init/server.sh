@@ -23,6 +23,6 @@ pip3 install indy_vdr
 cd -L
 mkdir res
 cd res
-git clone https://github.com/bcgov/von-network ~/von-network
+git clone https://github.com/bcgov/von-network
 git clone https://github.com/bcgov/indy-tails-server.git
 cd ..
