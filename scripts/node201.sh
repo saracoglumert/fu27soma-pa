@@ -13,6 +13,10 @@ pip3 install aries_askar
 pip3 install indy_credx
 pip3 install indy_vdr
 
+# set-up
+echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc 
+
 # scripts
 # start
 touch start
