@@ -21,9 +21,6 @@ INIT () {
   if ! test -f $CONF_TEMPLATE_PATH; then
     wget $CONF_TEMPLATE_URL -O $CONF_TEMPLATE_PATH
   fi
-  ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_SERVER"
-  ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_NODE1"
-  ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_NODE2"
 }
 
 
@@ -70,9 +67,12 @@ START () {
   pct start $ID_NODE1
   pct start $ID_NODE2
   # Run start-up scripts
-  sshpass -p $CONF_ROOTPASS ssh -oStrictHostKeyChecking=no root@$IP_SERVER 'bash start' &
-  sshpass -p $CONF_ROOTPASS ssh -oStrictHostKeyChecking=no root@$IP_NODE1 'bash start' &
-  sshpass -p $CONF_ROOTPASS ssh -oStrictHostKeyChecking=no root@$IP_NODE2 'bash start' &
+  ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_SERVER" > /dev/null 2>&1
+  ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_NODE1" > /dev/null 2>&1
+  ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_NODE2" > /dev/null 2>&1
+  sshpass -p $CONF_ROOTPASS ssh -oStrictHostKeyChecking=no root@$IP_SERVER 'bash start'
+  sshpass -p $CONF_ROOTPASS ssh -oStrictHostKeyChecking=no root@$IP_NODE1 'bash start'
+  sshpass -p $CONF_ROOTPASS ssh -oStrictHostKeyChecking=no root@$IP_NODE2 'bash start'
 }
 
 STOP () {
