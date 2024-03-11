@@ -1,3 +1,6 @@
+IP=$(/sbin/ip route | awk '/default/ { print $3 }')
+echo $IP
+
 HOSTNAME_SERVER="server"
 HOSTNAME_NODE1="sender"
 HOSTNAME_NODE2="receiver"
@@ -18,6 +21,7 @@ CONF_TEMPLATE_PATH="/var/lib/vz/template/cache/debian-11-standard_11.7-1_amd64.t
 CONF_TEMPLATE_URL='http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst'
 
 INIT () {
+  apt install sshpass -y
   if ! test -f $CONF_TEMPLATE_PATH; then
     wget $CONF_TEMPLATE_URL -O $CONF_TEMPLATE_PATH
   fi
