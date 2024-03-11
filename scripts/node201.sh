@@ -23,7 +23,7 @@ touch start
 cat <<EOT >> start
 echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc 
-aca-py start --arg-file args.yaml
+nohup aca-py start --arg-file args.yaml > /dev/null 2>&1 &
 EOT
 chmod +x start
 

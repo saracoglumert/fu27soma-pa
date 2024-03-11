@@ -6,9 +6,10 @@ ID_SERVER="200"
 ID_NODE1="201"
 ID_NODE2="202"
 
-IP_SERVER="10.10.136.200/24"
-IP_NODE1="10.10.136.201/24"
-IP_NODE2="10.10.136.202/24"
+IP_SERVER="10.10.136.200"
+IP_NODE1="10.10.136.201"
+IP_NODE2="10.10.136.202"
+IP_EXT='/24'
 
 CONF_GATEWAY="10.10.136.254"
 CONF_MEMORY="1024"
@@ -16,15 +17,26 @@ CONF_ROOTPASS="12345"
 CONF_TEMPLATE_PATH="/var/lib/vz/template/cache/debian-11-standard_11.7-1_amd64.tar.zst"
 CONF_TEMPLATE_URL='http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst'
 
+read -p "This will take apprx. 10 minutes. Do you want to proceed? (y/n) " yn
+
+case $yn in 
+	y ) echo '';;
+	n ) echo '';
+		exit;;
+	* ) echo 'Invalid response.';
+		exit 1;;
+esac
+
 if ! test -f $CONF_TEMPLATE_PATH; then
   wget $CONF_TEMPLATE_URL -O $CONF_TEMPLATE_PATH
 fi
 
 BUILD () {
   # Create containers
-  pct create $ID_SERVER $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_SERVER" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$IP_SERVER,type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
-  pct create $ID_NODE1 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE1" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$IP_NODE1,type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
-  pct create $ID_NODE2 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE2" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$IP_NODE2,type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
+  pct create $ID_SERVER $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_SERVER" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_SERVER}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
+  pct create $ID_NODE1 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE1" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_NODE1}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
+  pct create $ID_NODE2 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE2" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_NODE2}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
+  #pct create 455 $CONF_TEMPLATE_PATH --hostname "testest" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip='10.10.136.245/24',type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password=$CONF_ROOTPASS --start 1 --features nesting=1
 
   # Fetch init scripts
   mkdir res
@@ -44,10 +56,8 @@ BUILD () {
 }
 
 START () {
-  # Start containers
-  pct exec $ID_SERVER -- sh start
-  pct exec $ID_NODE1 -- bash start
-  pct exec $ID_NODE2 -- sh start
+  pct exec $ID_SERVER -- bash start
+
 }
 
 DESTROY () {

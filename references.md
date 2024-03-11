@@ -10,3 +10,5 @@ https://github.com/hyperledger/aries-cloudagent-python/blob/main/docs/demo/READM
 
 Architecture problems
 https://github.com/hyperledger/aries-cloudagent-python/issues/2124
+
+https://ldej.nl/post/becoming-a-hyperledger-aries-developer-part-3-connecting-using-swagger/
