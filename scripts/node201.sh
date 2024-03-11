@@ -29,7 +29,7 @@ auto-provision: true
 label: faber
 
 inbound-transport:
-   - [http, 0.0.0.0, 9040]
+   - [http, 0.0.0.0, 9010]
 
 outbound-transport: http
 
@@ -40,9 +40,9 @@ wallet-key: faber-wallet-key
 
 admin-insecure-mode: true
 
-admin: [0.0.0.0, 9041]
+admin: [0.0.0.0, 9011]
 
-endpoint: http://localhost:9040
+endpoint: http://localhost:9010
 
 genesis-url: http://10.10.136.200:9000/genesis
 

@@ -29,7 +29,7 @@ auto-provision: true
 label: alice
 
 inbound-transport:
-   - [http, 0.0.0.0, 9010]
+   - [http, 0.0.0.0, 9020]
 
 outbound-transport: http
 
@@ -40,9 +40,9 @@ wallet-key: alice-wallet-key
 
 admin-insecure-mode: true
 
-admin: [0.0.0.0, 9011]
+admin: [0.0.0.0, 9021]
 
-endpoint: http://localhost:9010
+endpoint: http://localhost:9020
 
 genesis-url: http://10.10.136.200:9000/genesis
 
