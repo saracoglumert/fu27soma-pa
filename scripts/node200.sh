@@ -8,6 +8,11 @@ apt install curl -y
 apt install python3-pip -y
 curl -sSL https://get.docker.com/ | sh
 
+# set-up
+echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc 
+echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+
 # dependencies
 pip3 install aries-cloudagent
 pip3 install aries_askar

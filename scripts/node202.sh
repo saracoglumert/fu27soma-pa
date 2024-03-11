@@ -10,6 +10,7 @@ apt install python3-pip -y
 # set-up
 echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc 
+echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 
 # dependencies
 pip3 install aries-cloudagent

@@ -33,9 +33,9 @@ BUILD () {
   esac
   
   # Create containers
-  pct create $ID_SERVER $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_SERVER" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_SERVER}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:16 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
-  pct create $ID_NODE1 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE1" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_NODE1}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:16 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
-  pct create $ID_NODE2 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE2" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_NODE2}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:16 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
+  pct create $ID_SERVER $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_SERVER" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_SERVER}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:16 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --ssh-public-keys /root/.ssh/authorized_keys --features nesting=1
+  pct create $ID_NODE1 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE1" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_NODE1}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:16 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --ssh-public-keys /root/.ssh/authorized_keys --start 1 --features nesting=1
+  pct create $ID_NODE2 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE2" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_NODE2}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:16 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --ssh-public-keys /root/.ssh/authorized_keys --start 1 --features nesting=1
   #pct create 455 $CONF_TEMPLATE_PATH --hostname "testest" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip='10.10.136.245/24',type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password=$CONF_ROOTPASS --start 1 --features nesting=1
 
   # Fetch init scripts
@@ -53,13 +53,26 @@ BUILD () {
   pct exec $ID_SERVER -- bash init.sh
   pct exec $ID_NODE1 -- bash init.sh
   pct exec $ID_NODE2 -- bash init.sh
+
+  # Stop containers
+  STOP
 }
 
 START () {
   # Start containers
-  pct exec $ID_SERVER -- bash start
-  pct exec $ID_NODE1 -- bash start
-  pct exec $ID_NODE2 -- bash start
+  pct start $ID_SERVER
+  pct start $ID_NODE1
+  pct start $ID_NODE2
+  # Run start-up scripts
+  sshpass -p $CONF_ROOTPASS ssh root@$IP_SERVER 'bash start'
+  sshpass -p $CONF_ROOTPASS ssh root@$IP_NODE1 'bash start'
+  sshpass -p $CONF_ROOTPASS ssh root@$IP_NODE2 'bash start'
+}
+
+STOP () {
+  pct stop $ID_SERVER
+  pct stop $ID_NODE1
+  pct stop $ID_NODE2
 }
 
 DESTROY () {
@@ -79,6 +92,10 @@ fi
 
 if [ "$1" == "start" ]; then
   START
+fi
+
+if [ "$1" == "stop" ]; then
+  STOP
 fi
 
 if [ "$1" == "destroy" ]; then

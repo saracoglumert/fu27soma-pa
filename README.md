@@ -12,7 +12,7 @@ wget --no-check-certificate --no-cache --no-cookies -O manage https://raw.github
 
 # to-do
 - Variables to arguments
-- Auto-start
+- Auto-start (using ssh)
 - git clone
 - improve manage script (pipe outputs to logs)
 

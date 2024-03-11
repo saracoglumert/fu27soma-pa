@@ -1,5 +1,5 @@
 LEDGER_URL=http://test.bcovrin.vonx.io
-
+ssh-keygen -R hostname
 
 
 https://github.com/bcgov/von-network/blob/main/docs/UsingVONNetwork.md#building-and-starting
