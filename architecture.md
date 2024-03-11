@@ -29,7 +29,6 @@
 | **Endpoint**      | http://10.10.136.201:8030       |
 | **Administration**| http://10.10.136.201:8031       |
 
-
 # CT 202 (Node 2 - Alice)
 | **Parameters**    | **Value**                       |
 |-------------------|---------------------------------|
@@ -41,6 +40,14 @@
 | **Pass**          | 12345                           |
 | **Endpoint**      | http://10.10.136.202:8030       |
 | **Administration**| http://10.10.136.202:8031       |
+
+# Endpoints
+| **Node 200 (Indy)**       | http://10.10.136.200:9000       |
+| **Node 200 (Tails)**      | http://10.10.136.200:6543       |
+| **Node 201**              | http://10.10.136.202:8030       |
+| **Node 201 (admin)**      | http://10.10.136.202:8030       |
+| **Node 202**              | http://10.10.136.202:8030       |
+| **Node 202 (admin)**      | http://10.10.136.202:8030       |
 
 # CT 250 (Development)
 | **Parameters**    | **Value**                       |
