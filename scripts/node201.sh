@@ -56,4 +56,3 @@ log-level: info
 
 tails-server-base-url: http://localhost:6543 
 EOT
-chmod +x start

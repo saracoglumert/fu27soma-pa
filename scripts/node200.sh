@@ -25,7 +25,7 @@ cd ..
 # scripts
 # start
 touch start
-cat <<EOT >> start_server
+cat <<EOT >> start
 ./res/von-network/manage build
 ./res/von-network/manage start
 ./res/indy-tails-server/docker/manage start
