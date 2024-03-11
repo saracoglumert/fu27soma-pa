@@ -8,11 +8,14 @@ cd fu27soma-project
 chmod +x manage
 ./manage init
 ./manage build
-./manage start
 ```
 
 ```
-./manage build
+./manage start
+./manage stop
+```
+
+```
 ./manage destroy
 ```
 
