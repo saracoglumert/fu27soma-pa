@@ -7,15 +7,15 @@ apt install git -y
 apt install curl -y
 apt install python3-pip -y
 
+# set-up
+echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc 
+
 # dependencies
 pip3 install aries-cloudagent
 pip3 install aries_askar
 pip3 install indy_credx
 pip3 install indy_vdr
-
-# set-up
-echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc 
 
 # scripts
 # start

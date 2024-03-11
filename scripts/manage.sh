@@ -29,8 +29,9 @@ pct create $ID_NODE1 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE1" --memory "
 
 echo 'Fetch scripts (press to continue)'
 read
-#wget --no-check-certificate --no-cache --no-cookies -O res/node201.sh https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node200.sh 
-wget --no-check-certificate --no-cache --no-cookies -O res/node202.sh https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node201.sh
+mkdir res
+#wget --no-check-certificate --no-cache --no-cookies -O res/node200.sh https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node200.sh 
+wget --no-check-certificate --no-cache --no-cookies -O res/node201.sh https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node201.sh
 #wget --no-check-certificate --no-cache --no-cookies -O res/node202.sh https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node202.sh
 
 echo 'Push scripts (press to continue)'
