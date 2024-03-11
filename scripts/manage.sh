@@ -49,7 +49,8 @@ pct exec $ID_NODE1 -- sh init.sh
 echo 'Start containers (press to continue)'
 read
 #pct exec $ID_SERVER -- sh start
-pct exec $ID_NODE1 -- sh start
+pct exec $ID_NODE1 -- chmod +x start
+pct exec $ID_NODE1 -- ./start
 #pct exec $ID_NODE2 -- sh start
 
 }
