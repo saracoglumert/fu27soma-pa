@@ -21,8 +21,6 @@ pip3 install indy_vdr
 # start
 touch start
 cat <<EOT >> start
-echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc 
 nohup aca-py start --arg-file args.yaml > /dev/null 2>&1 &
 EOT
 chmod +x start

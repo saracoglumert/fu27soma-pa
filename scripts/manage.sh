@@ -33,9 +33,9 @@ BUILD () {
   esac
   
   # Create containers
-  pct create $ID_SERVER $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_SERVER" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_SERVER}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
-  pct create $ID_NODE1 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE1" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_NODE1}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
-  pct create $ID_NODE2 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE2" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_NODE2}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
+  pct create $ID_SERVER $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_SERVER" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_SERVER}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:16 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
+  pct create $ID_NODE1 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE1" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_NODE1}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:16 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
+  pct create $ID_NODE2 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE2" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$(echo ${IP_NODE2}${IP_EXT}),type=veth --storage local-lvm --rootfs local-lvm:16 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
   #pct create 455 $CONF_TEMPLATE_PATH --hostname "testest" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip='10.10.136.245/24',type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password=$CONF_ROOTPASS --start 1 --features nesting=1
 
   # Fetch init scripts
