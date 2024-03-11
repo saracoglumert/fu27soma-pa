@@ -17,9 +17,13 @@ CONF_ROOTPASS="12345"
 CONF_TEMPLATE_PATH="/var/lib/vz/template/cache/debian-11-standard_11.7-1_amd64.tar.zst"
 CONF_TEMPLATE_URL='http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst'
 
+# init
 if ! test -f $CONF_TEMPLATE_PATH; then
   wget $CONF_TEMPLATE_URL -O $CONF_TEMPLATE_PATH
 fi
+ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_SERVER"
+ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_NODE1"
+ssh-keygen -f "/root/.ssh/known_hosts" -R "$IP_NODE2"
 
 BUILD () {
   # Ask
@@ -64,9 +68,9 @@ START () {
   pct start $ID_NODE1
   pct start $ID_NODE2
   # Run start-up scripts
-  sshpass -p $CONF_ROOTPASS ssh root@$IP_SERVER 'bash start'
-  sshpass -p $CONF_ROOTPASS ssh root@$IP_NODE1 'bash start'
-  sshpass -p $CONF_ROOTPASS ssh root@$IP_NODE2 'bash start'
+  sshpass -p $CONF_ROOTPASS ssh -oStrictHostKeyChecking=no root@$IP_SERVER 'bash start' &
+  sshpass -p $CONF_ROOTPASS ssh -oStrictHostKeyChecking=no root@$IP_NODE1 'bash start' &
+  sshpass -p $CONF_ROOTPASS ssh -oStrictHostKeyChecking=no root@$IP_NODE2 'bash start' &
 }
 
 STOP () {
