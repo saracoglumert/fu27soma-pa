@@ -9,3 +9,8 @@ wget --no-check-certificate --no-cache --no-cookies -O manage https://raw.github
 ./manage build
 ./manage destroy
 ```
+
+# to-do
+- Variables to arguments
+- Auto-start
+- git clone
