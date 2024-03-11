@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from subprocess import call
+import subprocess
 import yaml
 
 with open('conf.yaml', 'r') as file:
@@ -11,6 +12,7 @@ def init():
 
 def build():
     # Create containers
+    print('Creating container \t [server]')
     call('pct create {} {} --hostname "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,gw={},ip={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['server']['id'],
         conf['template']['path'],
@@ -21,7 +23,8 @@ def build():
         conf['conf']['disk'],
         conf['conf']['passwd'],
         conf['conf']['ssh']
-    ),shell=True)
+    ),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    print('Creating container \t [node1]')
     call('pct create {} {} --hostname "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,gw={},ip={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['node1']['id'],
         conf['template']['path'],
@@ -32,7 +35,8 @@ def build():
         conf['conf']['disk'],
         conf['conf']['passwd'],
         conf['conf']['ssh']
-    ),shell=True)
+    ),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    print('Creating container \t [node2]')
     call('pct create {} {} --hostname "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,gw={},ip={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['node2']['id'],
         conf['template']['path'],
@@ -43,20 +47,26 @@ def build():
         conf['conf']['disk'],
         conf['conf']['passwd'],
         conf['conf']['ssh']
-    ),shell=True)
+    ),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     
   
     # Push init
-    call('pct push {} ~/fu27soma-project/res/init/server.sh ~/init.sh'.format(conf['server']['id']),shell=True)
-    call('pct push {} ~/fu27soma-project/res/init/node.sh ~/init.sh'.format(conf['node1']['id']),shell=True)
-    call('pct push {} ~/fu27soma-project/res/init/node.sh ~/init.sh'.format(conf['node2']['id']),shell=True)
+    print('Pushing init scripts')
+    call('pct push {} ~/fu27soma-project/res/init/server.sh ~/init.sh'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-project/res/init/node.sh ~/init.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-project/res/init/node.sh ~/init.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
     # Run init
-    call('pct exec {} -- bash ~/init.sh'.format(conf['server']['id']),shell=True)
-    call('pct exec {} -- bash ~/init.sh'.format(conf['node1']['id']),shell=True)
-    call('pct exec {} -- bash ~/init.sh'.format(conf['node2']['id']),shell=True)
+    print('Running init script \t [server]')
+    call('pct exec {} -- bash ~/init.sh'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    print('Running init script \t [node1]')
+    call('pct exec {} -- bash ~/init.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    print('Running init script \t [node2]')
+    call('pct exec {} -- bash ~/init.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+
 
     # Generate args
+    print('Generating args files')
     call('mkdir temp',shell=True)
     # Read in the file
     with open('res/args/node.yaml', 'r') as file:
@@ -76,8 +86,9 @@ def build():
         file.write(node2)
 
     # Push args
-    call('pct push {} ~/fu27soma-project/temp/node1.yaml ~/args.yaml'.format(conf['node1']['id']),shell=True)
-    call('pct push {} ~/fu27soma-project/temp/node2.yaml ~/args.yaml'.format(conf['node2']['id']),shell=True)
+    print('Pushing args files')
+    call('pct push {} ~/fu27soma-project/temp/node1.yaml ~/args.yaml'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-project/temp/node2.yaml ~/args.yaml'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
     # Generate start
     with open('res/start/server.sh', 'r') as file:
@@ -89,23 +100,28 @@ def build():
         file.write(data)
 
     # Push start
-    call('pct push {} ~/fu27soma-project/temp/start_server.sh ~/start.sh'.format(conf['server']['id']),shell=True)
-    call('pct push {} ~/fu27soma-project/res/start/node.sh ~/start.sh'.format(conf['node1']['id']),shell=True)
-    call('pct push {} ~/fu27soma-project/res/start/node.sh ~/start.sh'.format(conf['node2']['id']),shell=True)
+    print('Push start scripts')
+    call('pct push {} ~/fu27soma-project/temp/start_server.sh ~/start.sh'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-project/res/start/node.sh ~/start.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-project/res/start/node.sh ~/start.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
     # Clear
     call('rm -r temp',shell=True) 
 
 def start():
+    print('Starting containers')
     call('pct start {}'.format(conf['server']['id']),shell=True)
     call('pct start {}'.format(conf['node1']['id']),shell=True)
     call('pct start {}'.format(conf['node2']['id']),shell=True)
-    call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['server']['ip']),shell=True)
-    call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['node1']['ip']),shell=True)
-    call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['node2']['ip']),shell=True)
-    call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash ~/start.sh\''.format(conf['conf']['passwd'],conf['server']['ip']),shell=True)
-    call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash ~/start.sh\''.format(conf['conf']['passwd'],conf['node1']['ip']),shell=True)
-    call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash ~/start.sh\''.format(conf['conf']['passwd'],conf['node2']['ip']),shell=True)
+    call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['server']['ip']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['node1']['ip']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['node2']['ip']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    print('Running start script \t [server]')
+    call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash ~/start.sh\''.format(conf['conf']['passwd'],conf['server']['ip']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    print('Running start script \t [node1]')
+    call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash ~/start.sh\''.format(conf['conf']['passwd'],conf['node1']['ip']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    print('Running start script \t [node2]')
+    call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash ~/start.sh\''.format(conf['conf']['passwd'],conf['node2']['ip']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
 def stop():
     call('pct stop {}'.format(conf['server']['id']),shell=True)

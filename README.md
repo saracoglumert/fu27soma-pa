@@ -1,8 +1,14 @@
 # fu27soma-project
 **Project Thesis**
 
+# 1. Installation
 ```
-wget --no-check-certificate --no-cache --no-cookies -O manage https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/manage.sh && chmod +x manage
+git clone https://github.com/saracoglumert/fu27soma-project
+cd fu27soma-project
+chmod +x manage
+./manage init
+./manage build
+./manage start
 ```
 
 ```
@@ -89,6 +95,7 @@ https://ldej.nl/post/becoming-a-hyperledger-aries-developer-part-3-connecting-us
 # To-Do
 - improve manage script (pipe outputs to logs)
 - init
+- manage script arguments
 - implement controller
 
 # Notes To Self
