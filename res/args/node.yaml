@@ -1,0 +1,30 @@
+auto-provision: true
+label: %hostname%
+
+inbound-transport:
+   - [http, 0.0.0.0, %endpoint%]
+
+outbound-transport: http
+
+wallet-type: askar
+wallet-storage-type: default
+wallet-name: %hostname%-wallet
+wallet-key: %hostname%-wallet-key
+
+admin-insecure-mode: true
+
+admin: [0.0.0.0, %admin%]
+
+endpoint: http://localhost:%endpoint%
+
+genesis-url: http://%server_ip%:%server_endpoint%/genesis
+
+# Connections
+debug-connections: true
+auto-accept-invites: true
+auto-accept-requests: true
+auto-ping-connection: true
+
+log-level: info
+
+tails-server-base-url: http://localhost:%tails%
