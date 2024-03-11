@@ -10,20 +10,7 @@ def init():
     call('apt install sshpass -y',shell=True)
 
 def build():
-    build_create()
-    
-    build_push_init()
-    build_run_init()
-    
-    call('mkdir temp',shell=True)
-    build_generate_args()
-    build_push_args()
-    
-    build_generate_start()
-    build_push_start()
-    call('rm -r temp',shell=True) 
-
-def build_create():
+    # Create containers
     call('pct create {} {} --hostname "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,gw={},ip={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['server']['id'],
         conf['template']['path'],
@@ -57,18 +44,20 @@ def build_create():
         conf['conf']['passwd'],
         conf['conf']['ssh']
     ),shell=True)
-
-def build_push_init():
+    
+  
+    # Push init
     call('pct push {} ~/fu27soma-project/res/init/server.sh ~/init.sh'.format(conf['server']['id']),shell=True)
     call('pct push {} ~/fu27soma-project/res/init/node.sh ~/init.sh'.format(conf['node1']['id']),shell=True)
     call('pct push {} ~/fu27soma-project/res/init/node.sh ~/init.sh'.format(conf['node2']['id']),shell=True)
 
-def build_run_init():
+    # Run init
     call('pct exec {} -- bash ~/init.sh'.format(conf['server']['id']),shell=True)
     call('pct exec {} -- bash ~/init.sh'.format(conf['node1']['id']),shell=True)
     call('pct exec {} -- bash ~/init.sh'.format(conf['node2']['id']),shell=True)
 
-def build_generate_args():
+    # Generate args
+    call('mkdir temp',shell=True)
     # Read in the file
     with open('res/args/node.yaml', 'r') as file:
         node1 = file.read()
@@ -86,34 +75,31 @@ def build_generate_args():
     with open('temp/node2.yaml', 'w') as file:
         file.write(node2)
 
-def build_push_args():
+    # Push args
     call('pct push {} ~/fu27soma-project/temp/node1.yaml ~/args.yaml'.format(conf['node1']['id']),shell=True)
     call('pct push {} ~/fu27soma-project/temp/node2.yaml ~/args.yaml'.format(conf['node2']['id']),shell=True)
 
-def build_generate_start():
+    # Generate start
     with open('res/start/server.sh', 'r') as file:
         data = file.read()
     
-    data = data.replace('%server_ip%',str(conf['server']['ip'])).replace('%server_endpoint%',str(conf['server']['endpoint'])).replace('%server_ledger',conf['server']['ledger'])
+    data = data.replace('%server_ip%',str(conf['server']['ip'])).replace('%server_endpoint%',str(conf['server']['endpoint'])).replace('%server_ledger%',conf['server']['ledger'])
 
     with open('temp/start_server.sh', 'w') as file:
         file.write(data)
 
-def build_push_start():
+    # Push start
     call('pct push {} ~/fu27soma-project/temp/start_server.sh ~/start.sh'.format(conf['server']['id']),shell=True)
     call('pct push {} ~/fu27soma-project/res/start/node.sh ~/start.sh'.format(conf['node1']['id']),shell=True)
     call('pct push {} ~/fu27soma-project/res/start/node.sh ~/start.sh'.format(conf['node2']['id']),shell=True)
 
-def start():
-    start_containers()
-    start_ssh()
+    # Clear
+    call('rm -r temp',shell=True) 
 
-def start_containers():
+def start():
     call('pct start {}'.format(conf['server']['id']),shell=True)
     call('pct start {}'.format(conf['node1']['id']),shell=True)
     call('pct start {}'.format(conf['node2']['id']),shell=True)
-
-def start_ssh():
     call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['server']['ip']),shell=True)
     call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['node1']['ip']),shell=True)
     call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['node2']['ip']),shell=True)

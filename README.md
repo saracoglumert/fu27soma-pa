@@ -87,10 +87,9 @@ https://github.com/hyperledger/aries-cloudagent-python/issues/2124
 https://ldej.nl/post/becoming-a-hyperledger-aries-developer-part-3-connecting-using-swagger/
 
 # To-Do
-- Variables to arguments
-- von-network start arguments
-- git clone
 - improve manage script (pipe outputs to logs)
+- init
+- implement controller
 
 # Notes To Self
 LEDGER_URL=http://test.bcovrin.vonx.io
