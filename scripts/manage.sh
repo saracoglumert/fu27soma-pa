@@ -23,7 +23,6 @@ INIT () {
   fi
 }
 
-
 BUILD () {
   # Ask
   read -p "This will take apprx. 20 minutes. Do you want to proceed? (y/n) " yn

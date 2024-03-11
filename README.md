@@ -12,6 +12,7 @@ wget --no-check-certificate --no-cache --no-cookies -O manage https://raw.github
 
 # to-do
 - Variables to arguments
+- von-network start arguments
 - Auto-start (using ssh)
 - git clone
 - improve manage script (pipe outputs to logs)
