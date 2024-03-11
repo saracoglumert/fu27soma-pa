@@ -21,44 +21,40 @@ if ! test -f $CONF_TEMPLATE_PATH; then
 fi
 
 BUILD () {
-echo 'Creating containers (press to continue)'
-read
-#pct create $ID_SERVER $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_SERVER" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$IP_SERVER,type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
+# Create containers
+pct create $ID_SERVER $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_SERVER" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$IP_SERVER,type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
 pct create $ID_NODE1 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE1" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$IP_NODE1,type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
-#pct create $ID_NODE2 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE2" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$IP_NODE2,type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
+pct create $ID_NODE2 $CONF_TEMPLATE_PATH --hostname "$HOSTNAME_NODE2" --memory "$CONF_MEMORY" --net0 name=eth0,bridge=vmbr0,firewall=1,gw=$CONF_GATEWAY,ip=$IP_NODE2,type=veth --storage local-lvm --rootfs local-lvm:8 --unprivileged 1 --ignore-unpack-errors --ostype debian --password="$CONF_ROOTPASS" --start 1 --features nesting=1
 
-echo 'Fetch scripts (press to continue)'
-read
+# Fetch init scripts
 mkdir res
-#wget --no-check-certificate --no-cache --no-cookies -O res/node200.sh https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node200.sh 
+wget --no-check-certificate --no-cache --no-cookies -O res/node200.sh https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node200.sh 
 wget --no-check-certificate --no-cache --no-cookies -O res/node201.sh https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node201.sh
-#wget --no-check-certificate --no-cache --no-cookies -O res/node202.sh https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node202.sh
+wget --no-check-certificate --no-cache --no-cookies -O res/node202.sh https://raw.githubusercontent.com/saracoglumert/fu27soma-project/main/scripts/node202.sh
 
-echo 'Push scripts (press to continue)'
-read
-#pct push $ID_SERVER res/node200.sh ~/init.sh
+# Push init scripts
+pct push $ID_SERVER res/node200.sh ~/init.sh
 pct push $ID_NODE1 res/node201.sh ~/init.sh
-#pct push $ID_NODE2 res/node202.sh ~/init.sh
+pct push $ID_NODE2 res/node202.sh ~/init.sh
 
-echo 'Run scripts (press to continue)'
-read
-#pct exec $ID_SERVER -- sh init.sh
-pct exec $ID_NODE1 -- sh init.sh
-#pct exec $ID_NODE2 -- sh init.sh
+# Run init scripts
+pct exec $ID_SERVER -- bash init.sh
+pct exec $ID_NODE1 -- bash init.sh
+pct exec $ID_NODE2 -- bash init.sh
 
-echo 'Start containers (press to continue)'
-read
-#pct exec $ID_SERVER -- sh start
-pct exec $ID_NODE1 -- chmod +x start
-pct exec $ID_NODE1 -- ./start
-#pct exec $ID_NODE2 -- sh start
-
+START () {
+# Start containers
+pct exec $ID_SERVER -- sh start
+pct exec $ID_NODE1 -- bash start
+pct exec $ID_NODE2 -- sh start
 }
 
 DESTROY () {
+# Stop containers
 pct stop $ID_SERVER
 pct stop $ID_NODE1
 pct stop $ID_NODE2
+# Destroy containers
 pct destroy $ID_SERVER
 pct destroy $ID_NODE1
 pct destroy $ID_NODE2
@@ -66,6 +62,10 @@ pct destroy $ID_NODE2
 
 if [ "$1" == "build" ]; then
     BUILD
+fi
+
+if [ "$1" == "start" ]; then
+    START
 fi
 
 if [ "$1" == "destroy" ]; then
