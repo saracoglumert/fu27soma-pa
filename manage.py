@@ -8,7 +8,6 @@ with open('conf.yaml', 'r') as file:
 def init():
     call('if ! test -f {}; then wget {} -O ${} fi'.format(conf['template']['path'],conf['template']['url'],conf['template']['path']),shell=True)
     call('apt install sshpass -y',shell=True)
-    call('mkdir temp',shell=True)
 
 def build():
     build_create()
@@ -16,13 +15,13 @@ def build():
     build_push_init()
     build_run_init()
     
+    call('mkdir temp',shell=True)
     build_generate_args()
     build_push_args()
     
     build_generate_start()
     build_push_start()
-
-    build_clear()
+    call('rm -r temp',shell=True) 
 
 def build_create():
     call('pct create {} {} --hostname "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,gw={},ip={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
@@ -104,9 +103,6 @@ def build_push_start():
     call('pct push {} ~/fu27soma-project/temp/start_server.sh ~/start.sh'.format(conf['server']['id']),shell=True)
     call('pct push {} ~/fu27soma-project/res/start/node.sh ~/start.sh'.format(conf['node1']['id']),shell=True)
     call('pct push {} ~/fu27soma-project/res/start/node.sh ~/start.sh'.format(conf['node2']['id']),shell=True)
-
-def build_clear():
-    call('rm -r temp',shell=True)   
 
 def start():
     start_containers()
