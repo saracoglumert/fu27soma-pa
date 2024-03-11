@@ -12,9 +12,11 @@ cid = ''
 
 # node2
 def create_invitation():
+    global cid
     body = json.loads('{}')
 
     r=requests.post(url = API_node2+'connections/create-invitation', json=body)
+    cid = json.loads(r.content)['invitation']['@id']
     return json.dumps((json.loads(r.content)['invitation']), sort_keys=True, indent=4)
 
 # node1
