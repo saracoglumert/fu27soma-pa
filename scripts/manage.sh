@@ -23,7 +23,7 @@ fi
 
 BUILD () {
   # Ask
-  read -p "This will take apprx. 10 minutes. Do you want to proceed? (y/n) " yn
+  read -p "This will take apprx. 20 minutes. Do you want to proceed? (y/n) " yn
   case $yn in 
     y ) echo '';;
     n ) echo '';
