@@ -1,6 +1,5 @@
 template:
-  url: http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst
-  path: /var/lib/vz/template/cache/debian-11-standard_11.7-1_amd64.tar.zst
+  path: /var/lib/vz/template/cache/fu27soma.tar.zst
 
 conf:
   gateway: 10.10.136.254

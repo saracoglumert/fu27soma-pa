@@ -2,13 +2,10 @@
 from subprocess import call
 import subprocess
 import yaml
+import sys
 
 with open('config.yaml', 'r') as file:
     conf = yaml.safe_load(file)
-
-def init():
-    call('if ! test -f {}; then wget {} -O ${} fi'.format(conf['template']['path'],conf['template']['url'],conf['template']['path']),shell=True)
-    call('apt install sshpass -y',shell=True)
 
 def build():
     # Create containers
@@ -124,12 +121,27 @@ def start():
     call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash ~/start.sh\''.format(conf['conf']['passwd'],conf['node2']['ip']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
 def stop():
-    call('pct stop {}'.format(conf['server']['id']),shell=True)
-    call('pct stop {}'.format(conf['node1']['id']),shell=True)
-    call('pct stop {}'.format(conf['node2']['id']),shell=True)
+    print('Stopping containers')
+    call('pct stop {}'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct stop {}'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct stop {}'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
 def destroy():
     stop()
-    call('pct destroy {}'.format(conf['server']['id']),shell=True)
-    call('pct destroy {}'.format(conf['node1']['id']),shell=True)
-    call('pct destroy {}'.format(conf['node2']['id']),shell=True)
+    print('Destroying containers')
+    call('pct destroy {}'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct destroy {}'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct destroy {}'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+
+if __name__ == '__main__':
+    arg = sys.argv[1]
+
+    match arg:
+        case 'build':
+            build()
+        case 'start':
+            start()
+        case 'stop':
+            stop()
+        case 'destroy':
+            destroy()

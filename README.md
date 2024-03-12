@@ -1,13 +1,27 @@
 # fu27soma-project
 **Project Thesis**
 
-# 0. Configuration
+# 1. Configuration
+## 1.1 Host Machine
+This repo runs on Proxmox VE 8. Please download it [here](https://www.proxmox.com/en/proxmox-virtual-environment/overview) and install it on a physical or virtual machine. SSH into the machine and follow the procedures below.
+## 1.2 Dependencies
+Firts, download and install dependencies
+```
+apt update -y
+apt upgrade -y
+apt install git sshpass -y
+wget http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst -O /var/lib/vz/template/cache/fu27soma.tar.zst
+```
 
-# 1. Installation
+Then, clone the repository and set permissions.
 ```
 git clone https://github.com/saracoglumert/fu27soma-project
 cd fu27soma-project
 chmod +x manage
+chmod +x controller
+```
+# 1. Installation
+```
 ./manage init
 ./manage build
 ```
@@ -21,82 +35,19 @@ chmod +x manage
 ./manage destroy
 ```
 
-# 2. Architecture
+# 2. Architecture and Endpoints
 ![alt text](https://github.com/saracoglumert/fu27soma-project/blob/main/thesis/img/arch.png)
-- *Disk :*&nbsp;&nbsp;&nbsp;&nbsp;16 GiB
-- *Memory :*&nbsp;&nbsp;&nbsp;&nbsp;1024 MiB
-- *Root Passwords :*&nbsp;&nbsp;&nbsp;&nbsp;12345
+Container configuration:
+- **Disk :** 16 GiB
+- **Memory :** 1024 MiB
+- **Root Passwords :** 12345
 
 
-# 3. Endpoints
-| **Parameters**    | **Value**                       |
-|-------------------|---------------------------------|
-| **OS**            | Proxmox VE 8.1.4                |
-| **IP**            | 10.10.136.100                   |
-| **Gateway**       | 10.10.136.254                   |
-
-# Host
-| **Parameters**    | **Value**                       |
-|-------------------|---------------------------------|
-| **OS**            | Proxmox VE 8.1.4                |
-| **IP**            | 10.10.136.100                   |
-| **Gateway**       | 10.10.136.254                   |
-
-
-# CT 200 (Server)
-| **Parameters**    | **Value**                       |
-|-------------------|---------------------------------|
-| **OS**            | Debian 11                       |
-| **Configuration** | 16 GB / 2GB / 4 core            |
-| **Hostname**      | server.local                    |
-| **IP**            | 10.10.136.200                   |
-| **User**          | root                            |
-| **Pass**          | 12345                           |
-| **App**           | http://10.10.136.200:9000       |
-
-# CT 201 (Node1 - Faber)
-| **Parameters**    | **Value**                       |
-|-------------------|---------------------------------|
-| **OS**            | Debian 11                       |
-| **Configuration** | 8 GB / 1GB / 1 core             |
-| **Hostname**      | node1.local                     |
-| **IP**            | 10.10.136.201                   |
-| **User**          | root                            |
-| **Pass**          | 12345                           |
-| **Endpoint**      | http://10.10.136.201:8030       |
-| **Administration**| http://10.10.136.201:8031       |
-
-# CT 202 (Node 2 - Alice)
-| **Parameters**    | **Value**                       |
-|-------------------|---------------------------------|
-| **OS**            | Debian 11                       |
-| **Configuration** | 8 GB / 1GB / 1 core             |
-| **Hostname**      | node2.local                     |
-| **IP**            | 10.10.136.202                   |
-| **User**          | root                            |
-| **Pass**          | 12345                           |
-| **Endpoint**      | http://10.10.136.202:8030       |
-| **Administration**| http://10.10.136.202:8031       |
-
-# Endpoints
-| **Parameters**    | **Value**                       |
-|-------------------|---------------------------------|
-| **Node 200 (Indy)**       | http://10.10.136.200:9000       |
-| **Node 200 (Tails)**      | http://10.10.136.200:6543       |
-| **Node 201**              | http://10.10.136.201:9010       |
-| **Node 201 (admin)**      | http://10.10.136.201:9011       |
-| **Node 202**              | http://10.10.136.202:9020       |
-| **Node 202 (admin)**      | http://10.10.136.202:9021       |
-
-# CT 250 (Development)
-| **Parameters**    | **Value**                       |
-|-------------------|---------------------------------|
-| **OS**            | Debian 11                       |
-| **Configuration** | 16 GB / 4GB / 4 core            |
-| **Hostname**      | node2.local                     |
-| **IP**            | 10.10.136.250                   |
-| **User**          | root                            |
-| **Pass**          | 12345                           |
+| **Description**           | **URL**                       |
+|---------------------------|---------------------------------|
+| **Server**                | http://10.10.136.200:9000       |
+| **Node 1**                | http://10.10.136.201:10001      |
+| **Node 2**                | http://10.10.136.202:10002      |
 
 # References
 
