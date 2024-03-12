@@ -3,14 +3,17 @@
 # 1. Configuration
 ## 1.1 Host Machine
 This repo runs on Proxmox VE 8. Please download it [here](https://www.proxmox.com/en/proxmox-virtual-environment/overview) and install it on a physical or virtual machine. SSH into the machine and follow the procedures below.
-## 1.2 Dependencies
-Firts, download and install dependencies
+
+s## 1.2 Dependencies
+
+First, download and install dependencies
 ```
 apt update -y
 apt upgrade -y
 apt install git sshpass -y
 wget http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst -O /var/lib/vz/template/cache/fu27soma.tar.zst
 ```
+
 
 Then, clone the repository and set permissions.
 ```
@@ -19,16 +22,20 @@ cd fu27soma-project
 chmod +x manage
 chmod +x controller
 ```
+
 # 1. Installation
+
 The following command, builds the containers and installs the Hyperledger Indy (von-network) and Hyperledger Aries (aries-cloundagent-python) packages.
 ```
 ./manage build
 ```
 
+
 To start the nodes, run the following command.
 ```
 ./manage start
 ```
+
 
 If you want to stop the nodes or destroy the containers, use the following commands.
 ```
@@ -37,12 +44,15 @@ If you want to stop the nodes or destroy the containers, use the following comma
 ```
 
 # 2. Architecture and Endpoints
+
 ![alt text](https://github.com/saracoglumert/fu27soma-project/blob/main/thesis/img/arch.png)
+
 Container configuration:
 - **Disk :** 16 GiB
 - **Memory :** 1024 MiB
 - **Root Passwords :** 12345
 
+# 3. Endpoints
 
 | **Description**           | **URL**                       |
 |---------------------------|---------------------------------|
