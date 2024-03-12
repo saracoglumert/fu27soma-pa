@@ -4,6 +4,8 @@ import subprocess
 import yaml
 import sys
 
+TEMPLATE = '/var/lib/vz/template/cache/debian11.tar.zst'
+
 with open('config.yaml', 'r') as file:
     conf = yaml.safe_load(file)
 
@@ -12,7 +14,7 @@ def build():
     print('Creating container \t [server]')
     call('pct create {} {} --hostname "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,gw={},ip={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['server']['id'],
-        conf['template']['path'],
+        TEMPLATE,
         conf['server']['hostname'],
         conf['conf']['memory'],
         conf['conf']['gateway'],
@@ -24,7 +26,7 @@ def build():
     print('Creating container \t [node1]')
     call('pct create {} {} --hostname "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,gw={},ip={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['node1']['id'],
-        conf['template']['path'],
+        TEMPLATE,
         conf['node1']['hostname'],
         conf['conf']['memory'],
         conf['conf']['gateway'],
@@ -36,7 +38,7 @@ def build():
     print('Creating container \t [node2]')
     call('pct create {} {} --hostname "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,gw={},ip={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['node2']['id'],
-        conf['template']['path'],
+        TEMPLATE,
         conf['node2']['hostname'],
         conf['conf']['memory'],
         conf['conf']['gateway'],

@@ -1,6 +1,3 @@
-template:
-  path: /var/lib/vz/template/cache/fu27soma.tar.zst
-
 conf:
   gateway: 10.10.136.254
   memory: 1024
