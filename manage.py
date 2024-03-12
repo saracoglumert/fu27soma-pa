@@ -3,7 +3,7 @@ from subprocess import call
 import subprocess
 import yaml
 
-with open('conf.yaml', 'r') as file:
+with open('config.yaml', 'r') as file:
     conf = yaml.safe_load(file)
 
 def init():
