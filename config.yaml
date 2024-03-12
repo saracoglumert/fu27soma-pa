@@ -2,7 +2,7 @@ conf:
   gateway: 10.10.136.254
   memory: 1024
   disk: 16
-  passwd: 12345
+  passwd: crcx3909
   ssh: /root/.ssh/authorized_keys
   tails: 6543
 

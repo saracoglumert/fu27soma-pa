@@ -5,9 +5,9 @@
 This repo runs on Proxmox VE 8. Please download it [here](https://www.proxmox.com/en/proxmox-virtual-environment/overview) and install it on a physical or virtual machine. SSH into the machine and follow the procedures below.
 
 The physical machine used for demonstration has the following specifications.
-- **Processor :**Intel i5-6500T
-- **Memory :**8 GiB
-- **Disk :**64 GiB
+- **Processor :** Intel i5-6500T
+- **Memory :** 8 GiB
+- **Disk :** 64 GiB
 ## 1.2 Dependencies
 ```
 git clone https://github.com/saracoglumert/fu27soma-project
@@ -21,21 +21,17 @@ bash init.sh
 
 ## 1.3 Network Setup
 ```
-GW=$(/sbin/ip route | awk '/default/ { print $3 }')
-IP_SW="${GW%.*}.200"
-IP_N1="${GW%.*}.201"
+Analyzing network
 
-echo "Gateway       : ${GW}"
-echo "IP [server]   : ${IP_SW}"
-echo "IP [node1]    : ${IP_N1}"
-
-if ping -c 1 ${IP} &> /dev/null
-then
-  echo "success"
-else
-  echo "error"
-fi
+Found suitable chunk:
+Gateway       : 10.10.136.254
+IP [server]   : 10.10.136.200
+IP [node1]    : 10.10.136.201
+IP [node2]    : 10.10.136.202
 ```
+
+Accorindg to the *init.sh* output, please edit the conf/gateway, server/ip, node1/ip and node2/ip parameters in *config.yaml* file. You can also tinker with other paramters to your liking or your specific network infrastructure.
+
 ## 1.4 config.yaml File
 
 # 2. Installation
@@ -58,7 +54,6 @@ If you want to stop the nodes or destroy the containers, use the following comma
 Container configuration:
 - **Disk :** 16 GiB
 - **Memory :** 1024 MiB
-- **Root Passwords :** 12345
 
 # 3. Endpoints
 | **Description**           | **URL**                         |
