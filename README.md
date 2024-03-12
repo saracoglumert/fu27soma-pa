@@ -1,5 +1,4 @@
 # fu27soma-project
-**Project Thesis**
 
 # 1. Configuration
 ## 1.1 Host Machine
@@ -21,17 +20,19 @@ chmod +x manage
 chmod +x controller
 ```
 # 1. Installation
+The following command, builds the containers and installs the Hyperledger Indy (von-network) and Hyperledger Aries (aries-cloundagent-python) packages.
 ```
-./manage init
 ./manage build
 ```
 
+To start the nodes, run the following command.
 ```
 ./manage start
-./manage stop
 ```
 
+If you want to stop the nodes or destroy the containers, use the following commands.
 ```
+./manage stop
 ./manage destroy
 ```
 
