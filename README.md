@@ -1,6 +1,8 @@
 # fu27soma-project
 **Project Thesis**
 
+# 0. Configuration
+
 # 1. Installation
 ```
 git clone https://github.com/saracoglumert/fu27soma-project
@@ -18,6 +20,16 @@ chmod +x manage
 ```
 ./manage destroy
 ```
+
+# 2. Architecture
+![alt text](http://url/to/img.png)
+
+# 3. Endpoints
+| **Parameters**    | **Value**                       |
+|-------------------|---------------------------------|
+| **OS**            | Proxmox VE 8.1.4                |
+| **IP**            | 10.10.136.100                   |
+| **Gateway**       | 10.10.136.254                   |
 
 # Host
 | **Parameters**    | **Value**                       |
