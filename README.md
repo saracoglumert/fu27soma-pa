@@ -14,7 +14,7 @@ git clone https://github.com/saracoglumert/fu27soma-project
 cd fu27soma-project
 ```
 
-First, run *init* script. It will download and install all dependencies, set the permissions, analyze your network and come up with a suggestion for network setup.
+First, run **init.sh** script. It will download and install all dependencies, set the permissions, analyze your network and come up with a suggestion for network setup.
 ```
 bash init.sh
 ```
@@ -30,9 +30,7 @@ IP [node1]    : 10.10.136.201
 IP [node2]    : 10.10.136.202
 ```
 
-Accorindg to the *init.sh* output, please edit the conf/gateway, server/ip, node1/ip and node2/ip parameters in *config.yaml* file. You can also tinker with other paramters to your liking or your specific network infrastructure.
-
-## 1.4 config.yaml File
+Accorindg to the output from **init.sh**, please edit the *conf/gateway**, **server/ip**, **node1/ip** and **node2/ip** parameters in **config.yaml** file. You can also tinker with other paramters to your liking or your specific network infrastructure.
 
 # 2. Installation
 The following command, builds the containers and installs the Hyperledger Indy (von-network) and Hyperledger Aries (aries-cloundagent-python) packages.
