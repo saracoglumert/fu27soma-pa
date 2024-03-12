@@ -23,6 +23,10 @@ chmod +x manage
 
 # 2. Architecture
 ![alt text](https://github.com/saracoglumert/fu27soma-project/blob/main/thesis/img/arch.png)
+- *Disk :*              16 GiB
+- *Memory :*            1024 MiB
+- *Root Passwords :*    12345
+
 
 # 3. Endpoints
 | **Parameters**    | **Value**                       |
