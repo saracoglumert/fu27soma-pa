@@ -22,7 +22,7 @@ chmod +x manage
 ```
 
 # 2. Architecture
-![alt text](http://url/to/img.png)
+![alt text](https://github.com/saracoglumert/fu27soma-project/blob/main/thesis/img/arch.png)
 
 # 3. Endpoints
 | **Parameters**    | **Value**                       |
