@@ -30,7 +30,7 @@ IP [node1]    : 10.10.136.201
 IP [node2]    : 10.10.136.202
 ```
 
-Accorindg to the output from **init.sh**, please edit the *conf/gateway**, **server/ip**, **node1/ip** and **node2/ip** parameters in **config.yaml** file. You can also tinker with other paramters to your liking or your specific network infrastructure.
+According to the output from **init.sh**, please edit the **conf/gateway**, **server/ip**, **node1/ip** and **node2/ip** parameters in **config.yaml** file. You can also tinker with other paramters to your liking or your specific network infrastructure.
 
 # 2. Installation
 The following command, builds the containers and installs the Hyperledger Indy (von-network) and Hyperledger Aries (aries-cloundagent-python) packages.
@@ -60,7 +60,7 @@ Container configuration:
 | **Node 1**                | http://10.10.136.201:10001      |
 | **Node 2**                | http://10.10.136.202:10002      |
 
-Please note that, the URL for endpoints will probably change in your case, according to your network structure. Refer to *1.3 Network Setup*.
+Please note that, the URL for endpoints will probably change in your case, according to your network structure. Please refer to *1.3 Network Setup*.
 
 # References
 
