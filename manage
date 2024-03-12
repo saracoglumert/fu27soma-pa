@@ -107,9 +107,9 @@ def build():
 
 def start():
     print('Starting containers')
-    call('pct start {}'.format(conf['server']['id']),shell=True)
-    call('pct start {}'.format(conf['node1']['id']),shell=True)
-    call('pct start {}'.format(conf['node2']['id']),shell=True)
+    call('pct start {}'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct start {}'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct start {}'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['server']['ip']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['node1']['ip']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(conf['conf']['ssh'],conf['node2']['ip']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
