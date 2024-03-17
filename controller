@@ -39,9 +39,9 @@ def accept_request(req_id):
     r=requests.post(url = x)
     return r.content
 
-a = create_invitation()
-print(a)
-b = receive_invitation(a)
-print('Connection ID :' + b)
-c = accept_invitation(b)
-print(c)
+#a = create_invitation()
+#print(a)
+#b = receive_invitation(a)
+#print('Connection ID :' + b)
+#c = accept_invitation(b)
+#print(c)

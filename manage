@@ -51,9 +51,9 @@ def build():
   
     # Push init
     print('Pushing init scripts')
-    call('pct push {} ~/fu27soma-project/res/init/server.sh ~/init.sh'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} ~/fu27soma-project/res/init/node.sh ~/init.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} ~/fu27soma-project/res/init/node.sh ~/init.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-pa/res/init/server.sh ~/init.sh'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-pa/res/init/node.sh ~/init.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-pa/res/init/node.sh ~/init.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
     # Run init
     print('Running init script \t [server]')
@@ -86,8 +86,8 @@ def build():
 
     # Push args
     print('Pushing args files')
-    call('pct push {} ~/fu27soma-project/temp/node1.yaml ~/args.yaml'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} ~/fu27soma-project/temp/node2.yaml ~/args.yaml'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-pa/temp/node1.yaml ~/args.yaml'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-pa/temp/node2.yaml ~/args.yaml'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
     # Generate start
     with open('res/start/server.sh', 'r') as file:
@@ -100,9 +100,9 @@ def build():
 
     # Push start
     print('Push start scripts')
-    call('pct push {} ~/fu27soma-project/temp/start_server.sh ~/start.sh'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} ~/fu27soma-project/res/start/node.sh ~/start.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} ~/fu27soma-project/res/start/node.sh ~/start.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-pa/temp/start_server.sh ~/start.sh'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-pa/res/start/node.sh ~/start.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} ~/fu27soma-pa/res/start/node.sh ~/start.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
     # Clear
     call('rm -r temp',shell=True) 

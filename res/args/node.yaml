@@ -21,8 +21,8 @@ genesis-url: http://%server_ip%:%server_endpoint%/genesis
 
 # Connections
 debug-connections: true
-auto-accept-invites: true
-auto-accept-requests: true
+auto-accept-invites: false
+auto-accept-requests: false
 auto-ping-connection: true
 
 log-level: info

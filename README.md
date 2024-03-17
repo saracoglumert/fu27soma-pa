@@ -10,7 +10,7 @@ The physical machine used for demonstration has the following specifications.
 - **Disk :** 64 GiB
 ## 1.2 Dependencies
 ```
-git clone https://github.com/saracoglumert/fu27soma-project
+git clone https://github.com/saracoglumert/fu27soma-pa
 cd fu27soma-project
 ```
 
@@ -47,7 +47,7 @@ If you want to stop the nodes or destroy the containers, use the following comma
 ./manage destroy
 ```
 # 3. Architecture and Endpoints
-![alt text](https://github.com/saracoglumert/fu27soma-project/blob/main/thesis/img/arch.png)
+![alt text](https://github.com/saracoglumert/fu27soma-pa/blob/main/thesis/img/arch.png)
 
 Container configuration:
 - **Disk :** 16 GiB
