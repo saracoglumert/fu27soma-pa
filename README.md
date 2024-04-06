@@ -75,6 +75,8 @@ https://github.com/hyperledger/aries-cloudagent-python/issues/2124
 
 https://ldej.nl/post/becoming-a-hyperledger-aries-developer-part-3-connecting-using-swagger/
 
+https://github.com/bcgov/aries-acapy-plugin-redis-events
+
 # To-Do
 - improve manage script (pipe outputs to logs)
 - init
