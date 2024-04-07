@@ -76,9 +76,9 @@ def build():
     print('Generating args files')
     call('mkdir temp',shell=True)
     # Read in the file
-    with open('res/yaml/args.yaml', 'r') as file:
+    with open('res/node/args.yaml', 'r') as file:
         node1 = file.read()
-    with open('res/yaml/args.yaml', 'r') as file:
+    with open('res/node/args.yaml', 'r') as file:
         node2 = file.read()
     
     # Replace the target string
@@ -99,8 +99,8 @@ def build():
 
     # Push plugin
     print('Pushing plugin files')
-    call('pct push {} /root/fu27soma-pa/res/yaml/plugin.yaml /root/plugin.yaml'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} /root/fu27soma-pa/res/yaml/plugin.yaml /root/plugin.yaml'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} /root/fu27soma-pa/res/node/plugin.yaml /root/plugin.yaml'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} /root/fu27soma-pa/res/node/plugin.yaml /root/plugin.yaml'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
     # Generate start
     with open('res/server/start.sh', 'r') as file:
