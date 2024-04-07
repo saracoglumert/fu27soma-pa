@@ -19,3 +19,9 @@ pip3 install indy_vdr
 
 pip3 install git+https://github.com/hyperledger/aries-acapy-plugins@main#subdirectory=redis_events
 pip3 install git+https://github.com/hyperledger/aries-acapy-plugins@main#subdirectory=basicmessage_storage
+
+apt install redis -y
+# change line bind 0.0.0.0
+# nano /etc/redis/redis.conf
+#bind 127.0.0.1 ::1
+sed -i 's/.*bind 127.0.0.1 ::1*/bind 0.0.0.0/' /etc/redis/redis.conf

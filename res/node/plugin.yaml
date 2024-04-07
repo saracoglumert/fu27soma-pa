@@ -1,6 +1,6 @@
 redis_queue:
   connection:
-    connection_url: "redis://root:12345@%ip%:%port%"
+    connection_url: "redis://:12345@%ip%:%port%"
 
   ### For Inbound ###
   inbound:
@@ -10,7 +10,7 @@ redis_queue:
   ### For Outbound ###
   outbound:
     acapy_outbound_topic: "acapy_outbound"
-    mediator_mode: true
+    mediator_mode: false
 
   ### For Event ###
   event:
