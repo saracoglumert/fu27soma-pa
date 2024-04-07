@@ -24,8 +24,7 @@ def build():
         conf['conf']['disk'],
         conf['conf']['passwd'],
         conf['conf']['ssh']
-    ),shell=True)
-    #),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    ),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     print('Creating container \t [node1]')
     call('pct create {} {} --hostname "{}" --nameserver "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},gw={},hwaddr={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['node1']['id'],
@@ -39,8 +38,7 @@ def build():
         conf['conf']['disk'],
         conf['conf']['passwd'],
         conf['conf']['ssh']
-    ),shell=True)
-    #),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    ),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     print('Creating container \t [node2]')
     call('pct create {} {} --hostname "{}" --nameserver "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},gw={},hwaddr={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['node2']['id'],
@@ -54,8 +52,7 @@ def build():
         conf['conf']['disk'],
         conf['conf']['passwd'],
         conf['conf']['ssh']
-    ),shell=True)
-    #),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    ),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     
   
     # Push init
@@ -148,14 +145,6 @@ def destroy():
     call('pct destroy {}'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     call('pct destroy {}'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     call('pct destroy {}'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-
-def find():
-    cmd = 'arp -a | findstr "aa-bb-cc-dd-ee-00" '
-    returned_output = subprocess.check_output((cmd),shell=True,stderr=subprocess.STDOUT)
-    print(returned_output)
-    parse=str(returned_output).split(' ',1)
-    ip=parse[1].split(' ')
-    print(ip[1])
 
 if __name__ == '__main__':
     arg = sys.argv[1]

@@ -32,4 +32,5 @@ tails-server-base-url: http://localhost:%tails%
 # Plugins
 plugin:
   - redis_events.v1_0.redis_queue.events
+  - basicmessage_storage.v1_0
 plugin-config: /root/plugin.yaml
