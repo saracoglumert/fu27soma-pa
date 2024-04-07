@@ -99,7 +99,6 @@ def build():
 
     # Generate plugin.yaml
     print('Generating plugin.yaml files')
-    call('mkdir temp',shell=True)
     # Read in the file
     with open('res/node/plugin.yaml', 'r') as file:
         plugin1 = file.read()
@@ -118,7 +117,7 @@ def build():
         file.write(plugin2)
 
     # Push args
-    print('Pushing args files')
+    print('Pushing plugin.yaml files')
     call('pct push {} /root/fu27soma-pa/temp/plugin1.yaml /root/plugin.yaml'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     call('pct push {} /root/fu27soma-pa/temp/plugin2.yaml /root/plugin.yaml'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
