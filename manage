@@ -58,9 +58,7 @@ def build():
     # Push init
     print('Pushing init scripts')
     call('pct push {} /root/fu27soma-pa/res/server/init.sh /root/init.sh'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    
-    call('pct push {} /root/fu27soma-pa/res/node/db.sql /root/db.sql'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} /root/fu27soma-pa/res/node/db.sql /root/db.sql'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} /root/fu27soma-pa/res/server/db.sql /root/db.sql'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     
     call('pct push {} /root/fu27soma-pa/res/node/init.sh /root/init.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     call('pct push {} /root/fu27soma-pa/res/node/init.sh /root/init.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
@@ -105,7 +103,7 @@ def build():
     call('pct push {} /root/fu27soma-pa/res/yaml/plugin.yaml /root/plugin.yaml'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
     # Generate start
-    with open('res/start/server.sh', 'r') as file:
+    with open('res/server/start.sh', 'r') as file:
         data = file.read()
     
     data = data.replace('%server_ip%',str(conf['server']['ip'])).replace('%server_endpoint%',str(conf['server']['endpoint'])).replace('%server_ledger%',conf['server']['ledger'])

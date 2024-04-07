@@ -7,6 +7,7 @@ apt upgrade -y
 apt install git -y
 apt install curl -y
 apt install python3-pip -y
+apt install lsb-release -y
 echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc 
@@ -27,7 +28,7 @@ export DEBIAN_FRONTEND=noninteractive
 wget https://dev.mysql.com/get/mysql-apt-config_0.8.29-1_all.deb
 dpkg -i mysql-apt-config_0.8.29-1_all.deb
 apt update
-apt install mysql-server
+apt install mysql-server -y
 
 mysql -uroot -e "CREATE USER 'root'@'%' IDENTIFIED BY '12345'"
 mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION"
