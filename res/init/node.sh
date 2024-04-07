@@ -16,4 +16,4 @@ pip3 install aries_askar
 pip3 install indy_credx
 pip3 install indy_vdr
 
-pip install git+https://github.com/hyperledger/aries-acapy-plugins@main#subdirectory=redis_events
+pip3 install git+https://github.com/hyperledger/aries-acapy-plugins@main#subdirectory=redis_events
