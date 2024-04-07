@@ -34,3 +34,7 @@ mysql -uroot -e "CREATE USER 'root'@'%' IDENTIFIED BY '12345'"
 mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION"
 mysql -uroot -e "FLUSH PRIVILEGES"
 mysql -uroot < db.sql
+
+# Finalize
+rm mysql-apt-config_0.8.29-1_all.deb
+reboot
