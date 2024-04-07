@@ -1,6 +1,7 @@
 # init
 echo 'en_US.UTF-8 UTF-8' >>  /etc/locale.gen
 locale-gen
+#echo 'nameserver 1.1.1.1' >> /etc/resolv.conf
 apt update -y
 apt upgrade -y
 apt install git -y

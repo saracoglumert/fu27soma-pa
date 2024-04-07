@@ -12,43 +12,49 @@ with open('config.yaml', 'r') as file:
 def build():
     # Create containers
     print('Creating container \t [server]')
-    call('pct create {} {} --hostname "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
+    call('pct create {} {} --hostname "{}" --nameserver "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},gw={},hwaddr={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['server']['id'],
         TEMPLATE,
         conf['server']['hostname'],
+        conf['conf']['dns'],
         conf['conf']['memory'],
-        #conf['conf']['gateway'],
-        conf['server']['ip'],
+        conf['server']['ip']+"/"+str(conf['conf']['cidr']),
+        conf['conf']['gateway'],
+        conf['server']['mac'],
         conf['conf']['disk'],
         conf['conf']['passwd'],
         conf['conf']['ssh']
-    ))
+    ),shell=True)
     #),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     print('Creating container \t [node1]')
-    call('pct create {} {} --hostname "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
+    call('pct create {} {} --hostname "{}" --nameserver "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},gw={},hwaddr={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['node1']['id'],
         TEMPLATE,
         conf['node1']['hostname'],
+        conf['conf']['dns'],
         conf['conf']['memory'],
-        #conf['conf']['gateway'],
-        conf['node1']['ip'],
+        conf['node1']['ip']+"/"+str(conf['conf']['cidr']),
+        conf['conf']['gateway'],
+        conf['node1']['mac'],
         conf['conf']['disk'],
         conf['conf']['passwd'],
         conf['conf']['ssh']
-    ))
+    ),shell=True)
     #),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     print('Creating container \t [node2]')
-    call('pct create {} {} --hostname "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
+    call('pct create {} {} --hostname "{}" --nameserver "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},gw={},hwaddr={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
         conf['node2']['id'],
         TEMPLATE,
         conf['node2']['hostname'],
+        conf['conf']['dns'],
         conf['conf']['memory'],
-        #conf['conf']['gateway'],
-        conf['node2']['ip'],
+        conf['node2']['ip']+"/"+str(conf['conf']['cidr']),
+        conf['conf']['gateway'],
+        conf['node2']['mac'],
         conf['conf']['disk'],
         conf['conf']['passwd'],
         conf['conf']['ssh']
-    ))
+    ),shell=True)
     #),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     
   
@@ -142,6 +148,14 @@ def destroy():
     call('pct destroy {}'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     call('pct destroy {}'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     call('pct destroy {}'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+
+def find():
+    cmd = 'arp -a | findstr "aa-bb-cc-dd-ee-00" '
+    returned_output = subprocess.check_output((cmd),shell=True,stderr=subprocess.STDOUT)
+    print(returned_output)
+    parse=str(returned_output).split(' ',1)
+    ip=parse[1].split(' ')
+    print(ip[1])
 
 if __name__ == '__main__':
     arg = sys.argv[1]

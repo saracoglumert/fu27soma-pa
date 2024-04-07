@@ -1,1 +1,1 @@
-nohup aca-py start --arg-file args.yaml > /dev/null 2>&1 &
+nohup aca-py start --arg-file /root/args.yaml > /dev/null 2>&1 &

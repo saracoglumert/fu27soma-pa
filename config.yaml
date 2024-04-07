@@ -1,5 +1,7 @@
 conf:
   gateway: 10.10.10.1
+  cidr: 8
+  dns: 1.1.1.1
   memory: 1024
   disk: 16
   passwd: crcx3909
@@ -9,20 +11,23 @@ conf:
 server:
   hostname: server
   id: 200
-  ip: dhcp
+  ip: 10.10.10.200
+  mac: AA:BB:CC:DD:EE:00
   endpoint: 9000
   ledger: fu27soma
 
 node1:
   hostname: node1
   id: 201
-  ip: dhcp
+  ip: 10.10.10.201
+  mac: AA:BB:CC:DD:EE:01
   endpoint: 9001
   admin: 10001
 
 node2:
   hostname: node2
   id: 202
-  ip: dhcp
+  ip: 10.10.10.202
+  mac: AA:BB:CC:DD:EE:02
   endpoint: 9002
   admin: 10002
