@@ -72,7 +72,7 @@ def build():
     call('pct exec {} -- bash /root/init.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
 
-    # Generate args
+    # Generate args.yaml
     print('Generating args files')
     call('mkdir temp',shell=True)
     # Read in the file
@@ -97,10 +97,31 @@ def build():
     call('pct push {} /root/fu27soma-pa/temp/node1.yaml /root/args.yaml'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     call('pct push {} /root/fu27soma-pa/temp/node2.yaml /root/args.yaml'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
-    # Push plugin
-    print('Pushing plugin files')
-    call('pct push {} /root/fu27soma-pa/res/node/plugin.yaml /root/plugin.yaml'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} /root/fu27soma-pa/res/node/plugin.yaml /root/plugin.yaml'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    # Generate plugin.yaml
+    print('Generating plugin.yaml files')
+    call('mkdir temp',shell=True)
+    # Read in the file
+    with open('res/node/plugin.yaml', 'r') as file:
+        plugin1 = file.read()
+    with open('res/node/plugin.yaml', 'r') as file:
+        plugin2 = file.read()
+    
+    # Replace the target string
+    plugin1 = plugin1.replace('%ip%', conf['node1']['ip']).replace('%port%', str(conf['conf']['redis']))
+    plugin2 = plugin2.replace('%ip%', conf['node2']['ip']).replace('%port%', str(conf['conf']['redis']))
+
+    # Write the file out again
+    with open('temp/plugin1.yaml', 'w') as file:
+        file.write(plugin1)
+
+    with open('temp/plugin2.yaml', 'w') as file:
+        file.write(plugin2)
+
+    # Push args
+    print('Pushing args files')
+    call('pct push {} /root/fu27soma-pa/temp/plugin1.yaml /root/plugin.yaml'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} /root/fu27soma-pa/temp/plugin2.yaml /root/plugin.yaml'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+
 
     # Generate start
     with open('res/server/start.sh', 'r') as file:

@@ -7,6 +7,7 @@ conf:
   passwd: crcx3909
   ssh: /root/.ssh/authorized_keys
   tails: 6543
+  redis: 6379
 
 server:
   hostname: server

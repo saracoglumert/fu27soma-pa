@@ -1,6 +1,6 @@
 redis_queue:
   connection:
-    connection_url: "redis://root:12345@172.28.0.103:6379"
+    connection_url: "redis://root:12345@%ip%:%port%"
 
   ### For Inbound ###
   inbound:
