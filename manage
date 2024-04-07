@@ -57,9 +57,13 @@ def build():
   
     # Push init
     print('Pushing init scripts')
-    call('pct push {} /root/fu27soma-pa/res/init/server.sh /root/init.sh'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} /root/fu27soma-pa/res/init/node.sh /root/init.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} /root/fu27soma-pa/res/init/node.sh /root/init.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} /root/fu27soma-pa/res/server/init.sh /root/init.sh'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    
+    call('pct push {} /root/fu27soma-pa/res/node/db.sql /root/db.sql'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} /root/fu27soma-pa/res/node/db.sql /root/db.sql'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    
+    call('pct push {} /root/fu27soma-pa/res/node/init.sh /root/init.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} /root/fu27soma-pa/res/node/init.sh /root/init.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
     # Run init
     print('Running init script \t [server]')
@@ -112,8 +116,8 @@ def build():
     # Push start
     print('Push start scripts')
     call('pct push {} /root/fu27soma-pa/temp/start_server.sh /root/start.sh'.format(conf['server']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} /root/fu27soma-pa/res/start/node.sh /root/start.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
-    call('pct push {} /root/fu27soma-pa/res/start/node.sh /root/start.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} /root/fu27soma-pa/res/node/start.sh /root/start.sh'.format(conf['node1']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
+    call('pct push {} /root/fu27soma-pa/res/node/start.sh /root/start.sh'.format(conf['node2']['id']),shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
     # Clear
     call('rm -r temp',shell=True) 
