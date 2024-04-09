@@ -1,7 +1,6 @@
 # Initialize OS
 echo 'en_US.UTF-8 UTF-8' >>  /etc/locale.gen
 locale-gen
-echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc 
 
@@ -28,4 +27,4 @@ sed -i 's/.*bind 127.0.0.1 ::1*/bind 0.0.0.0/' /etc/redis/redis.conf
 sed -i 's/.*# requirepass foobared*/requirepass 12345/' /etc/redis/redis.conf
 
 # Finalize
-reboot
+echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
