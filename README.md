@@ -12,29 +12,22 @@ apt install git sshpass -y
 chmod +x manage.py
 ```
 
-# Further Reading
-
-https://github.com/bcgov/von-network/blob/main/docs/UsingVONNetwork.md#building-and-starting
-
-https://github.com/hyperledger/aries-cloudagent-python/blob/main/docs/demo/AriesOpenAPIDemo.md#sending-a-message-from-alice-to-faber
-
-https://github.com/hyperledger/aries-cloudagent-python/blob/main/docs/demo/README.md
-
-Architecture problems
-https://github.com/hyperledger/aries-cloudagent-python/issues/2124
-
-https://ldej.nl/post/becoming-a-hyperledger-aries-developer-part-3-connecting-using-swagger/
-
-https://github.com/bcgov/aries-acapy-plugin-redis-events
-
-# To-Do
+## To-Do
 - Solve problems with aca-py Redis plugin integration
 - Access Redis cluster from Python
 - Complete connection procedure
 - UI for connection
 - SD-JWT with PCF in Payload
 
-# Notes To Self
+## Further Reading
+- https://github.com/bcgov/von-network/blob/main/docs/UsingVONNetwork.md#building-and-starting
+- https://github.com/hyperledger/aries-cloudagent-python/blob/main/docs/demo/AriesOpenAPIDemo.md#sending-a-message-from-alice-to-faber
+- https://github.com/hyperledger/aries-cloudagent-python/blob/main/docs/demo/README.md
+- https://github.com/hyperledger/aries-cloudagent-python/issues/2124
+- https://ldej.nl/post/becoming-a-hyperledger-aries-developer-part-3-connecting-using-swagger/
+- https://github.com/bcgov/aries-acapy-plugin-redis-events
+
+## Notes To Self
 Possible Public Ledgers
 - https://idu.cloudcompass.ca
 - http://test.bcovrin.vonx.io
