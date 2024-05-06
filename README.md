@@ -29,6 +29,7 @@ Other possible commands are,
 
 ## To-Do
 - CLI for manage script
+- UI on server node for endpoints
 - Solve problems with aca-py Redis plugin integration
 - Access Redis cluster from Python
 - Complete connection procedure
