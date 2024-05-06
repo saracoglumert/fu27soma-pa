@@ -15,7 +15,7 @@ import urllib
 CONF_DEBUG = False
 CONF_ROOT_PATH = os.path.dirname(os.path.abspath(inspect.getframeinfo(inspect.currentframe()).filename))
 CONF_TEMP_PATH = CONF_ROOT_PATH + "/temp"
-CONF_RES_PATH = CONF_ROOT_PATH + "/res"
+CONF_RES_PATH = CONF_ROOT_PATH + "/resources"
 
 
 with open('config.yaml', 'r') as file:
