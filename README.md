@@ -1,4 +1,4 @@
-# fu27soma-project
+# fu27soma-pa
 
 # 1. Installation
 After a clean installation of Proxmox on a host machine, SSH into it and run the following code block.
