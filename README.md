@@ -15,7 +15,7 @@ chmod +x manage.py
 
 This will clone the repository to your machine, install the dependencies required for the **manage script** to work and make it an executable. After that, **manage script** can be used to interact with Proxmox and the host machine.
 
-Run the following command to build the nodes and get them running.
+Run the following command to build the nodes and get them running. The build may take up to 20 minutes depending on your internet connection.
 ```
 ./manage.py build
 ```
