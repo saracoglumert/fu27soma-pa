@@ -28,11 +28,13 @@ https://ldej.nl/post/becoming-a-hyperledger-aries-developer-part-3-connecting-us
 https://github.com/bcgov/aries-acapy-plugin-redis-events
 
 # To-Do
-- improve manage script (pipe outputs to logs)
-- init
-- manage script arguments
-- implement controller
+- Solve problems with aca-py Redis plugin integration
+- Access Redis cluster from Python
+- Complete connection procedure
+- UI for connection
+- SD-JWT with PCF in Payload
 
 # Notes To Self
-LEDGER_URL=http://test.bcovrin.vonx.io
-ssh-keygen -R hostname
+Possible Public Ledgers
+- https://idu.cloudcompass.ca
+- http://test.bcovrin.vonx.io
