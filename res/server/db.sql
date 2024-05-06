@@ -1,40 +1,26 @@
-CREATE DATABASE Node1;
-CREATE DATABASE Node2;
+CREATE DATABASE %db_name%;
 
-CREATE TABLE Node1.Products (
+CREATE TABLE %db_name%.Companies (
+    CompanyID int,
+    CompanyName varchar(255),
+    PRIMARY KEY (companyID)
+);
+
+CREATE TABLE %db_name%.Products (
     ProductID int,
     ProductName varchar(255),
-    Parts varchar(255)
+    PCF varchar(255),
+    CompanyID int,
+    PRIMARY KEY (ProductID),
+    FOREIGN KEY (CompanyID) REFERENCES Companies(CompanyID)
 );
 
-CREATE TABLE Node1.Parts (
-    PartID int,
-    PartName varchar(255),
-    PartProducer varchar(255)
-);
+INSERT INTO %db_name%.Companies (CompanyID, CompanyName) VALUES 
+(%node1_id%, "%node1_name%"),
+(%node2_id%, "%node2_name%");
 
-CREATE TABLE Node2.Products (
-    ProductID int,
-    ProductName varchar(255),
-    Parts varchar(255)
-);
-
-CREATE TABLE Node2.Parts (
-    PartID int,
-    PartName varchar(255),
-    PartProducer varchar(255)
-);
-
-INSERT INTO Node1.Parts (PartID, PartName, PartProducer)
-VALUES (1, "Product 1 - Part 1", "Node2");
-VALUES (2, "Product 1 - Part 2", "Node2");
-
-INSERT INTO Node1.Products (ProductID, ProductName, Parts)
-VALUES (1,"Product 1","1,2");
-
-INSERT INTO Node2.Parts (PartID, PartName, PartProducer)
-VALUES (1, "Product 2 - Part 1", "Node1");
-VALUES (2, "Product 2 - Part 2", "Node1");
-
-INSERT INTO Node2.Products (ProductID, ProductName, Parts)
-VALUES (1,"Product 2","1,2");
+INSERT INTO %db_name%.Products (ProductID, ProductName, PCF, CompanyID) VALUES
+(%node1_id%1, "Product A1", "TestPCF-A1",%node1_id%),
+(%node1_id%2, "Product A2", "TestPCF-A2",%node1_id%),
+(%node2_id%1, "Product B1", "TestPCF-B1",%node2_id%),
+(%node2_id%2, "Product B2", "TestPCF-B2",%node2_id%);

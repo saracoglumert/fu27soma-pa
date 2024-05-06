@@ -1,34 +1,48 @@
-conf:
-  gateway: 10.10.10.1
-  cidr: 8
-  dns: 1.1.1.1
-  memory: 1024
-  disk: 16
-  passwd: crcx3909
+host:
+  network_gateway: 10.10.10.1
+  network_cidr: 8
+  network_dns: 1.1.1.1
+  container_memory: 1024
+  container_disk: 16
+  container_passwd: crcx3909
+  container_template_path: /var/lib/vz/template/cache/debian11.tar.zst
+  container_template_url: http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst
   ssh: /root/.ssh/authorized_keys
   tails: 6543
   redis: 6379
 
 server:
-  hostname: server
   id: 200
-  ip: 10.10.10.200
-  mac: AA:BB:CC:DD:EE:00
-  endpoint: 9000
-  ledger: fu27soma
+  network_hostname: server
+  network_ip: 10.10.10.200
+  network_mac: AA:BB:CC:DD:EE:00
+  ledger_endpoint: 9000
+  ledger_name: fu27soma
+  db_user: root
+  db_pass: 12345
+  db_name: fu27soma
 
 node1:
-  hostname: node1
   id: 201
-  ip: 10.10.10.201
-  mac: AA:BB:CC:DD:EE:01
-  endpoint: 9001
-  admin: 10001
+  name: Company A
+  network_hostname: node1
+  network_ip: 10.10.10.201
+  network_mac: AA:BB:CC:DD:EE:01
+  acapy_endpoint1: 9000
+  acapy_endpoint2: 10000
+  tails_endpoint: 6543
+  redis_endpoint: 6379
+  redis_pass: 12345
 
 node2:
-  hostname: node2
   id: 202
-  ip: 10.10.10.202
-  mac: AA:BB:CC:DD:EE:02
-  endpoint: 9002
-  admin: 10002
+  name: Company B
+  network_hostname: node2
+  network_ip: 10.10.10.202
+  network_mac: AA:BB:CC:DD:EE:02
+  acapy_endpoint1: 9000
+  acapy_endpoint2: 10000
+  tails_endpoint: 6543
+  redis_endpoint: 6379
+  redis_pass: 12345
+  

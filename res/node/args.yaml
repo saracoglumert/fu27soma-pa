@@ -1,23 +1,23 @@
 auto-provision: true
-label: %hostname%
+label: %name%
 
 inbound-transport:
-   - [http, 0.0.0.0, %endpoint%]
+   - [http, 0.0.0.0, %acapy_endpoint1%]
 
 outbound-transport: http
 
 wallet-type: askar
 wallet-storage-type: default
-wallet-name: %hostname%-wallet
-wallet-key: %hostname%-wallet-key
+wallet-name: %name%-wallet
+wallet-key: %name%-wallet-key
 
 admin-insecure-mode: true
 
-admin: [0.0.0.0, %admin%]
+admin: [0.0.0.0, %acapy_endpoint2%]
 
-endpoint: http://localhost:%endpoint%
+endpoint: http://localhost:%acapy_endpoint1%
 
-genesis-url: http://%server_ip%:%server_endpoint%/genesis
+genesis-url: http://%network_ip%:%ledger_endpoint%/genesis
 
 # Connections
 debug-connections: true
@@ -27,7 +27,7 @@ auto-ping-connection: true
 
 log-level: info
 
-tails-server-base-url: http://localhost:%tails%
+tails-server-base-url: http://localhost:%tails_endpoint%
 
 # Plugins
 plugin:
