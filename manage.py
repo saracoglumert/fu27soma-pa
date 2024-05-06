@@ -2,8 +2,6 @@
 import subprocess
 import urllib.request
 import yaml
-import sys
-import time
 import pathlib
 import os
 import inspect
@@ -12,14 +10,13 @@ import fileinput
 import datetime
 import urllib
 
-CONF_DEBUG = False
-CONF_ROOT_PATH = os.path.dirname(os.path.abspath(inspect.getframeinfo(inspect.currentframe()).filename))
-CONF_TEMP_PATH = CONF_ROOT_PATH + "/temp"
-CONF_RES_PATH = CONF_ROOT_PATH + "/resources"
-
-
 with open('config.yaml', 'r') as file:
     CONF_YAML = yaml.safe_load(file)
+
+CONF_DEBUG = CONF_YAML['manage']['debug']
+CONF_ROOT_PATH = os.path.dirname(os.path.abspath(inspect.getframeinfo(inspect.currentframe()).filename))
+CONF_TEMP_PATH = CONF_ROOT_PATH + "/" + CONF_YAML['manage']['path_temp']
+CONF_RES_PATH = CONF_ROOT_PATH + "/" + CONF_YAML['manage']['path_resources']
 
 class Tools:
     @staticmethod
@@ -58,7 +55,7 @@ class Containers:
             CONF_YAML['host']['network_gateway'],
             CONF_YAML['server']['network_mac'],
             CONF_YAML['host']['container_disk'],
-            CONF_YAML['host']['container_passwd'],
+            CONF_YAML['host']['container_pass'],
             CONF_YAML['host']['ssh']))
         print('[node1] \t Creating container...')
         Tools.Call('pct create {} {} --hostname "{}" --nameserver "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},gw={},hwaddr={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
@@ -71,7 +68,7 @@ class Containers:
             CONF_YAML['host']['network_gateway'],
             CONF_YAML['node1']['network_mac'],
             CONF_YAML['host']['container_disk'],
-            CONF_YAML['host']['container_passwd'],
+            CONF_YAML['host']['container_pass'],
             CONF_YAML['host']['ssh']))
         print('[node2] \t Creating container...')
         Tools.Call('pct create {} {} --hostname "{}" --nameserver "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},gw={},hwaddr={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
@@ -84,7 +81,7 @@ class Containers:
             CONF_YAML['host']['network_gateway'],
             CONF_YAML['node2']['network_mac'],
             CONF_YAML['host']['container_disk'],
-            CONF_YAML['host']['container_passwd'],
+            CONF_YAML['host']['container_pass'],
             CONF_YAML['host']['ssh']))
 
     @staticmethod
@@ -241,11 +238,11 @@ class App:
         Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh'],CONF_YAML['node1']['network_ip']))
         Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh'],CONF_YAML['node2']['network_ip']))
         print('[server] \t Running start script...')
-        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_passwd'],CONF_YAML['server']['network_ip']))
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['server']['network_ip']))
         print('[node1] \t Running start script...')
-        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_passwd'],CONF_YAML['node1']['network_ip']))
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node1']['network_ip']))
         print('[node2] \t Running start script...')
-        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_passwd'],CONF_YAML['node2']['network_ip']))
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node2']['network_ip']))
 
 def AIO():
     datetime_start = datetime.datetime.now()

@@ -1,10 +1,15 @@
+manage:
+  debug: False
+  path_temp: temp
+  path_resources: resources
+
 host:
   network_gateway: 10.10.10.1
   network_cidr: 8
   network_dns: 1.1.1.1
   container_memory: 1024
   container_disk: 16
-  container_passwd: crcx3909
+  container_pass: crcx3909
   container_template_path: /var/lib/vz/template/cache/debian11.tar.zst
   container_template_url: http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst
   ssh: /root/.ssh/authorized_keys
