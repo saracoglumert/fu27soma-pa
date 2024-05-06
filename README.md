@@ -2,6 +2,7 @@
 
 # 1. Installation
 After a clean installation of Proxmox on a host machine, SSH into it and run the following code block.
+
 ```
 cd -L
 https://github.com/saracoglumert/fu27soma-pa.git
@@ -11,6 +12,22 @@ apt upgrade -y
 apt install git sshpass -y
 chmod +x manage.py
 ```
+
+This will clone the repository to your machine, install the dependencies required for the **manage script** to work and make it an executable. After that, **manage script** can be used to interact with Proxmox and the host machine.
+
+Run the following command to build the nodes and get them running.
+
+```
+./manage.py build
+```
+
+Other possible commands are,
+
+```
+./manage.py start
+./manage.py stop
+```
+
 
 ## To-Do
 - Solve problems with aca-py Redis plugin integration
