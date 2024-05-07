@@ -28,9 +28,9 @@ Other possible commands are,
 ./manage.py help
 ```
 
+Settings are stored in **config.yaml** file. In order to build the project successfully, you **have to** set *host/network_gateway*, *node1/network_ip* and *node2/network_ip* values in a way suitable for your network infrastructure, or build will fail.
 
 ## To-Do
-- CLI for manage script
 - UI on server node for endpoints
 - Solve problems with aca-py Redis plugin integration
 - Access Redis cluster from Python
