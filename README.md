@@ -24,6 +24,8 @@ Other possible commands are,
 ```
 ./manage.py start
 ./manage.py stop
+./manage.py destroy
+./manage.py help
 ```
 
 
