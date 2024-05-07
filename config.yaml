@@ -2,6 +2,7 @@ manage:
   debug: False
   path_temp: temp
   path_resources: resources
+  error_arg: "Argument error."
 
 host:
   network_gateway: 10.10.10.1
@@ -13,8 +14,6 @@ host:
   container_template_path: /var/lib/vz/template/cache/debian11.tar.zst
   container_template_url: http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst
   ssh: /root/.ssh/authorized_keys
-  tails: 6543
-  redis: 6379
 
 server:
   id: 200

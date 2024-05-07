@@ -8,7 +8,9 @@ import inspect
 import shutil
 import fileinput
 import datetime
+import time
 import urllib
+import sys
 
 with open('config.yaml', 'r') as file:
     CONF_YAML = yaml.safe_load(file)
@@ -256,3 +258,28 @@ def AIO():
     datetime_end = datetime.datetime.now()
     duration = round((datetime_end - datetime_start).total_seconds() / 60.0,1)
     print("\nBuild took {} minutes.".format(duration))
+
+if __name__ == "__main__":
+    if len(sys.argv) == 2:
+        cmd = sys.argv[1]
+        match cmd:
+            case "build":
+                AIO()
+            case "destroy":
+                Containers.Destroy()
+            case "start":
+                Containers.Start()
+                time.sleep(5)
+                App.Start()
+            case "stop":
+                Containers.Stop()
+            case "help":
+                print("./manage build \t\t Build containers")
+                print("./manage start \t\t Start containers")
+                print("./manage stop \t\t Stop containers")
+                print("./manage destroy \t Destroy containers")
+                print("./manage help \t\t Shows this help page.")
+            case _:
+                print(CONF_YAML['manage']['error_arg'])
+    else:
+        print(CONF_YAML['manage']['error_arg'])
