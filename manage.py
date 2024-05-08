@@ -12,6 +12,7 @@ import time
 import urllib
 import sys
 
+
 with open('config.yaml', 'r') as file:
     CONF_YAML = yaml.safe_load(file)
 
@@ -38,6 +39,23 @@ class Tools:
     def Template():
         if os.path.exists(CONF_YAML['host']['container_template_path']):
             urllib.request.urlretrieve(CONF_YAML['host']['container_template_url'],CONF_YAML['host']['container_template_path'])
+
+    @staticmethod
+    def Ping(host):
+        result = subprocess.run('ping -c 1 {}'.format(host), capture_output=True, shell=True).stdout.decode()
+        if "Unreachable" in result:
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def CheckNetwork():
+        gateway = subprocess.run('/sbin/ip route | awk \'/default/ { print $3 }\'', capture_output=True, shell=True).stdout.decode().replace('\n','')
+        base = '.'.join(gateway.split('.')[:-1]) + "."
+        ips = []
+        for i in range(1,256):
+            ips.append(base+str(i))
+        return ips
 
 class Containers:
     @staticmethod

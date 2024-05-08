@@ -32,6 +32,7 @@ Settings are stored in **config.yaml** file. In order to build the project succe
 
 ## To-Do
 - Clear steps in README.md (config.yaml before build)
+- Complete network scanner in manage script
 - UI on server node for endpoints
 - Solve problems with aca-py Redis plugin integration
 - Access Redis cluster from Python
