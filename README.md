@@ -4,12 +4,13 @@
 After a clean installation of Proxmox on a host machine, SSH into it and run the following code block.
 
 ```
-cd -L
-https://github.com/saracoglumert/fu27soma-pa.git
-cd fu27soma-pa
 apt update -y
 apt upgrade -y
+apt install git -y
 apt install git sshpass -y
+cd -L
+git clone https://github.com/saracoglumert/fu27soma-pa.git
+cd fu27soma-pa
 chmod +x manage.py
 ```
 
