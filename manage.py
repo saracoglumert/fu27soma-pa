@@ -12,7 +12,6 @@ import time
 import urllib
 import sys
 
-
 with open('config.yaml', 'r') as file:
     CONF_YAML = yaml.safe_load(file)
 
@@ -67,6 +66,7 @@ class Tools:
                     temp = temp + 1
             if temp == 3:
                 results.append(element)
+        print("Gateway   : {}\n".format(gateway))
         print("Possible chunks are :")
         for result in results:
             print("Server IP : {}".format(result[0]))

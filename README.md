@@ -32,7 +32,7 @@ Other possible commands are,
 ```
 
 ## To-Do
-- Complete network scanner in manage script (and add to README) (add gateway)
+- Complete network scanner in manage script (and add to README)
 - Insert endpoints and ips into db.sql
 - UI on server node for endpoints
 - Solve problems with aca-py Redis plugin integration
