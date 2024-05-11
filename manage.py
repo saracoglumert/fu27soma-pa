@@ -50,12 +50,29 @@ class Tools:
 
     @staticmethod
     def CheckNetwork():
+        print("[network] \t\t Checking network...")
         gateway = subprocess.run('/sbin/ip route | awk \'/default/ { print $3 }\'', capture_output=True, shell=True).stdout.decode().replace('\n','')
         base = '.'.join(gateway.split('.')[:-1]) + "."
         ips = []
-        for i in range(1,256):
-            ips.append(base+str(i))
-        return ips
+        results = []
+        for i in range(0,64,10):
+            ip_server = base+str(i)
+            ip_node1 = base+str(i+1)
+            ip_node2 = base+str(i+2)
+            ips.append((ip_server,ip_node1,ip_node2))
+        for element in ips:
+            temp = 0
+            for element2 in element:
+                if not Tools.Ping(element2):
+                    temp = temp + 1
+            if temp == 3:
+                results.append(element)
+        print("Possible chunks are :")
+        for result in results:
+            print("Server IP : {}".format(result[0]))
+            print("Node 1 IP : {}".format(result[1]))
+            print("Node 2 IP : {}".format(result[2]))
+            print("------------")
 
 class Containers:
     @staticmethod
