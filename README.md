@@ -16,7 +16,9 @@ chmod +x manage.py
 
 This will clone the repository to your machine, install the dependencies required for the **manage script** to work and make it an executable. After that, **manage script** can be used to interact with Proxmox and the host machine.
 
-Run the following command to build the nodes and get them running. The build may take up to 20 minutes depending on your internet connection.
+Before starting to use **manage script**, **config.yaml** file must be set according to your network configuration, otherwise the build will fail. In order to build the project successfully, you **have to** set *host/network_gateway*, *node1/network_ip* and *node2/network_ip* values in a way suitable for your network infrastructure. Other key values are still open for change, but not mandatory.
+
+After editing the **config.yaml** file, run the following command to build the nodes and get them running. The build may take up to 20 minutes depending on your internet connection.
 ```
 ./manage.py build
 ```
@@ -29,10 +31,7 @@ Other possible commands are,
 ./manage.py help
 ```
 
-Settings are stored in **config.yaml** file. In order to build the project successfully, you **have to** set *host/network_gateway*, *node1/network_ip* and *node2/network_ip* values in a way suitable for your network infrastructure, or build will fail.
-
 ## To-Do
-- Clear steps in README.md (config.yaml before build)
 - Complete network scanner in manage script
 - UI on server node for endpoints
 - Solve problems with aca-py Redis plugin integration
