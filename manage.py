@@ -48,13 +48,22 @@ class Tools:
             return True
 
     @staticmethod
-    def CheckNetwork():
+    def Help():
+        print("./manage build \t\t Build containers")
+        print("./manage start \t\t Start containers")
+        print("./manage stop \t\t Stop containers")
+        print("./manage destroy \t Destroy containers")
+        print("./manage config \t Runs configuration script")
+        print("./manage help \t\t Shows this help page.")
+
+    @staticmethod
+    def Config():
         print("[network] \t\t Checking network...")
         gateway = subprocess.run('/sbin/ip route | awk \'/default/ { print $3 }\'', capture_output=True, shell=True).stdout.decode().replace('\n','')
         base = '.'.join(gateway.split('.')[:-1]) + "."
         ips = []
         results = []
-        for i in range(0,64,10):
+        for i in range(0,256,50):
             ip_server = base+str(i)
             ip_node1 = base+str(i+1)
             ip_node2 = base+str(i+2)
@@ -66,13 +75,13 @@ class Tools:
                     temp = temp + 1
             if temp == 3:
                 results.append(element)
-        print("Gateway   : {}\n".format(gateway))
-        print("Possible chunks are :")
+        print("\nGateway   : {}\n".format(gateway))
+        print("Options are : \n")
         for result in results:
-            print("Server IP : {}".format(result[0]))
-            print("Node 1 IP : {}".format(result[1]))
-            print("Node 2 IP : {}".format(result[2]))
-            print("------------")
+            print("Server - ID : {} / IP : {}".format(result[0].split(".")[-1],result[0]))
+            print("Node 1 - ID : {} / IP : {}".format(result[1].split(".")[-1],result[1]))
+            print("Node 2 - ID : {} / IP : {}".format(result[2].split(".")[-1],result[2]))
+            print("-"*os.get_terminal_size()[0])
 
 class Containers:
     @staticmethod
@@ -308,13 +317,13 @@ if __name__ == "__main__":
                 App.Start()
             case "stop":
                 Containers.Stop()
+            case "config":
+                Tools.Config()
             case "help":
-                print("./manage build \t\t Build containers")
-                print("./manage start \t\t Start containers")
-                print("./manage stop \t\t Stop containers")
-                print("./manage destroy \t Destroy containers")
-                print("./manage help \t\t Shows this help page.")
+                Tools.Help()
             case _:
                 print(CONF_YAML['manage']['error_arg'])
+    elif len(sys.argv) == 1:
+        Tools.Help()
     else:
         print(CONF_YAML['manage']['error_arg'])
