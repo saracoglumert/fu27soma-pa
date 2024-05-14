@@ -7,7 +7,7 @@ After a clean installation of Proxmox on a host machine, SSH into it and run the
 apt update -y
 apt upgrade -y
 apt install git -y
-apt install git sshpass -y
+apt install sshpass -y
 cd -L
 git clone https://github.com/saracoglumert/fu27soma-pa.git
 cd fu27soma-pa
@@ -36,14 +36,15 @@ Other possible commands are,
 ```
 
 ## To-Do
-- Complete network scanner in manage script (and add to README)
-- Insert endpoints and ips into db.sql
-- UI on server node for endpoints
-- Solve problems with aca-py Redis plugin integration
-- Access Redis cluster from Python
-- Complete connection procedure
-- UI for connection
-- SD-JWT with PCF in Payload
+- Complete network scanner in manage script (and add to README) -- soon
+- Insert endpoints and ips into db.sql -- soon
+- UI on server node for endpoints -- p1
+- UI for connection on nodes -- p1
+- Solve problems with aca-py Redis plugin integration -- p2
+- Access Redis cluster from Python -- p2
+- Aries OPENAPI Tutorial -- p3
+- Complete connection procedure -- p3
+- SD-JWT with PCF in Payload -- p4
 
 ## Further Reading
 - https://github.com/bcgov/von-network/blob/main/docs/UsingVONNetwork.md#building-and-starting
