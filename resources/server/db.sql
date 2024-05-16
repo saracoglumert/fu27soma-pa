@@ -3,6 +3,9 @@ CREATE DATABASE %db_name%;
 CREATE TABLE %db_name%.Companies (
     CompanyID int,
     CompanyName varchar(255),
+    CompanyIP varchar(255),
+    CompanyEndpointUI varchar(255),
+    CompanyEndpointAcaPy varchar(255),
     PRIMARY KEY (companyID)
 );
 
@@ -15,9 +18,9 @@ CREATE TABLE %db_name%.Products (
     FOREIGN KEY (CompanyID) REFERENCES Companies(CompanyID)
 );
 
-INSERT INTO %db_name%.Companies (CompanyID, CompanyName) VALUES 
-(%node1_id%, "%node1_name%"),
-(%node2_id%, "%node2_name%");
+INSERT INTO %db_name%.Companies (CompanyID, CompanyName, CompanyIP, CompanyEndpointUI, CompanyEndpointAcaPy) VALUES 
+(%node1_id%, "%node1_name%","%node1_ip%","%node1_ui_endpoint%","%node1_acapy_endpoint_2%"),
+(%node2_id%, "%node2_name%","%node2_ip%","%node2_ui_endpoint%","%node2_acapy_endpoint_2%");
 
 INSERT INTO %db_name%.Products (ProductID, ProductName, PCF, CompanyID) VALUES
 (%node1_id%1, "Product A1", "TestPCF-A1",%node1_id%),

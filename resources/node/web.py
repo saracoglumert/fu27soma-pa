@@ -41,13 +41,10 @@ def handler_request():
     return ('', 204)
 
 def getCompanyNamebyID(id):
-    try:
-        mycursor = mydb.cursor()
-        mycursor.execute("SELECT * FROM Companies")
-        myresult = dict(mycursor.fetchall())
-        return myresult[id]
-    except Exception as e:
-        return "N/A - Error:"
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT CompanyID, CompanyName FROM Companies")
+    myresult = dict(mycursor.fetchall())
+    return myresult[id]
 
 def getProductbyID(id):
     mycursor = mydb.cursor()
@@ -74,4 +71,4 @@ def getProductsonSupplyChainbyCompanyID(id):
 if __name__ == "__main__":
     CONFIG_COMPANYID = int(sys.argv[1])
     CONFIG_COMPANYNAME = getCompanyNamebyID(CONFIG_COMPANYID)
-    app.run(host='0.0.0.0', port=80, debug=False)
+    app.run(host='0.0.0.0', port=%ui_endpoint%, debug=False)

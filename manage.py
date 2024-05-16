@@ -83,6 +83,15 @@ class Tools:
             print("Node 2 - ID : {} / IP : {}".format(result[2].split(".")[-1],result[2]))
             print("-"*os.get_terminal_size()[0])
 
+    @staticmethod
+    def SetSSH():
+        Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_hosts'],CONF_YAML['server']['network_ip']))
+        Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_hosts'],CONF_YAML['node1']['network_ip']))
+        Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_hosts'],CONF_YAML['node2']['network_ip']))
+        Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_keys'],CONF_YAML['server']['network_ip']))
+        Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_keys'],CONF_YAML['node1']['network_ip']))
+        Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_keys'],CONF_YAML['node2']['network_ip']))
+
 class Containers:
     @staticmethod
     def Create():
@@ -91,6 +100,7 @@ class Containers:
         
         # Create containers
         print('[server] \t Creating container...')
+        # Container - server
         Tools.Call('pct create {} {} --hostname "{}" --nameserver "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},gw={},hwaddr={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
             CONF_YAML['server']['id'],
             CONF_YAML['host']['container_template_path'],
@@ -102,8 +112,9 @@ class Containers:
             CONF_YAML['server']['network_mac'],
             CONF_YAML['host']['container_disk'],
             CONF_YAML['host']['container_pass'],
-            CONF_YAML['host']['ssh']))
+            CONF_YAML['host']['ssh_keys']))
         print('[node1] \t Creating container...')
+        # Container - node1
         Tools.Call('pct create {} {} --hostname "{}" --nameserver "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},gw={},hwaddr={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
             CONF_YAML['node1']['id'],
             CONF_YAML['host']['container_template_path'],
@@ -115,8 +126,9 @@ class Containers:
             CONF_YAML['node1']['network_mac'],
             CONF_YAML['host']['container_disk'],
             CONF_YAML['host']['container_pass'],
-            CONF_YAML['host']['ssh']))
+            CONF_YAML['host']['ssh_keys']))
         print('[node2] \t Creating container...')
+        # Container - node2
         Tools.Call('pct create {} {} --hostname "{}" --nameserver "{}" --memory "{}" --net0 name=eth0,bridge=vmbr0,firewall=1,ip={},gw={},hwaddr={},type=veth --storage local-lvm --rootfs local-lvm:{} --unprivileged 1 --ignore-unpack-errors --ostype debian --password={} --start 1 --ssh-public-keys {} --features nesting=1'.format(
             CONF_YAML['node2']['id'],
             CONF_YAML['host']['container_template_path'],
@@ -128,7 +140,7 @@ class Containers:
             CONF_YAML['node2']['network_mac'],
             CONF_YAML['host']['container_disk'],
             CONF_YAML['host']['container_pass'],
-            CONF_YAML['host']['ssh']))
+            CONF_YAML['host']['ssh_keys']))
 
     @staticmethod
     def Start():
@@ -162,7 +174,6 @@ class Containers:
 class Files:
     @staticmethod
     def Generate():
-        print('[all] \t\t Generating files...')
         # Generate TEMP directory
         if os.path.exists(CONF_TEMP_PATH):
             shutil.rmtree(CONF_TEMP_PATH)
@@ -189,7 +200,6 @@ class Files:
 
     @staticmethod
     def Render():
-        print('[all] \t\t Rendering files...')
         # Replace values in files related to SERVER
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%network_ip%",str(CONF_YAML['server']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%ledger_endpoint%",str(CONF_YAML['server']['ledger_endpoint']))
@@ -198,16 +208,22 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_init.sh","%db_pass%",str(CONF_YAML['server']['db_pass']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%db_name%",str(CONF_YAML['server']['db_name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_id%",str(CONF_YAML['node1']['id']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_id%",str(CONF_YAML['node2']['id']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_name%",str(CONF_YAML['node1']['name']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_ip%",str(CONF_YAML['node1']['network_ip']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_ui_endpoint%",str(CONF_YAML['node1']['ui_endpoint']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_acapy_endpoint_2%",str(CONF_YAML['node1']['acapy_endpoint_2']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_id%",str(CONF_YAML['node2']['id']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_name%",str(CONF_YAML['node2']['name']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_ip%",str(CONF_YAML['node2']['network_ip']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_ui_endpoint%",str(CONF_YAML['node2']['ui_endpoint']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_acapy_endpoint_2%",str(CONF_YAML['node2']['acapy_endpoint_2']))
 
         # Replace values in files related to Node 1
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_start.sh","%id%",str(CONF_YAML['node1']['id']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_init.sh","%redis_pass%",str(CONF_YAML['node1']['redis_pass']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%name%",str(CONF_YAML['node1']['name']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%acapy_endpoint1%",str(CONF_YAML['node1']['acapy_endpoint1']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%acapy_endpoint2%",str(CONF_YAML['node1']['acapy_endpoint2']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%acapy_endpoint_1%",str(CONF_YAML['node1']['acapy_endpoint_1']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%acapy_endpoint_2%",str(CONF_YAML['node1']['acapy_endpoint_2']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%tails_endpoint%",str(CONF_YAML['node1']['tails_endpoint']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%network_ip%",str(CONF_YAML['server']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%ledger_endpoint%",str(CONF_YAML['server']['ledger_endpoint']))
@@ -218,13 +234,14 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%db_user%",str(CONF_YAML['server']['db_user']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%db_pass%",str(CONF_YAML['server']['db_pass']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%db_name%",str(CONF_YAML['server']['db_name']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%ui_endpoint%",str(CONF_YAML['node1']['ui_endpoint']))
 
         # Replace values in files related to Node 2
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_start.sh","%id%",str(CONF_YAML['node2']['id']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_init.sh","%redis_pass%",str(CONF_YAML['node2']['redis_pass']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%name%",str(CONF_YAML['node2']['name']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%acapy_endpoint1%",str(CONF_YAML['node2']['acapy_endpoint1']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%acapy_endpoint2%",str(CONF_YAML['node2']['acapy_endpoint2']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%acapy_endpoint_1%",str(CONF_YAML['node2']['acapy_endpoint_1']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%acapy_endpoint_2%",str(CONF_YAML['node2']['acapy_endpoint_2']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%tails_endpoint%",str(CONF_YAML['node2']['tails_endpoint']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%network_ip%",str(CONF_YAML['server']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%ledger_endpoint%",str(CONF_YAML['server']['ledger_endpoint']))
@@ -235,6 +252,7 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_user%",str(CONF_YAML['server']['db_user']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_pass%",str(CONF_YAML['server']['db_pass']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_name%",str(CONF_YAML['server']['db_name']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%ui_endpoint%",str(CONF_YAML['node2']['ui_endpoint']))
 
     @staticmethod
     def Push():
@@ -280,9 +298,7 @@ class App:
 
     @staticmethod
     def Start():    
-        Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh'],CONF_YAML['server']['network_ip']))
-        Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh'],CONF_YAML['node1']['network_ip']))
-        Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh'],CONF_YAML['node2']['network_ip']))
+        Tools.SetSSH()
         print('[server] \t Running start script...')
         Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['server']['network_ip']))
         print('[node1] \t Running start script...')
@@ -302,6 +318,7 @@ def AIO():
     datetime_end = datetime.datetime.now()
     duration = round((datetime_end - datetime_start).total_seconds() / 60.0,1)
     print("\nBuild took {} minutes.".format(duration))
+    print("\n\t http://{}:{}".format(CONF_YAML['server']['network_ip'],CONF_YAML['server']['ui_endpoint']))
 
 if __name__ == "__main__":
     if len(sys.argv) == 2:

@@ -13,13 +13,15 @@ host:
   container_pass: crcx3909
   container_template_path: /var/lib/vz/template/cache/debian11.tar.zst
   container_template_url: http://ftp.cn.debian.org/proxmox/images/system/debian-11-standard_11.7-1_amd64.tar.zst
-  ssh: /root/.ssh/authorized_keys
+  ssh_keys: /root/.ssh/authorized_keys
+  ssh_hosts: /root/.ssh/known_hosts
 
 server:
   id: 200
   network_hostname: server
   network_ip: 10.10.10.200
   network_mac: AA:BB:CC:DD:EE:00
+  ui_endpoint: 80
   ledger_endpoint: 9000
   ledger_name: fu27soma
   db_user: root
@@ -32,8 +34,9 @@ node1:
   network_hostname: node1
   network_ip: 10.10.10.201
   network_mac: AA:BB:CC:DD:EE:01
-  acapy_endpoint1: 9000
-  acapy_endpoint2: 10000
+  ui_endpoint: 80
+  acapy_endpoint_1: 9000
+  acapy_endpoint_2: 10000
   tails_endpoint: 6543
   redis_endpoint: 6379
   redis_pass: 12345
@@ -44,8 +47,9 @@ node2:
   network_hostname: node2
   network_ip: 10.10.10.202
   network_mac: AA:BB:CC:DD:EE:02
-  acapy_endpoint1: 9000
-  acapy_endpoint2: 10000
+  ui_endpoint: 80
+  acapy_endpoint_1: 9000
+  acapy_endpoint_2: 10000
   tails_endpoint: 6543
   redis_endpoint: 6379
   redis_pass: 12345

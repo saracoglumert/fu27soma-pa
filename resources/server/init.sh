@@ -18,8 +18,8 @@ curl -4sSL https://get.docker.com/ | sh
 
 # Get Repos
 cd -L
-mkdir res
-cd res
+mkdir resources
+cd resources
 git clone https://github.com/bcgov/von-network
 git clone https://github.com/bcgov/indy-tails-server.git
 cd ..

@@ -28,7 +28,7 @@ pip3 install git+https://github.com/hyperledger/aries-acapy-plugins@main#subdire
 
 # Setup redis
 apt install redis -y
-# set redis conf, cluster mode
+# set redis conf - cluster mode, accessiblity, password
 sed -i 's/.*bind 127.0.0.1 ::1*/bind 0.0.0.0/' /etc/redis/redis.conf
 sed -i 's/.*# requirepass foobared*/requirepass %redis_pass%/' /etc/redis/redis.conf
 

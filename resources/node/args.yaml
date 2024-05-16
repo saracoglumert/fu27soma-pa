@@ -2,7 +2,7 @@ auto-provision: true
 label: %name%
 
 inbound-transport:
-   - [http, 0.0.0.0, %acapy_endpoint1%]
+   - [http, 0.0.0.0, %acapy_endpoint_1%]
 
 outbound-transport: http
 
@@ -13,9 +13,9 @@ wallet-key: %name%-wallet-key
 
 admin-insecure-mode: true
 
-admin: [0.0.0.0, %acapy_endpoint2%]
+admin: [0.0.0.0, %acapy_endpoint_2%]
 
-endpoint: http://localhost:%acapy_endpoint1%
+endpoint: http://localhost:%acapy_endpoint_1%
 
 genesis-url: http://%network_ip%:%ledger_endpoint%/genesis
 
