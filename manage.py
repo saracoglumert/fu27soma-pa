@@ -318,7 +318,9 @@ def AIO():
     datetime_end = datetime.datetime.now()
     duration = round((datetime_end - datetime_start).total_seconds() / 60.0,1)
     print("\nBuild took {} minutes.".format(duration))
-    print("\n\t http://{}:{}".format(CONF_YAML['server']['network_ip'],CONF_YAML['server']['ui_endpoint']))
+    print("\nVisit")
+    print("\t http://{}:{}".format(CONF_YAML['server']['network_ip'],CONF_YAML['server']['ui_endpoint']))
+    print("to see endpoints.")
 
 if __name__ == "__main__":
     if len(sys.argv) == 2:
