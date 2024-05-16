@@ -41,6 +41,7 @@ Other possible commands are,
 - Update to aca-py v0.12.1 -- p1.5
 - Solve problems with aca-py Redis plugin integration -- p2
 - Access Redis cluster from Python -- p2
+- python library (app,web,lib,db)
 - Aries OPENAPI Tutorial -- p3
 - Complete connection procedure -- p3
 - Issue credential / Request proof -- p4
