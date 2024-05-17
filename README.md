@@ -36,8 +36,8 @@ Other possible commands are,
 ```
 
 ## To-Do
+- UI for connection on nodes -- soon
 - UI on server node for endpoints (end of manage script) -- p1
-- UI for connection on nodes -- p1
 - Update to aca-py v0.12.1 -- p1.5
 - Solve problems with aca-py Redis plugin integration -- p2
 - Access Redis cluster from Python -- p2
@@ -57,6 +57,10 @@ Other possible commands are,
 - https://github.com/hyperledger/aries-cloudagent-python/issues/2124
 - https://ldej.nl/post/becoming-a-hyperledger-aries-developer-part-3-connecting-using-swagger/
 - https://github.com/bcgov/aries-acapy-plugin-redis-events
+- https://github.com/bcgov/openshift-aries-mediator-service
+- https://github.com/bcgov/openshift-aries-mediator-service/tree/main/openshift/templates/aries-mediator-agent
+- https://github.com/bcgov/openshift-aries-mediator-service/tree/main/openshift/templates/redis
+- https://github.com/bcgov/openshift-aries-mediator-service/blob/main/openshift/templates/redis/redis-cluster-deploy.yaml#L1-L37
 
 ## Notes To Self
 Possible Public Ledgers

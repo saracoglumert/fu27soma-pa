@@ -1,5 +1,5 @@
 manage:
-  debug: False
+  debug: True
   path_temp: temp
   path_resources: resources
   error_arg: "Argument error."
@@ -21,8 +21,8 @@ server:
   network_hostname: server
   network_ip: 10.10.10.200
   network_mac: AA:BB:CC:DD:EE:00
-  ui_endpoint: 80
-  ledger_endpoint: 9000
+  port_ui: 80
+  port_ledger: 9000
   ledger_name: fu27soma
   db_user: root
   db_pass: 12345
@@ -34,12 +34,12 @@ node1:
   network_hostname: node1
   network_ip: 10.10.10.201
   network_mac: AA:BB:CC:DD:EE:01
-  ui_endpoint: 80
-  acapy_endpoint_1: 9000
-  acapy_endpoint_2: 10000
-  tails_endpoint: 6543
-  redis_endpoint: 6379
-  redis_pass: 12345
+  port_ui: 80
+  port_acapy_1: 9000
+  port_acapy_2: 10000
+  port_tails: 6543
+  port_redis: 6379
+  pass_redis: 12345
 
 node2:
   id: 202
@@ -47,10 +47,10 @@ node2:
   network_hostname: node2
   network_ip: 10.10.10.202
   network_mac: AA:BB:CC:DD:EE:02
-  ui_endpoint: 80
-  acapy_endpoint_1: 9000
-  acapy_endpoint_2: 10000
-  tails_endpoint: 6543
-  redis_endpoint: 6379
-  redis_pass: 12345
+  port_ui: 80
+  port_acapy_1: 9000
+  port_acapy_2: 10000
+  port_tails: 6543
+  port_redis: 6379
+  pass_redis: 12345
   

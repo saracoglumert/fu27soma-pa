@@ -2,7 +2,7 @@ auto-provision: true
 label: %name%
 
 inbound-transport:
-   - [http, 0.0.0.0, %acapy_endpoint_1%]
+   - [http, 0.0.0.0, %port_acapy_1%]
 
 outbound-transport: http
 
@@ -13,11 +13,11 @@ wallet-key: %name%-wallet-key
 
 admin-insecure-mode: true
 
-admin: [0.0.0.0, %acapy_endpoint_2%]
+admin: [0.0.0.0, %port_acapy_2%]
 
-endpoint: http://localhost:%acapy_endpoint_1%
+endpoint: http://localhost:%port_acapy_1%
 
-genesis-url: http://%network_ip%:%ledger_endpoint%/genesis
+genesis-url: http://%network_ip%:%port_ledger%/genesis
 
 # Connections
 debug-connections: true
@@ -27,7 +27,7 @@ auto-ping-connection: true
 
 log-level: info
 
-tails-server-base-url: http://localhost:%tails_endpoint%
+tails-server-base-url: http://localhost:%port_tails%
 
 # Plugins
 plugin:

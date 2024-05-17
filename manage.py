@@ -36,7 +36,8 @@ class Tools:
 
     @staticmethod
     def Template():
-        if os.path.exists(CONF_YAML['host']['container_template_path']):
+        if not os.path.exists(CONF_YAML['host']['container_template_path']):
+            print('[all] \t\t Downloading container template...')
             urllib.request.urlretrieve(CONF_YAML['host']['container_template_url'],CONF_YAML['host']['container_template_path'])
 
     @staticmethod
@@ -202,7 +203,7 @@ class Files:
     def Render():
         # Replace values in files related to SERVER
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%network_ip%",str(CONF_YAML['server']['network_ip']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%ledger_endpoint%",str(CONF_YAML['server']['ledger_endpoint']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%port_ledger%",str(CONF_YAML['server']['port_ledger']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%ledger_name%",str(CONF_YAML['server']['ledger_name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_init.sh","%db_user%",str(CONF_YAML['server']['db_user']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_init.sh","%db_pass%",str(CONF_YAML['server']['db_pass']))
@@ -210,49 +211,49 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_id%",str(CONF_YAML['node1']['id']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_name%",str(CONF_YAML['node1']['name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_ip%",str(CONF_YAML['node1']['network_ip']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_ui_endpoint%",str(CONF_YAML['node1']['ui_endpoint']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_acapy_endpoint_2%",str(CONF_YAML['node1']['acapy_endpoint_2']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_ui_port%",str(CONF_YAML['node1']['port_ui']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_acapy_port_2%",str(CONF_YAML['node1']['port_acapy_2']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_id%",str(CONF_YAML['node2']['id']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_name%",str(CONF_YAML['node2']['name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_ip%",str(CONF_YAML['node2']['network_ip']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_ui_endpoint%",str(CONF_YAML['node2']['ui_endpoint']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_acapy_endpoint_2%",str(CONF_YAML['node2']['acapy_endpoint_2']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_ui_port%",str(CONF_YAML['node2']['port_ui']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_acapy_port_2%",str(CONF_YAML['node2']['port_acapy_2']))
 
         # Replace values in files related to Node 1
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_start.sh","%id%",str(CONF_YAML['node1']['id']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_init.sh","%redis_pass%",str(CONF_YAML['node1']['redis_pass']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_init.sh","%pass_redis%",str(CONF_YAML['node1']['pass_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%name%",str(CONF_YAML['node1']['name']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%acapy_endpoint_1%",str(CONF_YAML['node1']['acapy_endpoint_1']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%acapy_endpoint_2%",str(CONF_YAML['node1']['acapy_endpoint_2']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%tails_endpoint%",str(CONF_YAML['node1']['tails_endpoint']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%port_acapy_1%",str(CONF_YAML['node1']['port_acapy_1']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%port_acapy_2%",str(CONF_YAML['node1']['port_acapy_2']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%port_tails%",str(CONF_YAML['node1']['port_tails']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%network_ip%",str(CONF_YAML['server']['network_ip']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%ledger_endpoint%",str(CONF_YAML['server']['ledger_endpoint']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_plugin.yaml","%redis_endpoint%",str(CONF_YAML['node1']['redis_endpoint']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_plugin.yaml","%redis_pass%",str(CONF_YAML['node1']['redis_pass']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%port_ledger%",str(CONF_YAML['server']['port_ledger']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_plugin.yaml","%port_redis%",str(CONF_YAML['node1']['port_redis']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_plugin.yaml","%pass_redis%",str(CONF_YAML['node1']['pass_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_plugin.yaml","%network_ip%",str(CONF_YAML['node1']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%network_ip%",str(CONF_YAML['server']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%db_user%",str(CONF_YAML['server']['db_user']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%db_pass%",str(CONF_YAML['server']['db_pass']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%db_name%",str(CONF_YAML['server']['db_name']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%ui_endpoint%",str(CONF_YAML['node1']['ui_endpoint']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%port_ui%",str(CONF_YAML['node1']['port_ui']))
 
         # Replace values in files related to Node 2
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_start.sh","%id%",str(CONF_YAML['node2']['id']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_init.sh","%redis_pass%",str(CONF_YAML['node2']['redis_pass']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_init.sh","%pass_redis%",str(CONF_YAML['node2']['pass_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%name%",str(CONF_YAML['node2']['name']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%acapy_endpoint_1%",str(CONF_YAML['node2']['acapy_endpoint_1']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%acapy_endpoint_2%",str(CONF_YAML['node2']['acapy_endpoint_2']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%tails_endpoint%",str(CONF_YAML['node2']['tails_endpoint']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%port_acapy_1%",str(CONF_YAML['node2']['port_acapy_1']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%port_acapy_2%",str(CONF_YAML['node2']['port_acapy_2']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%port_tails%",str(CONF_YAML['node2']['port_tails']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%network_ip%",str(CONF_YAML['server']['network_ip']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%ledger_endpoint%",str(CONF_YAML['server']['ledger_endpoint']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_plugin.yaml","%redis_endpoint%",str(CONF_YAML['node2']['redis_endpoint']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_plugin.yaml","%redis_pass%",str(CONF_YAML['node2']['redis_pass']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%port_ledger%",str(CONF_YAML['server']['port_ledger']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_plugin.yaml","%port_redis%",str(CONF_YAML['node2']['port_redis']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_plugin.yaml","%pass_redis%",str(CONF_YAML['node2']['pass_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_plugin.yaml","%network_ip%",str(CONF_YAML['node2']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%network_ip%",str(CONF_YAML['server']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_user%",str(CONF_YAML['server']['db_user']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_pass%",str(CONF_YAML['server']['db_pass']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_name%",str(CONF_YAML['server']['db_name']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%ui_endpoint%",str(CONF_YAML['node2']['ui_endpoint']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%ui_endpoint%",str(CONF_YAML['node2']['port_ui']))
 
     @staticmethod
     def Push():
@@ -319,7 +320,7 @@ def AIO():
     duration = round((datetime_end - datetime_start).total_seconds() / 60.0,1)
     print("\nBuild took {} minutes.".format(duration))
     print("\nVisit")
-    print("\t http://{}:{}".format(CONF_YAML['server']['network_ip'],CONF_YAML['server']['ui_endpoint']))
+    print("\t http://{}:{}".format(CONF_YAML['server']['network_ip'],CONF_YAML['server']['port_ui']))
     print("to see endpoints.")
 
 if __name__ == "__main__":
@@ -336,6 +337,12 @@ if __name__ == "__main__":
                 App.Start()
             case "stop":
                 Containers.Stop()
+            case "restart":
+                Containers.Stop()
+                time.sleep(5)
+                Containers.Start()
+                time.sleep(5)
+                App.Start()
             case "config":
                 Tools.Config()
             case "help":

@@ -71,4 +71,4 @@ def getProductsonSupplyChainbyCompanyID(id):
 if __name__ == "__main__":
     CONFIG_COMPANYID = int(sys.argv[1])
     CONFIG_COMPANYNAME = getCompanyNamebyID(CONFIG_COMPANYID)
-    app.run(host='0.0.0.0', port=%ui_endpoint%, debug=False)
+    app.run(host='0.0.0.0', port=%port_ui%, debug=False)
