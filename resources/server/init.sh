@@ -4,19 +4,19 @@ locale-gen
 echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
 echo 'Acquire::ForceIPv4 "true";' >> /etc/apt/apt.conf.d/99force-ipv4
 echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
-source ~/.bashrc 
+source ~/.bashrc
 
 # Update & Upgrade
-apt install apt-transport-https -y
-apt clean -y
-apt update -y
-apt upgrade -y
+apt install apt-transport-https -yq
+apt clean -yq
+apt update -yq
+DEBIAN_FRONTEND=noninteractive apt upgrade -yq
 
 # Dependencies - system
-apt install git -y
-apt install curl -y
-apt install python3-pip -y
-apt install lsb-release -y
+apt install git -yq
+apt install curl -yq
+apt install python3-pip -yq
+apt install lsb-release -yq
 
 # Dependencies - Docker
 curl -4sSL https://get.docker.com/ | sh

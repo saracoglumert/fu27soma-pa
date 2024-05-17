@@ -204,10 +204,15 @@ class Files:
         # Replace values in files related to SERVER
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%network_ip%",str(CONF_YAML['server']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%port_ledger%",str(CONF_YAML['server']['port_ledger']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%ledger_name%",str(CONF_YAML['server']['ledger_name']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%name%",str(CONF_YAML['server']['name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_init.sh","%db_user%",str(CONF_YAML['server']['db_user']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_init.sh","%db_pass%",str(CONF_YAML['server']['db_pass']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%db_name%",str(CONF_YAML['server']['db_name']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%server_id%",str(CONF_YAML['server']['id']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%server_name%",str(CONF_YAML['server']['name']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%server_ip%",str(CONF_YAML['server']['network_ip']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%server_ui_port%",str(CONF_YAML['server']['port_ui']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%server_acapy_port%",str(CONF_YAML['server']['port_ledger']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_id%",str(CONF_YAML['node1']['id']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_name%",str(CONF_YAML['node1']['name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node1_ip%",str(CONF_YAML['node1']['network_ip']))
@@ -253,7 +258,7 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_user%",str(CONF_YAML['server']['db_user']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_pass%",str(CONF_YAML['server']['db_pass']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_name%",str(CONF_YAML['server']['db_name']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%ui_endpoint%",str(CONF_YAML['node2']['port_ui']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%port_ui%",str(CONF_YAML['node2']['port_ui']))
 
     @staticmethod
     def Push():

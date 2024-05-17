@@ -19,6 +19,7 @@ CREATE TABLE %db_name%.Products (
 );
 
 INSERT INTO %db_name%.Companies (CompanyID, CompanyName, CompanyIP, CompanyPortUI, CompanyPortAcaPy) VALUES 
+(%server_id%, "%server_name%","%server_ip%","%server_ui_port%","%server_acapy_port%"),
 (%node1_id%, "%node1_name%","%node1_ip%","%node1_ui_port%","%node1_acapy_port_2%"),
 (%node2_id%, "%node2_name%","%node2_ip%","%node2_ui_port%","%node2_acapy_port_2%");
 

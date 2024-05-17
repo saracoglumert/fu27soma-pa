@@ -1,5 +1,5 @@
 manage:
-  debug: True
+  debug: False
   path_temp: temp
   path_resources: resources
   error_arg: "Argument error."
@@ -18,12 +18,12 @@ host:
 
 server:
   id: 200
+  name: fu27soma
   network_hostname: server
   network_ip: 10.10.10.200
   network_mac: AA:BB:CC:DD:EE:00
   port_ui: 80
   port_ledger: 9000
-  ledger_name: fu27soma
   db_user: root
   db_pass: 12345
   db_name: fu27soma
