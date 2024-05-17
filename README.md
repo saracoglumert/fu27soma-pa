@@ -35,18 +35,20 @@ Other possible commands are,
 ./manage.py help
 ```
 
-## To-Do
-- UI for connection on nodes -- soon
-- UI on server node for endpoints (end of manage script) -- p1
-- Update to aca-py v0.12.1 -- p1.5
+## To-Do (Must)
+- Prettify CLI (library 'click' or 'argparse') -- p1
+- rename App to Services in manage script -- p1
+- dev option in start.sh -- p1
 - Solve problems with aca-py Redis plugin integration -- p2
 - Access Redis cluster from Python -- p2
-- python library (app,web,lib,db) -- soon
 - Aries OPENAPI Tutorial -- p3
 - Complete connection procedure -- p3
 - Issue credential / Request proof -- p4
 - SD-JWT with PCF in Payload -- p4
-- Prettify CLI (library 'click' or 'argparse') -- p5
+
+## To-Do (Optional)
+- Update to aca-py v0.12.1 -- p1.5
+- python library (app,web,lib,db) -- soon
 
 ## Further Reading
 - http://aca-py.org

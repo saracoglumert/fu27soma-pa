@@ -18,16 +18,21 @@ apt install curl -yq
 apt install python3-pip -yq
 apt install lsb-release -yq
 
+# Dependencies - Python Packages
+pip3 install werkzeug==2.0.1
+pip3 install markupsafe==2.0.1
+pip3 install flask==2.0.1
+pip3 install mysql-connector-python==8.4.0
+
 # Dependencies - Docker
 curl -4sSL https://get.docker.com/ | sh
 
 # Dependencies - Images
-cd -L
-mkdir resources
+mkdir /resources
 cd resources
 git clone https://github.com/bcgov/von-network
 git clone https://github.com/bcgov/indy-tails-server.git
-cd ..
+cd -L
 
 # Dependencies - MySQL
 export DEBIAN_FRONTEND=noninteractive

@@ -1,15 +1,9 @@
 from flask import Flask, render_template, request, redirect
 from datetime import datetime
-import mysql.connector
 import sys
 import os
 import inspect
-
-mydb = mysql.connector.connect(
-  host="%network_ip%",
-  user="%db_user%",
-  password="%db_pass%",
-  database="%db_name%")
+import lib_db
 
 CONF_ROOT_PATH = os.path.dirname(os.path.abspath(inspect.getframeinfo(inspect.currentframe()).filename))
 
@@ -23,52 +17,34 @@ def main():
 
 @app.route('/products')
 def handler_products():
-    products = getProductbyCompanyID(CONFIG_COMPANYID)
+    products = lib_db.Company(CONFIG_COMPANYID).ProductstoList()
     return render_template('products.html',title=CONFIG_COMPANYNAME,products=products)
 
 @app.route('/supplychain')
 def handler_supplychain():
-    products = getProductsonSupplyChainbyCompanyID(CONFIG_COMPANYID)
-    return render_template('supplychain.html',title=CONFIG_COMPANYNAME,products=products)
+    products = lib_db.SupplyChain(CONFIG_COMPANYID).ProductstoList()
+    companies = lib_db.SupplyChain(CONFIG_COMPANYID).CompaniestoList()
+    return render_template('supplychain.html',title=CONFIG_COMPANYNAME,companies=companies,products=products)
 
 @app.route('/request', methods = ['POST'])
 def handler_request():
-    productID = request.form["productID"]
+    ProductID = request.form["ProductID"]
 
     stamp = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
-    notifications.append("<b>{}</b> - PCF data requested for #{}.".format(stamp,productID))
+    notifications.append("<b>{}</b> - PCF data requested for #{}.".format(stamp,ProductID))
     #return redirect("/", code=302)
     return ('', 204)
 
-def getCompanyNamebyID(id):
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT CompanyID, CompanyName FROM Companies")
-    myresult = dict(mycursor.fetchall())
-    return myresult[id]
+@app.route('/connect', methods = ['POST'])
+def handler_connect():
+    CompanyID = request.form["CompanyID"]
 
-def getProductbyID(id):
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT * FROM Products WHERE ProductID={}".format(id))
-    myresult = mycursor.fetchone()
-    return myresult
-
-def getProductbyCompanyID(id):
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT * FROM Products WHERE CompanyID={}".format(id))
-    myresult = list(mycursor.fetchall())
-    return myresult
-
-def getProductsonSupplyChainbyCompanyID(id):
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT productID, productName, companyID FROM Products WHERE companyID!={}".format(id))
-    myresult = list(mycursor.fetchall())
-    result = []
-    for element in myresult:
-        temp = (element[0],element[2],getCompanyNamebyID(element[2]),element[1])
-        result.append(temp)
-    return result
+    stamp = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
+    notifications.append("<b>{}</b> - Connection requested for #{}.".format(stamp,CompanyID))
+    #return redirect("/", code=302)
+    return ('', 204)
 
 if __name__ == "__main__":
     CONFIG_COMPANYID = int(sys.argv[1])
-    CONFIG_COMPANYNAME = getCompanyNamebyID(CONFIG_COMPANYID)
+    CONFIG_COMPANYNAME = lib_db.Company(CONFIG_COMPANYID).name
     app.run(host='0.0.0.0', port=%port_ui%, debug=False)

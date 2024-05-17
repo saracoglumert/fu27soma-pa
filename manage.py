@@ -179,14 +179,20 @@ class Files:
         if os.path.exists(CONF_TEMP_PATH):
             shutil.rmtree(CONF_TEMP_PATH)
         pathlib.Path(CONF_TEMP_PATH).mkdir(parents=True, exist_ok=True)
-        
+
+        # lib
+        shutil.copyfile(CONF_RES_PATH+"/lib/lib_db.py", CONF_TEMP_PATH+"/lib_db.py")
+
         # Copy files related to SERVER into TEMP directory
         shutil.copyfile(CONF_RES_PATH+"/server/start.sh", CONF_TEMP_PATH+"/server_start.sh")
+        shutil.copyfile(CONF_RES_PATH+"/server/stop.sh", CONF_TEMP_PATH+"/server_stop.sh")
         shutil.copyfile(CONF_RES_PATH+"/server/init.sh", CONF_TEMP_PATH+"/server_init.sh")
         shutil.copyfile(CONF_RES_PATH+"/server/db.sql", CONF_TEMP_PATH+"/server_db.sql")
+        shutil.copyfile(CONF_RES_PATH+"/server/web.py", CONF_TEMP_PATH+"/server_web.py")
 
         # Copy files related to NODE1 into TEMP directory
         shutil.copyfile(CONF_RES_PATH+"/node/start.sh", CONF_TEMP_PATH+"/node1_start.sh")
+        shutil.copyfile(CONF_RES_PATH+"/node/stop.sh", CONF_TEMP_PATH+"/node1_stop.sh")
         shutil.copyfile(CONF_RES_PATH+"/node/init.sh", CONF_TEMP_PATH+"/node1_init.sh")
         shutil.copyfile(CONF_RES_PATH+"/node/args.yaml", CONF_TEMP_PATH+"/node1_args.yaml")
         shutil.copyfile(CONF_RES_PATH+"/node/plugin.yaml", CONF_TEMP_PATH+"/node1_plugin.yaml")
@@ -194,6 +200,7 @@ class Files:
 
         # Copy files related to NODE2 into TEMP directory
         shutil.copyfile(CONF_RES_PATH+"/node/start.sh", CONF_TEMP_PATH+"/node2_start.sh")
+        shutil.copyfile(CONF_RES_PATH+"/node/stop.sh", CONF_TEMP_PATH+"/node2_stop.sh")
         shutil.copyfile(CONF_RES_PATH+"/node/init.sh", CONF_TEMP_PATH+"/node2_init.sh")
         shutil.copyfile(CONF_RES_PATH+"/node/args.yaml", CONF_TEMP_PATH+"/node2_args.yaml")
         shutil.copyfile(CONF_RES_PATH+"/node/plugin.yaml", CONF_TEMP_PATH+"/node2_plugin.yaml")
@@ -201,6 +208,13 @@ class Files:
 
     @staticmethod
     def Render():
+        # Replace values LIB
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/lib_db.py","%network_ip%",str(CONF_YAML['server']['network_ip']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/lib_db.py","%db_user%",str(CONF_YAML['server']['db_user']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/lib_db.py","%db_pass%",str(CONF_YAML['server']['db_pass']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/lib_db.py","%db_name%",str(CONF_YAML['server']['db_name']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/lib_db.py","%port_ui%",str(CONF_YAML['node2']['port_ui']))
+
         # Replace values in files related to SERVER
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%network_ip%",str(CONF_YAML['server']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%port_ledger%",str(CONF_YAML['server']['port_ledger']))
@@ -223,6 +237,7 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_ip%",str(CONF_YAML['node2']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_ui_port%",str(CONF_YAML['node2']['port_ui']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_acapy_port_2%",str(CONF_YAML['node2']['port_acapy_2']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_web.py","%port_ui%",str(CONF_YAML['server']['port_ui']))
 
         # Replace values in files related to Node 1
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_start.sh","%id%",str(CONF_YAML['node1']['id']))
@@ -236,10 +251,6 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_plugin.yaml","%port_redis%",str(CONF_YAML['node1']['port_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_plugin.yaml","%pass_redis%",str(CONF_YAML['node1']['pass_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_plugin.yaml","%network_ip%",str(CONF_YAML['node1']['network_ip']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%network_ip%",str(CONF_YAML['server']['network_ip']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%db_user%",str(CONF_YAML['server']['db_user']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%db_pass%",str(CONF_YAML['server']['db_pass']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%db_name%",str(CONF_YAML['server']['db_name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%port_ui%",str(CONF_YAML['node1']['port_ui']))
 
         # Replace values in files related to Node 2
@@ -254,10 +265,6 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_plugin.yaml","%port_redis%",str(CONF_YAML['node2']['port_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_plugin.yaml","%pass_redis%",str(CONF_YAML['node2']['pass_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_plugin.yaml","%network_ip%",str(CONF_YAML['node2']['network_ip']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%network_ip%",str(CONF_YAML['server']['network_ip']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_user%",str(CONF_YAML['server']['db_user']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_pass%",str(CONF_YAML['server']['db_pass']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%db_name%",str(CONF_YAML['server']['db_name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%port_ui%",str(CONF_YAML['node2']['port_ui']))
 
     @staticmethod
@@ -265,14 +272,21 @@ class Files:
         print('[all] \t\t Pushing files...')
         # Push files to SERVER
         Tools.Call('pct push {} {}/server_start.sh /root/start.sh'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/server_stop.sh /root/stop.sh'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/server_init.sh /root/init.sh'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/server_db.sql /root/db.sql'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/lib_db.py /root/lib_db.py'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/server_web.py /root/web.py'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct exec {} -- mkdir /root/templates'.format(CONF_YAML['server']['id']))
+        Tools.Call('pct push {} {}/server/templates/index.html /root/templates/index.html'.format(CONF_YAML['server']['id'],CONF_RES_PATH))
         
         # Push files to NODE 1
         Tools.Call('pct push {} {}/node1_start.sh /root/start.sh'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/node1_stop.sh /root/stop.sh'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_init.sh /root/init.sh'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_args.yaml /root/args.yaml'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_plugin.yaml /root/plugin.yaml'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/lib_db.py /root/lib_db.py'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_web.py /root/web.py'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct exec {} -- mkdir /root/templates'.format(CONF_YAML['node1']['id']))
         Tools.Call('pct push {} {}/node/templates/index.html /root/templates/index.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
@@ -281,9 +295,11 @@ class Files:
 
         # Push files to NODE 2
         Tools.Call('pct push {} {}/node2_start.sh /root/start.sh'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/node2_stop.sh /root/stop.sh'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_init.sh /root/init.sh'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_args.yaml /root/args.yaml'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_plugin.yaml /root/plugin.yaml'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/lib_db.py /root/lib_db.py'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_web.py /root/web.py'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct exec {} -- mkdir /root/templates'.format(CONF_YAML['node2']['id']))
         Tools.Call('pct push {} {}/node/templates/index.html /root/templates/index.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
@@ -291,6 +307,20 @@ class Files:
         Tools.Call('pct push {} {}/node/templates/supplychain.html /root/templates/supplychain.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
 
         shutil.rmtree(CONF_TEMP_PATH)
+
+    @staticmethod
+    def Clear():
+        print('[all] \t\t Clearing files...')
+        Tools.Call('pct exec {} -- bash -c "rm -rf /root/*"'.format(CONF_YAML['server']['id']))
+        Tools.Call('pct exec {} -- bash -c "rm -rf /root/*"'.format(CONF_YAML['node1']['id']))
+        Tools.Call('pct exec {} -- bash -c "rm -rf /root/*"'.format(CONF_YAML['node2']['id']))
+
+    @staticmethod
+    def Update():
+        Files.Clear()
+        Files.Generate()
+        Files.Render()
+        Files.Push()
 
 class App:
     @staticmethod
@@ -311,6 +341,13 @@ class App:
         Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node1']['network_ip']))
         print('[node2] \t Running start script...')
         Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node2']['network_ip']))
+
+    @staticmethod
+    def Stop():
+        Tools.Call('pct exec {} -- bash /root/stop.sh'.format(CONF_YAML['server']['id']))
+        Tools.Call('pct exec {} -- bash /root/stop.sh'.format(CONF_YAML['node1']['id']))
+        Tools.Call('pct exec {} -- bash /root/stop.sh'.format(CONF_YAML['node2']['id']))
+
 
 def AIO():
     datetime_start = datetime.datetime.now()
@@ -334,6 +371,8 @@ if __name__ == "__main__":
         match cmd:
             case "build":
                 AIO()
+            case "update":
+                Files.Update()
             case "destroy":
                 Containers.Destroy()
             case "start":
