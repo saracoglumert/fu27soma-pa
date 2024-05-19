@@ -1,5 +1,15 @@
 # fu27soma-pa
 
+redis-cli -h 10.10.10.201 -p 7000
+
+redis-cli --cluster create 10.10.10.200:7000 10.10.10.201:7000 10.10.10.202:7000 --cluster-yes
+
+# Procedure
+- Endpoints
+- Redis Cluster Access
+- Redis Key Access
+- Stop & Start & Repeat
+
 # 1. Installation
 After a clean installation of Proxmox on a host machine, SSH into it and run the following code block.
 
@@ -22,7 +32,7 @@ Before starting to build the project, **config.yaml** file must be set according
 ./manage.py config
 ```
 
-After editing the **config.yaml** file, run the following command to build the nodes and get them running. The build may take up to 20 minutes depending on your internet connection.
+After editing the **config.yaml** file, run the following command to build the nodes and get them running. The build may between 15 to 30 minutes depending on your internet connection.
 ```
 ./manage.py build
 ```
@@ -36,19 +46,18 @@ Other possible commands are,
 ```
 
 ## To-Do (Must)
-- Prettify CLI (library 'click' or 'argparse') -- p1
-- rename App to Services in manage script -- p1
-- dev option in start.sh -- p1
-- Solve problems with aca-py Redis plugin integration -- p2
-- Access Redis cluster from Python -- p2
+- Access Redis cluster from Python -- soon
+- CreateRedisCluster utilize CONF_YAML -- soon
 - Aries OPENAPI Tutorial -- p3
 - Complete connection procedure -- p3
 - Issue credential / Request proof -- p4
 - SD-JWT with PCF in Payload -- p4
 
 ## To-Do (Optional)
-- Update to aca-py v0.12.1 -- p1.5
-- python library (app,web,lib,db) -- soon
+- Update to aca-py v0.12.1
+- python library (app,web,lib,db)
+- remove Tails? (build, start, manage, config)
+- Prettify logs.
 
 ## Further Reading
 - http://aca-py.org

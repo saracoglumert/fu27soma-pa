@@ -5,18 +5,19 @@ echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
 echo 'Acquire::ForceIPv4 "true";' >> /etc/apt/apt.conf.d/99force-ipv4
 echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 source ~/.bashrc
+export DEBIAN_FRONTEND=noninteractive
 
 # Update & Upgrade
-apt install apt-transport-https -yq
-apt clean -yq
-apt update -yq
-DEBIAN_FRONTEND=noninteractive apt upgrade -yq
+apt install apt-transport-https -y
+apt clean -y
+apt update -y
+apt upgrade -y
 
-# Dependencies - system
-apt install git -yq
-apt install curl -yq
-apt install python3-pip -yq
-apt install lsb-release -yq
+# Dependencies - System
+apt install git -y
+apt install curl -y
+apt install python3-pip -y
+apt install lsb-release -y
 
 # Dependencies - Python Packages
 pip3 install werkzeug==2.0.1
@@ -33,9 +34,9 @@ cd resources
 git clone https://github.com/bcgov/von-network
 git clone https://github.com/bcgov/indy-tails-server.git
 cd -L
+/resources/von-network/manage build
 
 # Dependencies - MySQL
-export DEBIAN_FRONTEND=noninteractive
 wget https://dev.mysql.com/get/mysql-apt-config_0.8.29-1_all.deb
 dpkg -i mysql-apt-config_0.8.29-1_all.deb
 apt update -y
@@ -45,3 +46,9 @@ mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO '%db_user%'@'%' WITH GRANT OPTIO
 mysql -uroot -e "FLUSH PRIVILEGES"
 mysql -uroot < db.sql
 rm mysql-apt-config_0.8.29-1_all.deb
+
+# Dependencies - Redis
+apt install redis -y
+/etc/init.d/redis-server stop
+update-rc.d redis-server disable
+

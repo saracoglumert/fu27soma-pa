@@ -35,6 +35,10 @@ class Tools:
             subprocess.call(command,shell=True,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
 
     @staticmethod
+    def CallinContainer(command,id):
+        Tools.Call('pct exec {} -- bash -c "{}"'.format(id,command))
+
+    @staticmethod
     def Template():
         if not os.path.exists(CONF_YAML['host']['container_template_path']):
             print('[all] \t\t Downloading container template...')
@@ -50,11 +54,13 @@ class Tools:
 
     @staticmethod
     def Help():
-        print("./manage build \t\t Build containers")
-        print("./manage start \t\t Start containers")
-        print("./manage stop \t\t Stop containers")
-        print("./manage destroy \t Destroy containers")
-        print("./manage config \t Runs configuration script")
+        print("./manage config \t Run configuration helper.")
+        print("./manage build \t\t Build containers.")
+        print("./manage update \t Update files.")
+        print("./manage start \t\t Start services.")
+        print("./manage stop \t\t Stop services.")
+        print("./manage restart \t Restart services.")
+        print("./manage reboot \t Reboot containers.")
         print("./manage help \t\t Shows this help page.")
 
     @staticmethod
@@ -86,12 +92,19 @@ class Tools:
 
     @staticmethod
     def SetSSH():
+        Tools.Call("ssh-keygen -R {}".format(CONF_YAML['server']['network_ip']))
+        Tools.Call("ssh-keygen -R {}".format(CONF_YAML['node1']['network_ip']))
+        Tools.Call("ssh-keygen -R {}".format(CONF_YAML['node2']['network_ip']))
         Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_hosts'],CONF_YAML['server']['network_ip']))
         Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_hosts'],CONF_YAML['node1']['network_ip']))
         Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_hosts'],CONF_YAML['node2']['network_ip']))
         Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_keys'],CONF_YAML['server']['network_ip']))
         Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_keys'],CONF_YAML['node1']['network_ip']))
         Tools.Call('ssh-keygen -f "{}" -R "{}"] > /dev/null 2>&1'.format(CONF_YAML['host']['ssh_keys'],CONF_YAML['node2']['network_ip']))
+
+    @staticmethod
+    def CreateRedisCluster():
+        print('[all] \t\t Creating Redis cluster...')
 
 class Containers:
     @staticmethod
@@ -145,14 +158,14 @@ class Containers:
 
     @staticmethod
     def Start():
-        print('[all] \t Starting containers...')
+        print('[all] \t\t Starting containers...')
         Tools.Call('pct start {}'.format(CONF_YAML['server']['id']))
         Tools.Call('pct start {}'.format(CONF_YAML['node1']['id']))
         Tools.Call('pct start {}'.format(CONF_YAML['node2']['id']))
 
     @staticmethod
     def Reboot():
-        print('[all] \t Rebooting containers...')
+        print('[all] \t\t Rebooting containers...')
         Tools.Call('pct reboot {}'.format(CONF_YAML['server']['id']))
         Tools.Call('pct reboot {}'.format(CONF_YAML['node1']['id']))
         Tools.Call('pct reboot {}'.format(CONF_YAML['node2']['id']))
@@ -172,6 +185,30 @@ class Containers:
         Tools.Call('pct destroy {}'.format(CONF_YAML['node1']['id']))
         Tools.Call('pct destroy {}'.format(CONF_YAML['node2']['id']))    
 
+    @staticmethod
+    def Build():    
+        print('[server] \t Running build script...')
+        Tools.Call('pct exec {} -- bash /root/build.sh'.format(CONF_YAML['server']['id']))
+        print('[node1] \t Running build script...')
+        Tools.Call('pct exec {} -- bash /root/build.sh'.format(CONF_YAML['node1']['id']))
+        print('[node2] \t Running build script...')
+        Tools.Call('pct exec {} -- bash /root/build.sh'.format(CONF_YAML['node2']['id']))
+        Files.Clear()
+
+    @staticmethod
+    def Snapshot():
+        print('[all] \t\t Taking snapshots of containers...')
+        Tools.Call('pct snapshot {} server-build'.format(CONF_YAML['server']['id'])) 
+        Tools.Call('pct snapshot {} node1-build'.format(CONF_YAML['node1']['id'])) 
+        Tools.Call('pct snapshot {} node2-build'.format(CONF_YAML['node2']['id'])) 
+    
+    @staticmethod
+    def Rollback():
+        print('[all] \t\t Rolling back containers...')
+        Tools.Call('pct rollback {} server-build'.format(CONF_YAML['server']['id'])) 
+        Tools.Call('pct rollback {} node1-build'.format(CONF_YAML['node1']['id'])) 
+        Tools.Call('pct rollback {} node2-build'.format(CONF_YAML['node2']['id'])) 
+
 class Files:
     @staticmethod
     def Generate():
@@ -186,24 +223,27 @@ class Files:
         # Copy files related to SERVER into TEMP directory
         shutil.copyfile(CONF_RES_PATH+"/server/start.sh", CONF_TEMP_PATH+"/server_start.sh")
         shutil.copyfile(CONF_RES_PATH+"/server/stop.sh", CONF_TEMP_PATH+"/server_stop.sh")
-        shutil.copyfile(CONF_RES_PATH+"/server/init.sh", CONF_TEMP_PATH+"/server_init.sh")
+        shutil.copyfile(CONF_RES_PATH+"/server/build.sh", CONF_TEMP_PATH+"/server_build.sh")
         shutil.copyfile(CONF_RES_PATH+"/server/db.sql", CONF_TEMP_PATH+"/server_db.sql")
+        shutil.copyfile(CONF_RES_PATH+"/node/redis.conf", CONF_TEMP_PATH+"/server_redis.conf")
         shutil.copyfile(CONF_RES_PATH+"/server/web.py", CONF_TEMP_PATH+"/server_web.py")
 
         # Copy files related to NODE1 into TEMP directory
         shutil.copyfile(CONF_RES_PATH+"/node/start.sh", CONF_TEMP_PATH+"/node1_start.sh")
         shutil.copyfile(CONF_RES_PATH+"/node/stop.sh", CONF_TEMP_PATH+"/node1_stop.sh")
-        shutil.copyfile(CONF_RES_PATH+"/node/init.sh", CONF_TEMP_PATH+"/node1_init.sh")
+        shutil.copyfile(CONF_RES_PATH+"/node/build.sh", CONF_TEMP_PATH+"/node1_build.sh")
         shutil.copyfile(CONF_RES_PATH+"/node/args.yaml", CONF_TEMP_PATH+"/node1_args.yaml")
         shutil.copyfile(CONF_RES_PATH+"/node/plugin.yaml", CONF_TEMP_PATH+"/node1_plugin.yaml")
+        shutil.copyfile(CONF_RES_PATH+"/node/redis.conf", CONF_TEMP_PATH+"/node1_redis.conf")
         shutil.copyfile(CONF_RES_PATH+"/node/web.py", CONF_TEMP_PATH+"/node1_web.py")
 
         # Copy files related to NODE2 into TEMP directory
         shutil.copyfile(CONF_RES_PATH+"/node/start.sh", CONF_TEMP_PATH+"/node2_start.sh")
         shutil.copyfile(CONF_RES_PATH+"/node/stop.sh", CONF_TEMP_PATH+"/node2_stop.sh")
-        shutil.copyfile(CONF_RES_PATH+"/node/init.sh", CONF_TEMP_PATH+"/node2_init.sh")
+        shutil.copyfile(CONF_RES_PATH+"/node/build.sh", CONF_TEMP_PATH+"/node2_build.sh")
         shutil.copyfile(CONF_RES_PATH+"/node/args.yaml", CONF_TEMP_PATH+"/node2_args.yaml")
         shutil.copyfile(CONF_RES_PATH+"/node/plugin.yaml", CONF_TEMP_PATH+"/node2_plugin.yaml")
+        shutil.copyfile(CONF_RES_PATH+"/node/redis.conf", CONF_TEMP_PATH+"/node2_redis.conf")
         shutil.copyfile(CONF_RES_PATH+"/node/web.py", CONF_TEMP_PATH+"/node2_web.py")
 
     @staticmethod
@@ -219,8 +259,8 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%network_ip%",str(CONF_YAML['server']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%port_ledger%",str(CONF_YAML['server']['port_ledger']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%name%",str(CONF_YAML['server']['name']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_init.sh","%db_user%",str(CONF_YAML['server']['db_user']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_init.sh","%db_pass%",str(CONF_YAML['server']['db_pass']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_build.sh","%db_user%",str(CONF_YAML['server']['db_user']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_build.sh","%db_pass%",str(CONF_YAML['server']['db_pass']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%db_name%",str(CONF_YAML['server']['db_name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%server_id%",str(CONF_YAML['server']['id']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%server_name%",str(CONF_YAML['server']['name']))
@@ -237,11 +277,13 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_ip%",str(CONF_YAML['node2']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_ui_port%",str(CONF_YAML['node2']['port_ui']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_acapy_port_2%",str(CONF_YAML['node2']['port_acapy_2']))
+        #Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_redis.conf","%pass_redis%",str(CONF_YAML['server']['pass_redis']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_redis.conf","%port_redis%",str(CONF_YAML['server']['port_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_web.py","%port_ui%",str(CONF_YAML['server']['port_ui']))
 
         # Replace values in files related to Node 1
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_start.sh","%id%",str(CONF_YAML['node1']['id']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_init.sh","%pass_redis%",str(CONF_YAML['node1']['pass_redis']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_start.sh","%file_log%",str(CONF_YAML['node1']['file_log']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%name%",str(CONF_YAML['node1']['name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%port_acapy_1%",str(CONF_YAML['node1']['port_acapy_1']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%port_acapy_2%",str(CONF_YAML['node1']['port_acapy_2']))
@@ -249,13 +291,13 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%network_ip%",str(CONF_YAML['server']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%port_ledger%",str(CONF_YAML['server']['port_ledger']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_plugin.yaml","%port_redis%",str(CONF_YAML['node1']['port_redis']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_plugin.yaml","%pass_redis%",str(CONF_YAML['node1']['pass_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_plugin.yaml","%network_ip%",str(CONF_YAML['node1']['network_ip']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_redis.conf","%port_redis%",str(CONF_YAML['node1']['port_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_web.py","%port_ui%",str(CONF_YAML['node1']['port_ui']))
 
         # Replace values in files related to Node 2
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_start.sh","%id%",str(CONF_YAML['node2']['id']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_init.sh","%pass_redis%",str(CONF_YAML['node2']['pass_redis']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_start.sh","%file_log%",str(CONF_YAML['node2']['file_log']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%name%",str(CONF_YAML['node2']['name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%port_acapy_1%",str(CONF_YAML['node2']['port_acapy_1']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%port_acapy_2%",str(CONF_YAML['node2']['port_acapy_2']))
@@ -263,8 +305,8 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%network_ip%",str(CONF_YAML['server']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%port_ledger%",str(CONF_YAML['server']['port_ledger']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_plugin.yaml","%port_redis%",str(CONF_YAML['node2']['port_redis']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_plugin.yaml","%pass_redis%",str(CONF_YAML['node2']['pass_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_plugin.yaml","%network_ip%",str(CONF_YAML['node2']['network_ip']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_redis.conf","%port_redis%",str(CONF_YAML['node2']['port_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_web.py","%port_ui%",str(CONF_YAML['node2']['port_ui']))
 
     @staticmethod
@@ -273,19 +315,21 @@ class Files:
         # Push files to SERVER
         Tools.Call('pct push {} {}/server_start.sh /root/start.sh'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/server_stop.sh /root/stop.sh'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
-        Tools.Call('pct push {} {}/server_init.sh /root/init.sh'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/server_build.sh /root/build.sh'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/server_db.sql /root/db.sql'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/lib_db.py /root/lib_db.py'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/server_web.py /root/web.py'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/server_redis.conf /root/redis.conf'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct exec {} -- mkdir /root/templates'.format(CONF_YAML['server']['id']))
         Tools.Call('pct push {} {}/server/templates/index.html /root/templates/index.html'.format(CONF_YAML['server']['id'],CONF_RES_PATH))
         
         # Push files to NODE 1
         Tools.Call('pct push {} {}/node1_start.sh /root/start.sh'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_stop.sh /root/stop.sh'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
-        Tools.Call('pct push {} {}/node1_init.sh /root/init.sh'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/node1_build.sh /root/build.sh'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_args.yaml /root/args.yaml'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_plugin.yaml /root/plugin.yaml'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/node1_redis.conf /root/redis.conf'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/lib_db.py /root/lib_db.py'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_web.py /root/web.py'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct exec {} -- mkdir /root/templates'.format(CONF_YAML['node1']['id']))
@@ -296,9 +340,10 @@ class Files:
         # Push files to NODE 2
         Tools.Call('pct push {} {}/node2_start.sh /root/start.sh'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_stop.sh /root/stop.sh'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
-        Tools.Call('pct push {} {}/node2_init.sh /root/init.sh'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/node2_build.sh /root/build.sh'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_args.yaml /root/args.yaml'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_plugin.yaml /root/plugin.yaml'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/node2_redis.conf /root/redis.conf'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/lib_db.py /root/lib_db.py'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_web.py /root/web.py'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct exec {} -- mkdir /root/templates'.format(CONF_YAML['node2']['id']))
@@ -309,38 +354,53 @@ class Files:
         shutil.rmtree(CONF_TEMP_PATH)
 
     @staticmethod
-    def Clear():
-        print('[all] \t\t Clearing files...')
+    def Purge():
+        print('[all] \t\t Purging files...')
         Tools.Call('pct exec {} -- bash -c "rm -rf /root/*"'.format(CONF_YAML['server']['id']))
         Tools.Call('pct exec {} -- bash -c "rm -rf /root/*"'.format(CONF_YAML['node1']['id']))
         Tools.Call('pct exec {} -- bash -c "rm -rf /root/*"'.format(CONF_YAML['node2']['id']))
 
     @staticmethod
+    def Clear():
+        print('[all] \t\t Cleaning files...')
+        Tools.Call('pct exec {} -- bash -c "rm /root/build.sh"'.format(CONF_YAML['server']['id']))
+        Tools.Call('pct exec {} -- bash -c "rm /root/db.sql"'.format(CONF_YAML['server']['id']))
+        Tools.Call('pct exec {} -- bash -c "rm /root/build.sh"'.format(CONF_YAML['node1']['id']))
+        Tools.Call('pct exec {} -- bash -c "rm /root/build.sh"'.format(CONF_YAML['node2']['id']))
+
+    @staticmethod
     def Update():
-        Files.Clear()
+        Files.Purge()
         Files.Generate()
         Files.Render()
         Files.Push()
 
-class App:
+class Services:
     @staticmethod
-    def Build():    
-        print('[server] \t Running build script...')
-        Tools.Call('pct exec {} -- bash /root/init.sh'.format(CONF_YAML['server']['id']))
-        print('[node1] \t Running build script...')
-        Tools.Call('pct exec {} -- bash /root/init.sh'.format(CONF_YAML['node1']['id']))
-        print('[node2] \t Running build script...')
-        Tools.Call('pct exec {} -- bash /root/init.sh'.format(CONF_YAML['node2']['id']))
-
-    @staticmethod
-    def Start():    
+    def Start():
         Tools.SetSSH()
-        print('[server] \t Running start script...')
-        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['server']['network_ip']))
-        print('[node1] \t Running start script...')
-        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node1']['network_ip']))
-        print('[node2] \t Running start script...')
-        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node2']['network_ip']))
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh von\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['server']['network_ip']))
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh tails\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['server']['network_ip']))
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh redis\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['server']['network_ip']))
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh redis\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node1']['network_ip']))
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh redis\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node2']['network_ip']))
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Tools.Call('pct exec {} -- bash -c "redis-cli --cluster create 10.10.10.200:7000 10.10.10.201:7000 10.10.10.202:7000 --cluster-yes"'.format(CONF_YAML['server']['id']))
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh aca-py\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node1']['network_ip']))
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh aca-py\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node2']['network_ip']))
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh web\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['server']['network_ip']))
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh web\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node1']['network_ip']))
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh web\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node2']['network_ip']))
+        time.sleep(CONF_YAML['manage']['step_sleep'])
 
     @staticmethod
     def Stop():
@@ -348,6 +408,11 @@ class App:
         Tools.Call('pct exec {} -- bash /root/stop.sh'.format(CONF_YAML['node1']['id']))
         Tools.Call('pct exec {} -- bash /root/stop.sh'.format(CONF_YAML['node2']['id']))
 
+    @staticmethod
+    def Restart():
+        Services.Stop()
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Services.Start()
 
 def AIO():
     datetime_start = datetime.datetime.now()
@@ -356,8 +421,11 @@ def AIO():
     Files.Generate()
     Files.Render()
     Files.Push()
-    App.Build()
-    App.Start()
+    Containers.Build()
+    Containers.Snapshot()
+    Services.Start()
+    Containers.Reboot()
+    Services.Start()
     datetime_end = datetime.datetime.now()
     duration = round((datetime_end - datetime_start).total_seconds() / 60.0,1)
     print("\nBuild took {} minutes.".format(duration))
@@ -366,34 +434,26 @@ def AIO():
     print("to see endpoints.")
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        cmd = sys.argv[1]
-        match cmd:
-            case "build":
-                AIO()
-            case "update":
-                Files.Update()
-            case "destroy":
-                Containers.Destroy()
-            case "start":
-                Containers.Start()
-                time.sleep(5)
-                App.Start()
-            case "stop":
-                Containers.Stop()
-            case "restart":
-                Containers.Stop()
-                time.sleep(5)
-                Containers.Start()
-                time.sleep(5)
-                App.Start()
-            case "config":
-                Tools.Config()
-            case "help":
-                Tools.Help()
-            case _:
-                print(CONF_YAML['manage']['error_arg'])
-    elif len(sys.argv) == 1:
-        Tools.Help()
-    else:
-        print(CONF_YAML['manage']['error_arg'])
+    match " ".join(sys.argv[1:]):
+        case "config":
+            Tools.Config()
+        case "build":
+            AIO()
+        case "update":
+            Files.Update()
+        case "start":
+            Containers.Start()
+            Services.Start()
+        case "stop":
+            Services.Stop()
+            Containers.Stop()
+        case "restart":
+            Services.Restart()
+        case "reboot":
+            Containers.Reboot()
+        case "help":
+            Tools.Help()
+        case "":
+            Tools.Help()   
+        case _:
+            print(CONF_YAML['manage']['error_arg'])

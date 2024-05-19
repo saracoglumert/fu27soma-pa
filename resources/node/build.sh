@@ -5,12 +5,13 @@ echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
 echo 'Acquire::ForceIPv4 "true";' >> /etc/apt/apt.conf.d/99force-ipv4
 echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 source ~/.bashrc
+export DEBIAN_FRONTEND=noninteractive
 
 # Update & Upgrade
-apt install apt-transport-https -yq
-apt clean -yq
-apt update -yq
-DEBIAN_FRONTEND=noninteractive apt upgrade -yq
+apt install apt-transport-https -y
+apt clean -y
+apt update -y
+apt upgrade -y
 
 # Dependencies - System
 apt install git -y
@@ -34,6 +35,5 @@ pip3 install git+https://github.com/hyperledger/aries-acapy-plugins@main#subdire
 
 # Dependencies - Redis
 apt install redis -y
-# set redis conf - cluster mode, accessiblity, password
-sed -i 's/.*bind 127.0.0.1 ::1*/bind 0.0.0.0/' /etc/redis/redis.conf
-sed -i 's/.*# requirepass foobared*/requirepass %redis_pass%/' /etc/redis/redis.conf
+/etc/init.d/redis-server stop
+update-rc.d redis-server disable

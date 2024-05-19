@@ -1,6 +1,6 @@
 redis_queue:
   connection:
-    connection_url: "redis://default:%pass_redis%@%network_ip%:%port_redis%"
+    connection_url: "redis://%network_ip%:%port_redis%"
 
   ### For Inbound ###
   inbound:
