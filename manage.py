@@ -277,7 +277,6 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_ip%",str(CONF_YAML['node2']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_ui_port%",str(CONF_YAML['node2']['port_ui']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_db.sql","%node2_acapy_port_2%",str(CONF_YAML['node2']['port_acapy_2']))
-        #Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_redis.conf","%pass_redis%",str(CONF_YAML['server']['pass_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_redis.conf","%port_redis%",str(CONF_YAML['server']['port_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_web.py","%port_ui%",str(CONF_YAML['server']['port_ui']))
 
@@ -389,7 +388,7 @@ class Services:
         time.sleep(CONF_YAML['manage']['step_sleep'])
         Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh redis\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node2']['network_ip']))
         time.sleep(CONF_YAML['manage']['step_sleep'])
-        Tools.Call('pct exec {} -- bash -c "redis-cli --cluster create 10.10.10.200:7000 10.10.10.201:7000 10.10.10.202:7000 --cluster-yes"'.format(CONF_YAML['server']['id']))
+        Tools.Call('pct exec {} -- bash -c "redis-cli --cluster create {}:{} {}:{} {}:{} --cluster-yes"'.format(CONF_YAML['server']['id'],CONF_YAML['server']['network_ip'],CONF_YAML['server']['port_redis'],CONF_YAML['node1']['network_ip'],CONF_YAML['node1']['port_redis'],CONF_YAML['node2']['network_ip'],CONF_YAML['node2']['port_redis']))
         time.sleep(CONF_YAML['manage']['step_sleep'])
         Tools.Call('sshpass -p {} ssh -oStrictHostKeyChecking=no root@{} \'bash /root/start.sh aca-py\''.format(CONF_YAML['host']['container_pass'],CONF_YAML['node1']['network_ip']))
         time.sleep(CONF_YAML['manage']['step_sleep'])

@@ -47,7 +47,6 @@ Other possible commands are,
 
 ## To-Do (Must)
 - Access Redis cluster from Python -- soon
-- CreateRedisCluster utilize CONF_YAML -- soon
 - Aries OPENAPI Tutorial -- p3
 - Complete connection procedure -- p3
 - Issue credential / Request proof -- p4
