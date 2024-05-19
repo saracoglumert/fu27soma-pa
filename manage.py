@@ -196,18 +196,18 @@ class Containers:
         Files.Clear()
 
     @staticmethod
-    def Snapshot():
-        print('[all] \t\t Taking snapshots of containers...')
-        Tools.Call('pct snapshot {} server-build'.format(CONF_YAML['server']['id'])) 
-        Tools.Call('pct snapshot {} node1-build'.format(CONF_YAML['node1']['id'])) 
-        Tools.Call('pct snapshot {} node2-build'.format(CONF_YAML['node2']['id'])) 
+    def Snapshot(name):
+        print('[all] \t\t Taking snapshots of containers... ({})'.format(name))
+        Tools.Call('pct snapshot {} server_{}'.format(CONF_YAML['server']['id'],name)) 
+        Tools.Call('pct snapshot {} node1_{}'.format(CONF_YAML['node1']['id'],name)) 
+        Tools.Call('pct snapshot {} node2_{}'.format(CONF_YAML['node2']['id'],name)) 
     
     @staticmethod
-    def Rollback():
-        print('[all] \t\t Rolling back containers...')
-        Tools.Call('pct rollback {} server-build'.format(CONF_YAML['server']['id'])) 
-        Tools.Call('pct rollback {} node1-build'.format(CONF_YAML['node1']['id'])) 
-        Tools.Call('pct rollback {} node2-build'.format(CONF_YAML['node2']['id'])) 
+    def Rollback(name):
+        print('[all] \t\t Rolling back containers... ({})'.format(name))
+        Tools.Call('pct rollback {} server_{}'.format(CONF_YAML['server']['id'],name)) 
+        Tools.Call('pct rollback {} node1_{}'.format(CONF_YAML['node1']['id'],name)) 
+        Tools.Call('pct rollback {} node2_{}'.format(CONF_YAML['node2']['id'],name)) 
 
 class Files:
     @staticmethod
@@ -421,10 +421,10 @@ def AIO():
     Files.Render()
     Files.Push()
     Containers.Build()
-    Containers.Snapshot()
     Services.Start()
     Containers.Reboot()
     Services.Start()
+    Containers.Snapshot("final")
     datetime_end = datetime.datetime.now()
     duration = round((datetime_end - datetime_start).total_seconds() / 60.0,1)
     print("\nBuild took {} minutes.".format(duration))
