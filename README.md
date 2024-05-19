@@ -47,9 +47,9 @@ Other possible commands are,
 
 ## To-Do (Must)
 - Access Redis cluster from Python -- soon
-- Aries OPENAPI Tutorial -- p3
-- Complete connection procedure -- p3
-- Issue credential / Request proof -- p4
+- Complete connection procedure -- p1
+- Aries OPENAPI Tutorial -- p2
+- Issue credential / Request proof -- p3
 - SD-JWT with PCF in Payload -- p4
 
 ## To-Do (Optional)
