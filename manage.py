@@ -223,7 +223,7 @@ class Files:
         pathlib.Path(CONF_TEMP_PATH).mkdir(parents=True, exist_ok=True)
 
         # lib
-        shutil.copyfile(CONF_RES_PATH+"/lib/controller_db.py", CONF_TEMP_PATH+"/controller_db.py")
+        shutil.copyfile(CONF_RES_PATH+"/libraries/controller_db.py", CONF_TEMP_PATH+"/controller_db.py")
 
         # Copy files related to SERVER into TEMP directory
         shutil.copyfile(CONF_RES_PATH+"/server/start.sh", CONF_TEMP_PATH+"/server_start.sh")
