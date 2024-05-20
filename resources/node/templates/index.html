@@ -33,6 +33,35 @@
         </div>
       </nav>
     
+    <h2 class="mt-3 ml-5">Configuration</h2>
+    <table class="table table-hover mt-3" style="width:93.5%;margin-left: auto;margin-right: auto;">
+        <thead class="thead-dark">
+          <tr>
+            <th class="align-middle" scope="col">Key</th>
+            <th class="align-middle" scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <th class="align-middle">DID</th>
+              <td class="align-middle">DID Value</td>
+            </tr>
+            <tr>
+              <th class="align-middle">Schema ID</th>
+              <td class="align-middle">Schema ID Value</td>
+            </tr>
+            <tr>
+              <th class="align-middle">Credential Definition ID</th>
+              <td class="align-middle">Credential Definition ID Value</td>
+            </tr>
+            <tr>
+              <td class="align-middle" colspan="2"><center><form method=post action=/register><input type="hidden" name="CompanyID" value="{{CompanyID}}"><input class="btn btn-primary" style="width:600px" type="submit" value="Register to Ledger"></form></center></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br></br>
+
     <h2 class="mt-3 ml-5 mr-5">Notifications</h2>
     <ul class="list-group mt-3" style="width:93.5%;margin-left: auto;margin-right: auto;">
       {% for notification in notifications %}

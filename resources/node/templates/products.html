@@ -42,6 +42,7 @@
             <th class="align-middle" scope="col">Product ID</th>
             <th class="align-middle" scope="col">Product Name</th>
             <th class="align-middle" scope="col">PCF</th>
+            <th class="align-middle" scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -50,6 +51,7 @@
               <th class="align-middle">{{product[0]}}</th>
               <td class="align-middle">{{product[1]}}</td>
               <td class="align-middle"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{product[0]}}">Show</button></td>
+              <td class="align-middle"><form method=post action=/issue><input type="hidden" name="ProductID" value="{{product[0]}}"><input class="btn btn-primary" type="submit" value="Issue Credential"></form></td>
             </tr>
           {% endfor %}
         </tbody>

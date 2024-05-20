@@ -13,7 +13,7 @@ notifications = []
 
 @app.route('/')
 def main():
-    return render_template('index.html',title=CONFIG_COMPANYNAME,notifications=notifications)
+    return render_template('index.html',title=CONFIG_COMPANYNAME,CompanyID=CONFIG_COMPANYID,notifications=notifications)
 
 @app.route('/products')
 def handler_products():
@@ -29,18 +29,32 @@ def handler_supplychain():
 @app.route('/request', methods = ['POST'])
 def handler_request():
     ProductID = request.form["ProductID"]
-
     stamp = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
-    notifications.append("<b>{}</b> - PCF data requested for #{}.".format(stamp,ProductID))
+    notifications.insert(0,"<b>{}</b> - Requested proof for product #{}.".format(stamp,ProductID))
     #return redirect("/", code=302)
     return ('', 204)
 
 @app.route('/connect', methods = ['POST'])
 def handler_connect():
     CompanyID = request.form["CompanyID"]
-
     stamp = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
-    notifications.append("<b>{}</b> - Connection requested for #{}.".format(stamp,CompanyID))
+    notifications.insert(0,"<b>{}</b> - Connection requested for company #{}.".format(stamp,CompanyID))
+    #return redirect("/", code=302)
+    return ('', 204)
+
+@app.route('/issue', methods = ['POST'])
+def handler_issue():
+    CompanyID = request.form["ProductID"]
+    stamp = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
+    notifications.insert(0,"<b>{}</b> - Issue credential for product #{}.".format(stamp,CompanyID))
+    #return redirect("/", code=302)
+    return ('', 204)
+
+@app.route('/register', methods = ['POST'])
+def handler_register():
+    CompanyID = request.form["CompanyID"]
+    stamp = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
+    notifications.insert(0,"<b>{}</b> - Register company #{} to ledger.".format(stamp,CompanyID))
     #return redirect("/", code=302)
     return ('', 204)
 

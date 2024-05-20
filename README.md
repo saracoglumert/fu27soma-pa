@@ -54,14 +54,15 @@ Other possible commands are,
 
 ## Must
 - controller_config.yaml -- p1
-- New DB Fields (ConnID, DID, SchemaID, CredDefID) -- p1
-- Add aca-py node on server -- p1
-- Connection - Create and Register DID -- p1
-- Connection - Create and Register Schema -- p1
-- Connection - Create and Register Crediential Definiton -- p1
-- OpenAPI Tutorial -> Issue credential / Request proof -- p2
-- Change Schema as PCF -- p2
-- SD-JWT with PCF in Payload -- p3
+- Connection - Create and Register DID (+mysql) -- p2
+- Connection - Create and Register Schema (+mysql) -- p2
+- Connection - Create and Register Crediential Definiton (+mysql) -- p2
+- Integration with UI - Create and Register DID -- p3
+- Integration with UI - Create and Register Schema -- p3
+- Integration with UI - Create and Register Credential Definition -- p3
+- OpenAPI Tutorial -> Issue credential / Request proof -- p4
+- Change Schema as PCF -- p5
+- SD-JWT with PCF in Payload -- p6
 
 ## Optional
 - Update to aca-py v0.12.1
