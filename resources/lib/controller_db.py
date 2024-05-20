@@ -1,6 +1,5 @@
 import mysql.connector
 
-
 db = mysql.connector.connect(
   host="%network_ip%",
   user="%db_user%",

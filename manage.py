@@ -205,9 +205,14 @@ class Containers:
     @staticmethod
     def Rollback(name):
         print('[all] \t\t Rolling back containers... ({})'.format(name))
+        Containers.Stop()
         Tools.Call('pct rollback {} server_{}'.format(CONF_YAML['server']['id'],name)) 
         Tools.Call('pct rollback {} node1_{}'.format(CONF_YAML['node1']['id'],name)) 
         Tools.Call('pct rollback {} node2_{}'.format(CONF_YAML['node2']['id'],name)) 
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Containers.Start()
+        time.sleep(CONF_YAML['manage']['step_sleep'])
+        Services.Start()
 
 class Files:
     @staticmethod
@@ -218,7 +223,7 @@ class Files:
         pathlib.Path(CONF_TEMP_PATH).mkdir(parents=True, exist_ok=True)
 
         # lib
-        shutil.copyfile(CONF_RES_PATH+"/lib/lib_db.py", CONF_TEMP_PATH+"/lib_db.py")
+        shutil.copyfile(CONF_RES_PATH+"/lib/controller_db.py", CONF_TEMP_PATH+"/controller_db.py")
 
         # Copy files related to SERVER into TEMP directory
         shutil.copyfile(CONF_RES_PATH+"/server/start.sh", CONF_TEMP_PATH+"/server_start.sh")
@@ -249,11 +254,11 @@ class Files:
     @staticmethod
     def Render():
         # Replace values LIB
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/lib_db.py","%network_ip%",str(CONF_YAML['server']['network_ip']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/lib_db.py","%db_user%",str(CONF_YAML['server']['db_user']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/lib_db.py","%db_pass%",str(CONF_YAML['server']['db_pass']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/lib_db.py","%db_name%",str(CONF_YAML['server']['db_name']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/lib_db.py","%port_ui%",str(CONF_YAML['node2']['port_ui']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/controller_db.py","%network_ip%",str(CONF_YAML['server']['network_ip']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/controller_db.py","%db_user%",str(CONF_YAML['server']['db_user']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/controller_db.py","%db_pass%",str(CONF_YAML['server']['db_pass']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/controller_db.py","%db_name%",str(CONF_YAML['server']['db_name']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/controller_db.py","%port_ui%",str(CONF_YAML['node2']['port_ui']))
 
         # Replace values in files related to SERVER
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%network_ip%",str(CONF_YAML['server']['network_ip']))
@@ -316,7 +321,7 @@ class Files:
         Tools.Call('pct push {} {}/server_stop.sh /root/stop.sh'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/server_build.sh /root/build.sh'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/server_db.sql /root/db.sql'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
-        Tools.Call('pct push {} {}/lib_db.py /root/lib_db.py'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/controller_db.py /root/controller_db.py'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/server_web.py /root/web.py'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/server_redis.conf /root/redis.conf'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct exec {} -- mkdir /root/templates'.format(CONF_YAML['server']['id']))
@@ -329,7 +334,7 @@ class Files:
         Tools.Call('pct push {} {}/node1_args.yaml /root/args.yaml'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_plugin.yaml /root/plugin.yaml'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_redis.conf /root/redis.conf'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
-        Tools.Call('pct push {} {}/lib_db.py /root/lib_db.py'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/controller_db.py /root/controller_db.py'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_web.py /root/web.py'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct exec {} -- mkdir /root/templates'.format(CONF_YAML['node1']['id']))
         Tools.Call('pct push {} {}/node/templates/index.html /root/templates/index.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
@@ -343,7 +348,7 @@ class Files:
         Tools.Call('pct push {} {}/node2_args.yaml /root/args.yaml'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_plugin.yaml /root/plugin.yaml'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_redis.conf /root/redis.conf'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
-        Tools.Call('pct push {} {}/lib_db.py /root/lib_db.py'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
+        Tools.Call('pct push {} {}/controller_db.py /root/controller_db.py'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_web.py /root/web.py'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct exec {} -- mkdir /root/templates'.format(CONF_YAML['node2']['id']))
         Tools.Call('pct push {} {}/node/templates/index.html /root/templates/index.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
@@ -369,10 +374,12 @@ class Files:
 
     @staticmethod
     def Update():
+        Services.Stop()
         Files.Purge()
         Files.Generate()
         Files.Render()
         Files.Push()
+        Services.Start()
 
 class Services:
     @staticmethod

@@ -45,20 +45,34 @@ Other possible commands are,
 ./manage.py help
 ```
 
-## To-Do (Must)
-- Access Redis cluster from Python -- soon
-- Complete connection procedure -- p1
-- Aries OPENAPI Tutorial -- p2
-- Issue credential / Request proof -- p3
-- SD-JWT with PCF in Payload -- p4
+# 2. Notes
+## Roles
+- Issuer (One issues for own product)
+- Holder & Verifier (One asks proof for others' products)
 
-## To-Do (Optional)
+# 3. To-Do
+
+## Must
+- controller_config.yaml -- p1
+- New DB Fields (ConnID, DID, SchemaID, CredDefID) -- p1
+- Add aca-py node on server -- p1
+- Connection - Create and Register DID -- p1
+- Connection - Create and Register Schema -- p1
+- Connection - Create and Register Crediential Definiton -- p1
+- OpenAPI Tutorial -> Issue credential / Request proof -- p2
+- Change Schema as PCF -- p2
+- SD-JWT with PCF in Payload -- p3
+
+## Optional
 - Update to aca-py v0.12.1
 - python library (app,web,lib,db)
 - remove Tails? (build, start, manage, config)
 - Prettify logs.
+- remove MAC address definition
+- cleaner file/folder structure in containers
 
 ## Further Reading
+- https://github.com/hyperledger/aries-cloudagent-python/issues/1263
 - http://aca-py.org
 - https://medium.com/@rajatpachauri12345/what-are-redis-cluster-and-how-to-setup-redis-cluster-locally-69e87941d573
 - https://github.com/bcgov/von-network/blob/main/docs/UsingVONNetwork.md#building-and-starting

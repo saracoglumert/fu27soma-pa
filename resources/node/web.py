@@ -3,7 +3,7 @@ from datetime import datetime
 import sys
 import os
 import inspect
-import lib_db
+import controller_db
 
 CONF_ROOT_PATH = os.path.dirname(os.path.abspath(inspect.getframeinfo(inspect.currentframe()).filename))
 
@@ -17,13 +17,13 @@ def main():
 
 @app.route('/products')
 def handler_products():
-    products = lib_db.Company(CONFIG_COMPANYID).ProductstoList()
+    products = controller_db.Company(CONFIG_COMPANYID).ProductstoList()
     return render_template('products.html',title=CONFIG_COMPANYNAME,products=products)
 
 @app.route('/supplychain')
 def handler_supplychain():
-    products = lib_db.SupplyChain(CONFIG_COMPANYID).ProductstoList()
-    companies = lib_db.SupplyChain(CONFIG_COMPANYID).CompaniestoList()
+    products = controller_db.SupplyChain(CONFIG_COMPANYID).ProductstoList()
+    companies = controller_db.SupplyChain(CONFIG_COMPANYID).CompaniestoList()
     return render_template('supplychain.html',title=CONFIG_COMPANYNAME,companies=companies,products=products)
 
 @app.route('/request', methods = ['POST'])
@@ -46,5 +46,5 @@ def handler_connect():
 
 if __name__ == "__main__":
     CONFIG_COMPANYID = int(sys.argv[1])
-    CONFIG_COMPANYNAME = lib_db.Company(CONFIG_COMPANYID).name
+    CONFIG_COMPANYNAME = controller_db.Company(CONFIG_COMPANYID).name
     app.run(host='0.0.0.0', port=%port_ui%, debug=False)
