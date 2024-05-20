@@ -1,15 +1,5 @@
 # fu27soma-pa
 
-redis-cli -h 10.10.10.201 -p 7000
-
-redis-cli --cluster create 10.10.10.200:7000 10.10.10.201:7000 10.10.10.202:7000 --cluster-yes
-
-# Procedure
-- Endpoints
-- Redis Cluster Access
-- Redis Key Access
-- Stop & Start & Repeat
-
 # 1. Installation
 After a clean installation of Proxmox on a host machine, SSH into it and run the following code block.
 
@@ -53,7 +43,7 @@ Other possible commands are,
 # 3. To-Do
 
 ## Must
-- controller_config.yaml -- p1
+- Push config.yaml to containers -- p1
 - Connection - Create and Register DID (+mysql) -- p2
 - Connection - Create and Register Schema (+mysql) -- p2
 - Connection - Create and Register Crediential Definiton (+mysql) -- p2
