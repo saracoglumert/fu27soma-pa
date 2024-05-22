@@ -35,10 +35,10 @@
             <tr>
               <th class="align-middle" scope="col">ID</th>
               <th class="align-middle" scope="col">Name</th>
-              <th class="align-middle" scope="col">Type</th>
-              <th class="align-middle" scope="col">IP</th>
-              <th class="align-middle" scope="col">UI Endpoint</th>
-              <th class="align-middle" scope="col">Aca-Py Endpoint</th>
+              <th class="align-middle" scope="col">User Interface</th>
+              <th class="align-middle" scope="col">Indy</th>
+              <th class="align-middle" scope="col">Aries</th>
+              <th class="align-middle" scope="col">Aries Controller</th>
             </tr>
           </thead>
           <tbody>
@@ -46,10 +46,14 @@
               <tr>
                 <th class="align-middle">{{endpoint[0]}}</th>
                 <th class="align-middle">{{endpoint[1]}}</th>
-                <td class="align-middle">{{endpoint[2]}}</td>
-                <td class="align-middle">{{endpoint[3]}}</td>
                 <td class="align-middle"><a href="{{endpoint[4]}}">{{endpoint[4]}}</a></td>
+                {% if endpoint[5] == "N/A" %}
+                <td class="align-middle">{{endpoint[5]}}</td>
+                {% else %}
                 <td class="align-middle"><a href="{{endpoint[5]}}">{{endpoint[5]}}</a></td>
+                {% endif %}
+                <td class="align-middle"><a href="{{endpoint[6]}}">{{endpoint[6]}}</a></td>
+                <td class="align-middle"><a href="{{endpoint[7]}}">{{endpoint[7]}}</a></td>
 
               </tr>
             {% endfor %}

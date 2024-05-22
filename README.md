@@ -1,5 +1,9 @@
 # fu27soma-pa
 
+- get good build
+- ui - registration
+- ui - connection
+
 # 1. Installation
 After a clean installation of Proxmox on a host machine, SSH into it and run the following code block.
 
@@ -43,24 +47,26 @@ Other possible commands are,
 # 3. To-Do
 
 ## Must
-- Push config.yaml to containers -- p1
-- Connection - Create and Register DID (+mysql) -- p2
-- Connection - Create and Register Schema (+mysql) -- p2
-- Connection - Create and Register Crediential Definiton (+mysql) -- p2
-- Integration with UI - Create and Register DID -- p3
-- Integration with UI - Create and Register Schema -- p3
-- Integration with UI - Create and Register Credential Definition -- p3
+- Notifications - implement timestamp -- p2
+- Integration with UI - Notifications -- p2
+- manage script - status -- p3
 - OpenAPI Tutorial -> Issue credential / Request proof -- p4
 - Change Schema as PCF -- p5
 - SD-JWT with PCF in Payload -- p6
 
 ## Optional
+- cleaner file/folder structure in containers
+- rename object Node to Company
+- Convert Server UI to Web Server (instead of Flask) -- p1
+- change time_sleep name to step
+- get snapshot name from config_yaml
+- use disown instead of sshpass
+- Update DB Structure in update function
 - Update to aca-py v0.12.1
 - python library (app,web,lib,db)
 - remove Tails? (build, start, manage, config)
 - Prettify logs.
 - remove MAC address definition
-- cleaner file/folder structure in containers
 
 ## Further Reading
 - https://github.com/hyperledger/aries-cloudagent-python/issues/1263

@@ -1,0 +1,38 @@
+auto-provision: true
+label: %name%
+
+inbound-transport:
+   - [http, 0.0.0.0, %port_acapy_1%]
+
+outbound-transport: http
+
+wallet-type: askar
+wallet-storage-type: default
+wallet-name: %name%-wallet
+wallet-key: %name%-wallet-key
+wallet-allow-insecure-seed: true
+
+admin-insecure-mode: true
+
+
+admin: [0.0.0.0, %port_acapy_2%]
+
+endpoint: http://localhost:%port_acapy_1%
+
+genesis-url: http://%network_ip%:%port_ledger%/genesis
+
+# Connections
+debug-connections: true
+auto-accept-invites: false
+auto-accept-requests: false
+auto-ping-connection: true
+
+log-level: info
+
+tails-server-base-url: http://localhost:%port_tails%
+
+# Plugins
+plugin:
+  - redis_events.v1_0.redis_queue.events
+  - basicmessage_storage.v1_0
+plugin-config: /root/plugin.yaml

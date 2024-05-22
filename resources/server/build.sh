@@ -23,12 +23,20 @@ apt install lsb-release -y
 pip3 install werkzeug==2.0.1
 pip3 install markupsafe==2.0.1
 pip3 install flask==2.0.1
+pip3 install aries-cloudagent==0.11.0
+pip3 install aries_askar==0.3.1
+pip3 install indy_credx==1.1.1
+pip3 install indy_vdr==0.4.2
+pip3 install anoncreds==0.2.0
 pip3 install mysql-connector-python==8.4.0
+pip3 install redis==5.0.4
 
-# Dependencies - Docker
+# Dependencies - Aca-py Plugins
+pip3 install git+https://github.com/hyperledger/aries-acapy-plugins@main#subdirectory=redis_events
+pip3 install git+https://github.com/hyperledger/aries-acapy-plugins@main#subdirectory=basicmessage_storage
+
+# Dependencies - Docker Images
 curl -4sSL https://get.docker.com/ | sh
-
-# Dependencies - Images
 mkdir /resources
 cd resources
 git clone https://github.com/bcgov/von-network

@@ -17,6 +17,7 @@ apt upgrade -y
 apt install git -y
 apt install curl -y
 apt install python3-pip -y
+apt install lsb-release -y
 
 # Dependencies - Python Packages (aiohttp <3.9, >= 3.81)
 pip3 install werkzeug==2.0.1
@@ -28,6 +29,7 @@ pip3 install indy_credx==1.1.1
 pip3 install indy_vdr==0.4.2
 pip3 install anoncreds==0.2.0
 pip3 install mysql-connector-python==8.4.0
+pip3 install redis==5.0.4
 
 # Dependencies - Aca-py Plugins
 pip3 install git+https://github.com/hyperledger/aries-acapy-plugins@main#subdirectory=redis_events

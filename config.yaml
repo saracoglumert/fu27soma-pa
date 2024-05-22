@@ -4,6 +4,8 @@ manage:
   path_resources: resources
   error_arg: "Argument error."
   step_sleep: 1.5
+  snapshot_build: build
+  snapshot_final: final
 
 host:
   network_gateway: 10.10.10.1
@@ -19,16 +21,20 @@ host:
 
 server:
   id: 200
-  name: fu27soma
+  name: Central Organization
   network_hostname: server
   network_ip: 10.10.10.200
   network_mac: AA:BB:CC:DD:EE:00
   port_ui: 80
-  port_ledger: 9000
+  port_ledger: 8000
+  port_acapy_1: 9000
+  port_acapy_2: 10000
   db_user: root
   db_pass: 12345
   db_name: fu27soma
   port_redis: 7000
+  port_tails: 6543
+  file_log: aca-py.log
 
 node1:
   id: 201
