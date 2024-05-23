@@ -43,11 +43,12 @@ Other possible commands are,
 # 3. To-Do
 
 ## Must
-- Notifications - implement timestamp -- p2
-- Integration with UI - Notifications -- p2
-- manage script - status -- p3
-- OpenAPI Tutorial -> Issue credential / Request proof -- p4
-- Change Schema as PCF -- p5
+- Notifications - implement timestamp -- p1
+- Integration with UI - Notifications -- p1
+- manage script - status -- p2
+- 4 Nodes (TÜV, Siemens, ATS, Reseller) -- p2
+- OpenAPI Tutorial -> Issue credential / Request proof -- p3
+- Change Schema as PCF or EPD -- p4
 - SD-JWT with PCF in Payload -- p6
 
 ## Optional
