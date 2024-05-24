@@ -46,7 +46,13 @@ Other possible commands are,
 - Notifications - implement timestamp -- p1
 - Integration with UI - Notifications -- p1
 - manage script - status -- p2
-- 4 Nodes (TÜV, Siemens, ATS, Reseller) -- p2
+- Design new UI for 3 Nodes -- p2
+- 3 Nodes (TÜV, Siemens, ATS) -- p3
+- --TÜV Issues a Credential to Siemens (data from Siemens)
+- --ATS asks for a proof from Siemens (data from ATS)
+- 4 Nodes (TÜV, Siemens, ATS, All4Tec) -- p2
+- --ATS asks for a proof from All4Tec (data from ATS)
+- --All4Tec asks for a proof from Siemens (data from All4Tec)
 - OpenAPI Tutorial -> Issue credential / Request proof -- p3
 - Change Schema as PCF or EPD -- p4
 - SD-JWT with PCF in Payload -- p6
