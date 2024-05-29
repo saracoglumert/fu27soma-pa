@@ -5,9 +5,11 @@ import os
 import inspect
 import controller
 
+sys.pycache_prefix = "/root/cache"
+
 CONF_ROOT_PATH = os.path.dirname(os.path.abspath(inspect.getframeinfo(inspect.currentframe()).filename))
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder='/root/view')
 
 notifications = []
 

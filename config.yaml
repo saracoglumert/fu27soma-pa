@@ -21,7 +21,7 @@ host:
 
 server:
   id: 200
-  name: Central Organization
+  name: TÜV SÜD
   network_hostname: server
   network_ip: 10.10.10.200
   network_mac: AA:BB:CC:DD:EE:00
@@ -29,36 +29,44 @@ server:
   port_ledger: 8000
   port_acapy_1: 9000
   port_acapy_2: 10000
+  port_redis: 7000
+  port_tails: 6543
   db_user: root
   db_pass: 12345
   db_name: fu27soma
-  port_redis: 7000
-  port_tails: 6543
-  file_log: aca-py.log
+  log_acapy: aca-py.log
+  log_redis: redis.log
+  log_indy: indy.log
+  log_tails: tails.log
+  log_app: app.log
 
 node1:
   id: 201
-  name: Company A
+  name: Siemens
   network_hostname: node1
   network_ip: 10.10.10.201
   network_mac: AA:BB:CC:DD:EE:01
   port_ui: 80
   port_acapy_1: 9000
   port_acapy_2: 10000
-  port_tails: 6543
   port_redis: 7000
-  file_log: aca-py.log
+  port_tails: 6543
+  log_acapy: aca-py.log
+  log_redis: redis.log
+  log_app: app.log
 
 node2:
   id: 202
-  name: Company B
+  name: ATS Automation
   network_hostname: node2
   network_ip: 10.10.10.202
   network_mac: AA:BB:CC:DD:EE:02
   port_ui: 80
   port_acapy_1: 9000
   port_acapy_2: 10000
-  port_tails: 6543
   port_redis: 7000
-  file_log: aca-py.log
+  port_tails: 6543
+  log_acapy: aca-py.log
+  log_redis: redis.log
+  log_app: app.log
   

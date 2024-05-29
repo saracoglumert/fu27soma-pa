@@ -45,20 +45,31 @@ Other possible commands are,
 ## Must
 - Notifications - implement timestamp -- p1
 - Integration with UI - Notifications -- p1
-- manage script - status -- p2
-- Design new UI for 3 Nodes -- p2
-- 3 Nodes (TÜV, Siemens, ATS) -- p3
-- --TÜV Issues a Credential to Siemens (data from Siemens)
-- --ATS asks for a proof from Siemens (data from ATS)
-- 4 Nodes (TÜV, Siemens, ATS, All4Tec) -- p2
-- --ATS asks for a proof from All4Tec (data from ATS)
-- --All4Tec asks for a proof from Siemens (data from All4Tec)
+- New UI -- p2
+- manage script - status -- p3
 - OpenAPI Tutorial -> Issue credential / Request proof -- p3
 - Change Schema as PCF or EPD -- p4
 - SD-JWT with PCF in Payload -- p6
 
+## New UI
+
+- TÜV
+- -- Home
+- -- Products (Action: Issue Credential)
+
+- Siemens / ATS Automation
+- -- Home
+- -- Products (Action: Register Product)
+
+
+- Homepage / Register to Ledger is same for all (1)
+- TÜV
+- -- Products / Action: Issue Credential (3)
+- Siemens / ATS
+- -- Products / Regsiter new Product (2)
+- -- Products / See products, Action: Request Proof (4)
+
 ## Optional
-- cleaner file/folder structure in containers
 - rename object Node to Company
 - Convert Server UI to Web Server (instead of Flask) -- p1
 - change time_sleep name to step
