@@ -5,10 +5,11 @@ import os
 import inspect
 import controller
 
+sys.pycache_prefix = "/root/cache"
 
 CONF_ROOT_PATH = os.path.dirname(os.path.abspath(inspect.getframeinfo(inspect.currentframe()).filename))
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder='view_node')
 
 notifications = []
 
@@ -54,8 +55,8 @@ def handler_request():
 def handler_connect():
     CompanyID = request.form["CompanyID"]
     controller.Node(CONFIG_COMPANYID).Connect(CompanyID)
-    #return redirect("/", code=302)
-    return ('', 204)
+    return redirect("/supplychain", code=302)
+    #return ('', 204)
 
 @app.route('/issue', methods = ['POST'])
 def handler_issue():
@@ -71,10 +72,13 @@ def handler_register():
     controller.Node(CompanyID).RegisterDID()
     controller.Node(CompanyID).RegisterSchema()
     controller.Node(CompanyID).RegisterCredentialDefinition()
-    #return redirect("/", code=302)
-    return ('', 204)
+    return redirect("/", code=302)
+    #return ('', 204)
 
 if __name__ == "__main__":
-    CONFIG_COMPANYID = int(sys.argv[1])
+    #CONFIG_COMPANYID = int(sys.argv[1])
+    #port = int(sys.argv[2])
+    CONFIG_COMPANYID = 201
+    port = 2001
     CONFIG_COMPANYNAME = controller.Node(CONFIG_COMPANYID).name
-    app.run(host='0.0.0.0', port=1000, debug=False)
+    app.run(host='0.0.0.0', port=port, debug=False)

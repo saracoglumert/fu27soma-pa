@@ -1,0 +1,1 @@
+kill -9 $(pgrep -f "env/bin/python") > /dev/null

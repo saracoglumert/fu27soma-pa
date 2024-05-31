@@ -56,15 +56,16 @@ class Node:
             self.type = result1[2]
             self.ip = result1[3]
             self.port_ui = result1[4]
-            self.port_acapy1 = result1[5]
-            self.port_acapy2 = result1[6]
+            self.port_indy = result1[5]
+            self.port_acapy1 = result1[6]
+            self.port_acapy2 = result1[7]
             self.endpoint_ui = "http://{}:{}".format(result1[3],result1[4])
-            self.endpoint_acapy1 = "http://{}:{}".format(result1[3],result1[5])
-            self.endpoint_acapy2 = "http://{}:{}".format(result1[3],result1[6])
-            self.did = result1[7]
-            self.schemaid = result1[8]
-            self.creddefid = result1[9]
-            self.connectionid = result1[10]
+            self.endpoint_acapy1 = "http://{}:{}".format(result1[3],result1[6])
+            self.endpoint_acapy2 = "http://{}:{}".format(result1[3],result1[7])
+            self.did = result1[8]
+            self.schemaid = result1[9]
+            self.creddefid = result1[10]
+            self.connectionid = result1[11]
             self.products = result3
         except Exception as e:
             print(str(e))
@@ -84,7 +85,7 @@ class Node:
 
         # Register DID into ledger
         body = json.loads('{"role":"ENDORSER","alias":null,"did":"#","verkey":"%"}'.replace("#",did).replace("%",verkey))
-        r = requests.post(url = "http://10.10.10.200:9000/register", json = body)
+        r = requests.post(url = "http://10.10.10.200:8000/register", json = body)
         did = json.loads(r.content)['did']
 
         # Publish DID
@@ -100,7 +101,7 @@ class Node:
         Notifications(self.id).New("DID registered. ({})".format(did))
 
     def RegisterSchema(self):
-        body = json.loads('{"attributes": ["company","product","PCF"],"schema_name": "PCF_Schema4","schema_version": "1.0"}')
+        body = json.loads('{"attributes": ["company","product","PCF"],"schema_name": "PCF_Schema","schema_version": "1.0"}')
         r=requests.post(url = self.endpoint_acapy2+'/schemas', json=body)
         schema_id = json.loads(r.content)['sent']['schema_id']
 
