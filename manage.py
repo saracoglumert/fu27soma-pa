@@ -228,22 +228,22 @@ class Files:
         shutil.copyfile(CONF_RES_PATH+"/server/app.py", CONF_TEMP_PATH+"/server_app.py")
 
         # Copy files related to NODE1 into TEMP directory
-        shutil.copyfile(CONF_RES_PATH+"/node/scripts/start.sh", CONF_TEMP_PATH+"/node1_start.sh")
-        shutil.copyfile(CONF_RES_PATH+"/node/scripts/stop.sh", CONF_TEMP_PATH+"/node1_stop.sh")
-        shutil.copyfile(CONF_RES_PATH+"/node/scripts/build.sh", CONF_TEMP_PATH+"/node1_build.sh")
-        shutil.copyfile(CONF_RES_PATH+"/node/config/args.yaml", CONF_TEMP_PATH+"/node1_args.yaml")
-        shutil.copyfile(CONF_RES_PATH+"/node/config/plugin.yaml", CONF_TEMP_PATH+"/node1_plugin.yaml")
-        shutil.copyfile(CONF_RES_PATH+"/node/config/redis.conf", CONF_TEMP_PATH+"/node1_redis.conf")
-        shutil.copyfile(CONF_RES_PATH+"/node/app.py", CONF_TEMP_PATH+"/node1_app.py")
+        shutil.copyfile(CONF_RES_PATH+"/client/scripts/start.sh", CONF_TEMP_PATH+"/node1_start.sh")
+        shutil.copyfile(CONF_RES_PATH+"/client/scripts/stop.sh", CONF_TEMP_PATH+"/node1_stop.sh")
+        shutil.copyfile(CONF_RES_PATH+"/client/scripts/build.sh", CONF_TEMP_PATH+"/node1_build.sh")
+        shutil.copyfile(CONF_RES_PATH+"/client/config/args.yaml", CONF_TEMP_PATH+"/node1_args.yaml")
+        shutil.copyfile(CONF_RES_PATH+"/client/config/plugin.yaml", CONF_TEMP_PATH+"/node1_plugin.yaml")
+        shutil.copyfile(CONF_RES_PATH+"/client/config/redis.conf", CONF_TEMP_PATH+"/node1_redis.conf")
+        shutil.copyfile(CONF_RES_PATH+"/client/app.py", CONF_TEMP_PATH+"/node1_app.py")
 
         # Copy files related to NODE2 into TEMP directory
-        shutil.copyfile(CONF_RES_PATH+"/node/scripts/start.sh", CONF_TEMP_PATH+"/node2_start.sh")
-        shutil.copyfile(CONF_RES_PATH+"/node/scripts/stop.sh", CONF_TEMP_PATH+"/node2_stop.sh")
-        shutil.copyfile(CONF_RES_PATH+"/node/scripts/build.sh", CONF_TEMP_PATH+"/node2_build.sh")
-        shutil.copyfile(CONF_RES_PATH+"/node/config/args.yaml", CONF_TEMP_PATH+"/node2_args.yaml")
-        shutil.copyfile(CONF_RES_PATH+"/node/config/plugin.yaml", CONF_TEMP_PATH+"/node2_plugin.yaml")
-        shutil.copyfile(CONF_RES_PATH+"/node/config/redis.conf", CONF_TEMP_PATH+"/node2_redis.conf")
-        shutil.copyfile(CONF_RES_PATH+"/node/app.py", CONF_TEMP_PATH+"/node2_app.py")
+        shutil.copyfile(CONF_RES_PATH+"/client/scripts/start.sh", CONF_TEMP_PATH+"/node2_start.sh")
+        shutil.copyfile(CONF_RES_PATH+"/client/scripts/stop.sh", CONF_TEMP_PATH+"/node2_stop.sh")
+        shutil.copyfile(CONF_RES_PATH+"/client/scripts/build.sh", CONF_TEMP_PATH+"/node2_build.sh")
+        shutil.copyfile(CONF_RES_PATH+"/client/config/args.yaml", CONF_TEMP_PATH+"/node2_args.yaml")
+        shutil.copyfile(CONF_RES_PATH+"/client/config/plugin.yaml", CONF_TEMP_PATH+"/node2_plugin.yaml")
+        shutil.copyfile(CONF_RES_PATH+"/client/config/redis.conf", CONF_TEMP_PATH+"/node2_redis.conf")
+        shutil.copyfile(CONF_RES_PATH+"/client/app.py", CONF_TEMP_PATH+"/node2_app.py")
 
     @staticmethod
     def Render():
@@ -365,9 +365,9 @@ class Files:
         Tools.Call('pct push {} {}/node1_redis.conf /root/config/redis.conf'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/controller.py /root/controller.py'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_app.py /root/app.py'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
-        Tools.Call('pct push {} {}/node/view/index.html /root/view/index.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
-        Tools.Call('pct push {} {}/node/view/products.html /root/view/products.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
-        Tools.Call('pct push {} {}/node/view/supplychain.html /root/view/supplychain.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
+        Tools.Call('pct push {} {}/client/view/index.html /root/view/index.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
+        Tools.Call('pct push {} {}/client/view/products.html /root/view/products.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
+        Tools.Call('pct push {} {}/client/view/supplychain.html /root/view/supplychain.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
 
         
 
@@ -385,9 +385,9 @@ class Files:
         Tools.Call('pct push {} {}/node2_redis.conf /root/config/redis.conf'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/controller.py /root/controller.py'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_app.py /root/app.py'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
-        Tools.Call('pct push {} {}/node/view/index.html /root/view/index.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
-        Tools.Call('pct push {} {}/node/view/products.html /root/view/products.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
-        Tools.Call('pct push {} {}/node/view/supplychain.html /root/view/supplychain.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
+        Tools.Call('pct push {} {}/client/view/index.html /root/view/index.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
+        Tools.Call('pct push {} {}/client/view/products.html /root/view/products.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
+        Tools.Call('pct push {} {}/client/view/supplychain.html /root/view/supplychain.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
 
         
 

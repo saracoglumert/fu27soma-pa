@@ -22,7 +22,7 @@ Before starting to build the project, **config.yaml** file must be set according
 ./manage.py config
 ```
 
-After editing the **config.yaml** file, run the following command to build the nodes and get them running. The build may between 15 to 30 minutes depending on your internet connection.
+After editing the **config.yaml** file, run the following command to build the nodes and get them running. The build may take between 15 to 30 minutes depending on your internet connection.
 ```
 ./manage.py build
 ```
