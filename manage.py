@@ -255,6 +255,7 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/controller.py","%port_ui%",str(CONF_YAML['node2']['port_ui']))
 
         # Replace values in files related to SERVER
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%id%",str(CONF_YAML['server']['id']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%network_ip%",str(CONF_YAML['server']['network_ip']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%port_ledger%",str(CONF_YAML['server']['port_ledger']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%name%",str(CONF_YAML['server']['name']))
@@ -263,7 +264,7 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%log_redis%",str(CONF_YAML['server']['log_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%log_indy%",str(CONF_YAML['server']['log_indy']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%log_tails%",str(CONF_YAML['server']['log_tails']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%log_app%",str(CONF_YAML['server']['log_app']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%log_web%",str(CONF_YAML['server']['log_web']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_build.sh","%db_user%",str(CONF_YAML['server']['db_user']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_build.sh","%db_pass%",str(CONF_YAML['server']['db_pass']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_database.sql","%db_name%",str(CONF_YAML['server']['db_name']))
@@ -302,7 +303,7 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_start.sh","%port_ui%",str(CONF_YAML['node1']['port_ui']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_start.sh","%log_acapy%",str(CONF_YAML['node1']['log_acapy']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_start.sh","%log_redis%",str(CONF_YAML['node1']['log_redis']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_start.sh","%log_app%",str(CONF_YAML['node1']['log_app']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_start.sh","%log_web%",str(CONF_YAML['node1']['log_web']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%name%",str(CONF_YAML['node1']['name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%port_acapy_1%",str(CONF_YAML['node1']['port_acapy_1']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node1_args.yaml","%port_acapy_2%",str(CONF_YAML['node1']['port_acapy_2']))
@@ -318,7 +319,7 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_start.sh","%port_ui%",str(CONF_YAML['node2']['port_ui']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_start.sh","%log_acapy%",str(CONF_YAML['node2']['log_acapy']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_start.sh","%log_redis%",str(CONF_YAML['node2']['log_redis']))
-        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_start.sh","%log_app%",str(CONF_YAML['node2']['log_app']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_start.sh","%log_web%",str(CONF_YAML['node2']['log_web']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%name%",str(CONF_YAML['node2']['name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%port_acapy_1%",str(CONF_YAML['node2']['port_acapy_1']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/node2_args.yaml","%port_acapy_2%",str(CONF_YAML['node2']['port_acapy_2']))
@@ -347,7 +348,8 @@ class Files:
         Tools.Call('pct push {} {}/server_redis.conf /root/config/redis.conf'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/server_args.yaml /root/config/args.yaml'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/server_plugin.yaml /root/config/plugin.yaml'.format(CONF_YAML['server']['id'],CONF_TEMP_PATH))
-        Tools.Call('pct push {} {}/server/view/endpoints.html /root/view/endpoints.html'.format(CONF_YAML['server']['id'],CONF_RES_PATH))
+        Tools.Call('pct push {} {}/server/view/home.html /root/view/home.html'.format(CONF_YAML['server']['id'],CONF_RES_PATH))
+        Tools.Call('pct push {} {}/server/view/products.html /root/view/products.html'.format(CONF_YAML['server']['id'],CONF_RES_PATH))
 
         
         
@@ -365,7 +367,7 @@ class Files:
         Tools.Call('pct push {} {}/node1_redis.conf /root/config/redis.conf'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/controller.py /root/controller.py'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node1_app.py /root/app.py'.format(CONF_YAML['node1']['id'],CONF_TEMP_PATH))
-        Tools.Call('pct push {} {}/client/view/index.html /root/view/index.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
+        Tools.Call('pct push {} {}/client/view/home.html /root/view/home.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
         Tools.Call('pct push {} {}/client/view/products.html /root/view/products.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
         Tools.Call('pct push {} {}/client/view/supplychain.html /root/view/supplychain.html'.format(CONF_YAML['node1']['id'],CONF_RES_PATH))
 
@@ -385,7 +387,7 @@ class Files:
         Tools.Call('pct push {} {}/node2_redis.conf /root/config/redis.conf'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/controller.py /root/controller.py'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
         Tools.Call('pct push {} {}/node2_app.py /root/app.py'.format(CONF_YAML['node2']['id'],CONF_TEMP_PATH))
-        Tools.Call('pct push {} {}/client/view/index.html /root/view/index.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
+        Tools.Call('pct push {} {}/client/view/home.html /root/view/home.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
         Tools.Call('pct push {} {}/client/view/products.html /root/view/products.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
         Tools.Call('pct push {} {}/client/view/supplychain.html /root/view/supplychain.html'.format(CONF_YAML['node2']['id'],CONF_RES_PATH))
 
@@ -415,7 +417,6 @@ class Files:
         Files.Generate()
         Files.Render()
         Files.Push()
-        Services.Start()
 
 class Services:
     @staticmethod
@@ -477,9 +478,11 @@ def AIO():
     datetime_end = datetime.datetime.now()
     duration = round((datetime_end - datetime_start).total_seconds() / 60.0,1)
     print("\nBuild took {} minutes.".format(duration))
-    print("\nVisit")
+    print("\nEndpoints:")
     print("\t http://{}:{}".format(CONF_YAML['server']['network_ip'],CONF_YAML['server']['port_ui']))
-    print("to see endpoints.")
+    print("\t http://{}:{}".format(CONF_YAML['node1']['network_ip'],CONF_YAML['node1']['port_ui']))
+    print("\t http://{}:{}".format(CONF_YAML['node2']['network_ip'],CONF_YAML['node2']['port_ui']))
+    print()
 
 if __name__ == "__main__":
     match " ".join(sys.argv[1:]):

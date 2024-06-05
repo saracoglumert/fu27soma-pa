@@ -11,6 +11,6 @@ elif [ $1 = "tails" ]; then
     [ ! -e /root/logs/%log_tails% ] || rm /root/logs/%log_tails%
     nohup /resources/indy-tails-server/docker/manage start > /root/logs/%log_tails% 2>&1 &
 elif [ $1 = "app" ]; then
-    [ ! -e /root/logs/%log_app% ] || rm /root/logs/%log_app%
-    nohup python3 /root/app.py %port_ui% > /root/logs/%log_app% 2>&1 &
+    [ ! -e /root/logs/%log_web% ] || rm /root/logs/%log_web%
+    nohup python3 /root/app.py %id% %port_ui% > /root/logs/%log_web% 2>&1 &
 fi

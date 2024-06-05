@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-    <title>{{title}}</title>
+    <title>{{node.name}}</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">{{title}}</a>
+        <a class="navbar-brand" href="#">{{node.name}}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -41,19 +41,19 @@
         <tbody>
             <tr>
               <th class="align-middle">DID</th>
-              <td class="align-middle">{{DID}}</td>
+              <td class="align-middle">{{node.did}}</td>
             </tr>
             <tr>
               <th class="align-middle">Schema ID</th>
-              <td class="align-middle">{{SchemaID}}</td>
+              <td class="align-middle">{{node.schemaid}}</td>
             </tr>
             <tr>
               <th class="align-middle">Credential Definition ID</th>
-              <td class="align-middle">{{CredDefID}}</td>
+              <td class="align-middle">{{node.creddefid}}</td>
             </tr>
-            {% if registered == false %}
+            {% if node.did == None and node.schemaid == None and node.creddefid == None %}
             <tr>
-              <td class="align-middle" colspan="2"><center><form method=post action=/register><input type="hidden" name="CompanyID" value="{{CompanyID}}"><input class="btn btn-primary" style="width:100%" type="submit" value="Register to Ledger"></form></center></td>
+              <td class="align-middle" colspan="2"><center><form method=post action=/register><input class="btn btn-primary" style="width:100%" type="submit" value="Register to Ledger"></form></center></td>
             </tr>
             {% endif %}
         </tbody>
@@ -61,12 +61,23 @@
 
     <br></br>
 
-    <h2 class="mt-3 ml-5 mr-5">Notifications</h2>
-    <ul class="list-group mt-3" style="width:93.5%;margin-left: auto;margin-right: auto;">
-      {% for notification in notifications %}
-      <li class="list-group-item">{{notification | safe}}</li>
-      {% endfor %}
-    </ul>
+    <h2 class="mt-3 ml-5 mr-5">Connections</h2>
+    <table class="table table-hover mt-3" style="width:93.5%;margin-left: auto;margin-right: auto;">
+      <thead class="thead-dark">
+        <tr>
+          <th class="align-middle" scope="col">Node ID</th>
+          <th class="align-middle" scope="col">Connection ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key, value in node.connections.items() %}  
+        <tr>
+          <th class="align-middle">{{key}}</th>
+          <td class="align-middle">{{value}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+  </table>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

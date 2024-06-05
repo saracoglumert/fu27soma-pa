@@ -4,8 +4,7 @@ manage:
   path_resources: resources
   error_arg: "Argument error."
   step_sleep: 1.5
-  snapshot_build: build
-  snapshot_final: final
+  snapshot: backup
 
 host:
   network_gateway: 10.10.10.1
@@ -38,7 +37,7 @@ server:
   log_redis: redis.log
   log_indy: indy.log
   log_tails: tails.log
-  log_app: app.log
+  log_web: app.log
 
 node1:
   id: 201
@@ -53,7 +52,7 @@ node1:
   port_tails: 6543
   log_acapy: aca-py.log
   log_redis: redis.log
-  log_app: app.log
+  log_web: app.log
 
 node2:
   id: 202
@@ -68,5 +67,5 @@ node2:
   port_tails: 6543
   log_acapy: aca-py.log
   log_redis: redis.log
-  log_app: app.log
+  log_web: app.log
   

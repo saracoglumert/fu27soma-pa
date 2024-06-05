@@ -48,48 +48,24 @@ Other possible commands are,
 # 3. To-Do
 
 ## Must
-- Notifications - implement timestamp -- p1
-- Integration with UI - Notifications -- p1
-- New UI -- p2
-- manage script - status -- p3
+- New UI -- p1
+- autopep8
+- manage script - status/endpoints -- p2
 - OpenAPI Tutorial -> Issue credential / Request proof -- p3
-- Change Schema as PCF or EPD -- p4
 - SD-JWT with PCF in Payload -- p6
 - Telegraf / InfluxDB Open Source
-## New UI
 
-- TÜV
-- -- Home
-- -- Products (Action: Issue Credential)
-
-- Siemens / ATS Automation
-- -- Home
-- -- Products (Action: Register Product)
-
-
-- Homepage / Register to Ledger is same for all (1)
-- TÜV
-- -- Products / Action: Issue Credential (3)
-- Siemens / ATS
-- -- Products / Regsiter new Product (2)
-- -- Products / See products, Action: Request Proof (4)
 
 ## Optional
-- rename object Node to Company
-- Convert Server UI to Web Server (instead of Flask) -- p1
 - change time_sleep name to step
-- get snapshot name from config_yaml
 - use disown instead of sshpass
-- Update DB Structure in update function
 - Update to aca-py v0.12.1
-- python library (app,web,lib,db)
 - remove Tails? (build, start, manage, config)
 - Prettify logs.
 - remove MAC address definition
 
 ## Future
-- Version control of data
-- InfluxDB
+- Telegraf and InfluxDB
 - OOP manage.py
 
 ## Further Reading

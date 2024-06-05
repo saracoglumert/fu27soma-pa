@@ -11,13 +11,33 @@ CONF_ROOT_PATH = os.path.dirname(os.path.abspath(inspect.getframeinfo(inspect.cu
 
 app = Flask(__name__,template_folder='/root/view')
 
-notifications = []
-
 @app.route('/')
 def main():
-    endpoints = controller.Endpoints()
-    return render_template('endpoints.html',title=controller.Node(controller.GetServerID()).name,endpoints=endpoints)
+    node.update()
+    return render_template('home.html',node=node)
+
+@app.route('/products')
+def handler_products():
+    
+    node.update()
+    return render_template('products.html',node=node,controller=controller)
+
+@app.route('/register', methods = ['POST'])
+def handler_register():
+    node.register()
+    
+    node.update()
+    return redirect("/", code=302)
+
+@app.route('/issue', methods = ['POST'])
+def handler_issue():
+    node.IssueCredential(request.form["ProductID"])
+    
+    node.update()
+    return redirect("/products", code=302)
 
 if __name__ == "__main__":
-    port = int(sys.argv[1])
+    CONFIG_NODEID = int(sys.argv[1])
+    port = int(sys.argv[2])
+    node = controller.Server(CONFIG_NODEID)
     app.run(host='0.0.0.0', port=port, debug=False)

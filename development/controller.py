@@ -5,237 +5,249 @@ import random
 import string
 import time
 from redis import Redis
+import ast
+import pprint
+import sys
 
-db = mysql.connector.connect(
+conn_db = mysql.connector.connect(
   host="10.10.10.200",
   user="root",
   password="12345",
-  database="fu27soma")
+  database="fu27soma",
+  autocommit=True)
 
-class Notifications:
-    def __init__(self,node):
-        self.node = node
-        
-    def New(self,content):
-        cursor = db.cursor()
-        sql = "INSERT INTO Notifications (NodeID, NotificationContent) VALUES ({}, '{}')".format(self.node,content)
-        cursor.execute(sql)
-        db.commit()
+conn_redis = Redis.from_url(url="redis://10.10.10.200:7000")
 
-class Product:
-    def __init__(self,id):
-        try:
-            cursor = db.cursor()
-            cursor.execute("SELECT * FROM Products WHERE ProductID = {}".format(id))
-            result = cursor.fetchone()
-                    
-            self.id = result[0]
-            self.name = result[1]
-            self.pcf = result[2]
-            self.company = result[3]
-        except Exception as e:
-            print(str(e))
-
-    def ProducttoList(self):
-        return [self.id,self.name,self.pcf,self.company]
+def GetServerID():
+    cursor = conn_db.cursor()
+    cursor.execute("SELECT NodeID FROM Nodes WHERE nodeType='server'")
+    result = cursor.fetchone()[0]
+    
+    return result
 
 class Node:
-    def __init__(self, id):
-        try:
-            cursor = db.cursor()
-            cursor.execute("SELECT * FROM Nodes WHERE NodeID = {}".format(id))
-            result1 = cursor.fetchone()
-            cursor.execute("SELECT ProductID FROM Products WHERE NodeID = {}".format(id))
-            result2 = [i[0] for i in cursor.fetchall()]
-            result3 = []
-            for id in result2:
-                result3.append(Product(id))
+    def __init__(self,id):
+        self.id = id
+        self.update()
 
-            self.id = result1[0]
-            self.name = result1[1]
-            self.type = result1[2]
-            self.ip = result1[3]
-            self.port_ui = result1[4]
-            self.port_indy = result1[5]
-            self.port_acapy1 = result1[6]
-            self.port_acapy2 = result1[7]
-            self.endpoint_ui = "http://{}:{}".format(result1[3],result1[4])
-            self.endpoint_acapy1 = "http://{}:{}".format(result1[3],result1[6])
-            self.endpoint_acapy2 = "http://{}:{}".format(result1[3],result1[7])
-            self.did = result1[8]
-            self.schemaid = result1[9]
-            self.creddefid = result1[10]
-            self.connectionid = result1[11]
-            self.products = result3
-        except Exception as e:
-            print(str(e))
-    
-    def ProductstoList(self):
-        temp = []
-        for element in self.products:
-            temp.append([element.id,element.name,element.pcf,element.company])
-        return temp
+    def update(self):
+        cursor = conn_db.cursor()
+        cursor.execute("SELECT * FROM Nodes WHERE nodeID = {}".format(self.id))
+        result = cursor.fetchone()
 
-    def RegisterDID(self):
+        self.id = result[0]
+        self.name = result[1]
+        self.type = result[2]
+        self.ip = result[3]
+        self.endpoints = json.loads(result[4])
+        self.did = result[5]
+        
+        if result[6] == None:
+            self.connections = json.loads("{}")
+        else:
+            self.connections = json.loads(result[6])
+
+        for key,value in self.endpoints.items():
+            self.endpoints[key] = "http://{}:{}".format(self.ip,value)
+
+        if self.type == "server":
+            self.schemaid = result[7]
+            self.creddefid = result[8]
+
+    def register(self):
         # Create DID from seed
         body = json.loads('{"method": "sov","options": {"key_type": "ed25519"},"seed": "#"}'.replace("#",''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(32))))
-        r=requests.post(url = self.endpoint_acapy2+'/wallet/did/create', json=body)
+        r=requests.post(url = self.endpoints["aries2"]+'/wallet/did/create', json=body)
         did = json.loads(r.content)['result']['did']
         verkey = json.loads(r.content)['result']['verkey']
 
         # Register DID into ledger
         body = json.loads('{"role":"ENDORSER","alias":null,"did":"#","verkey":"%"}'.replace("#",did).replace("%",verkey))
-        r = requests.post(url = "http://10.10.10.200:8000/register", json = body)
+        r = requests.post(url = Node(GetServerID()).endpoints["indy"]+"/register", json = body)
         did = json.loads(r.content)['did']
 
         # Publish DID
-        r=requests.post(url = self.endpoint_acapy2+'/wallet/did/public?did={}'.format(did), json=body)
+        r=requests.post(url = self.endpoints["aries2"]+'/wallet/did/public?did={}'.format(did), json=body)
     
         # Register into DB
-        cursor = db.cursor()
-        sql = "UPDATE Nodes SET DID = '{}' WHERE NodeID = {}".format(did,self.id)
+        cursor = conn_db.cursor()
+        sql = "UPDATE Nodes SET did = '{}' WHERE nodeID = {}".format(did,self.id)
         cursor.execute(sql)
-        db.commit()
+        conn_db.commit()
 
-        # Register Notification
-        Notifications(self.id).New("DID registered. ({})".format(did))
+        if self.type == "server":
+            # Register Schema
+            #{"specVersion": "ver1", "version": "ver1", "created": 1717371325, "status": "Active", "companyName": "Siemens", "companyIds": 201, "productDescription": "descp1", "productIds": "101", "productCategoryCpc": "cpc1", "productNameCompany": "name1", "comment": "comment1", "pcf": "pcf1"}
+            body = json.loads('{"attributes": ["data"],"schema_name": "data","schema_version": "1.0"}')
+            r=requests.post(url = self.endpoints["aries2"]+'/schemas', json=body)
+            schema_id = json.loads(r.content)['sent']['schema_id']
 
-    def RegisterSchema(self):
-        body = json.loads('{"attributes": ["company","product","PCF"],"schema_name": "PCF_Schema","schema_version": "1.0"}')
-        r=requests.post(url = self.endpoint_acapy2+'/schemas', json=body)
-        schema_id = json.loads(r.content)['sent']['schema_id']
+            # Register into DB
+            cursor = conn_db.cursor()
+            sql = "UPDATE Nodes SET schemaID = '{}' WHERE nodeID={}".format(schema_id,self.id)
+            cursor.execute(sql)
+            conn_db.commit()
 
-        # Register into DB
-        cursor = db.cursor()
-        sql = "UPDATE Nodes SET SchemaID = '{}' WHERE NodeID={}".format(schema_id,self.id)
-        cursor.execute(sql)
-        db.commit()
+            # Regsiter Credential Definition
+            cursor = conn_db.cursor()
+            cursor.execute("SELECT schemaID FROM Nodes WHERE nodeID={}".format(self.id))
+            schema_id = cursor.fetchone()[0]
 
-        # Register Notification
-        Notifications(self.id).New("Schema registered. ({})".format(schema_id))
+            body = json.loads('{"revocation_registry_size": 1000,"schema_id": "#","support_revocation": true,"tag": "default"}'.replace("#",schema_id))
+            r=requests.post(url = self.endpoints["aries2"]+'/credential-definitions', json=body)
+            credential_definition_id = json.loads(r.content)['sent']['credential_definition_id']
 
-    def RegisterCredentialDefinition(self):
-        cursor = db.cursor()
-        cursor.execute("SELECT SchemaID FROM Nodes WHERE NodeID={}".format(self.id))
-        schema_id = cursor.fetchone()[0]
+            # Register into DB
+            cursor = conn_db.cursor()
+            sql = "UPDATE Nodes SET credDefID = '{}' WHERE nodeID={}".format(credential_definition_id,self.id)
+            cursor.execute(sql)
+            conn_db.commit()
 
-        body = json.loads('{"revocation_registry_size": 1000,"schema_id": "#","support_revocation": true,"tag": "default"}'.replace("#",schema_id))
-        r=requests.post(url = self.endpoint_acapy2+'/credential-definitions', json=body)
-        credential_definition_id = json.loads(r.content)['sent']['credential_definition_id']
+        elif self.type == "client":
+            self.connect(GetServerID())
 
-        # Register into DB
-        cursor = db.cursor()
-        sql = "UPDATE Nodes SET CredDefID = '{}' WHERE NodeID={}".format(credential_definition_id,self.id)
-        cursor.execute(sql)
-        db.commit()
-
-        # Register Notification
-        Notifications(self.id).New("Credential definiton registered. ({})".format(credential_definition_id))
-
-    def Connect(self,id):
-        rds = Redis.from_url(url="redis://10.10.10.200:7000")
+    def connect(self,id):
+        target = Node(id)
         
         # Step 1 - Create Invitation (node2 - faber)
-        body = json.loads('{"service_endpoint": "#"}'.replace("#",Node(id).endpoint_acapy1))
-        r=requests.post(url = Node(id).endpoint_acapy2+'/connections/create-invitation', json=body)
+        body = json.loads('{"service_endpoint": "#"}'.replace("#",target.endpoints["aries1"]))
+        r=requests.post(url = target.endpoints["aries2"]+'/connections/create-invitation', json=body)
         cid = json.loads(r.content)['invitation']['@id']
         response1 = json.dumps((json.loads(r.content)['invitation']), sort_keys=True, indent=4)
         time.sleep(1.5)
 
         # Step 2 - Receive Invitation (node1 - alice)
         body = response1
-        r=requests.post(url = self.endpoint_acapy2+'/connections/receive-invitation', json=body)
+        r=requests.post(url = self.endpoints["aries2"]+'/connections/receive-invitation', json=body)
         cid = json.loads(r.content)['connection_id']
         response2 = json.loads(r.content)['connection_id']
         time.sleep(1.5)
 
         # Step 3 - Accept Invitation (node1 - alice)
-        x = self.endpoint_acapy2+'/connections/{}/accept-invitation?my_endpoint={}'.format(response2,self.endpoint_acapy1)
+        x = self.endpoints["aries2"]+'/connections/{}/accept-invitation?my_endpoint={}'.format(response2,self.endpoints["aries1"])
         r=requests.post(url = x)
         response3 = json.loads(r.content)
         time.sleep(1.5)
 
         # Step 4 - Accept Request (node2 - faber)
-        response4 = json.loads(rds.lrange(str.encode('acapy-record-with-state-base'), -1, -1)[0].decode("utf-8"))['payload']['payload']['connection_id']
-        x = Node(id).endpoint_acapy2+'/connections/{}/accept-request?my_endpoint={}'.format(response4,Node(id).endpoint_acapy1)
+        response4 = json.loads(conn_redis.lrange(str.encode('acapy-record-with-state-base'), -1, -1)[0].decode("utf-8"))['payload']['payload']['connection_id']
+        x = target.endpoints["aries2"]+'/connections/{}/accept-request?my_endpoint={}'.format(response4,target.endpoints["aries1"])
         r=requests.post(url = x)
         response5 = r.content
         time.sleep(5)
 
         # Register into DB - Node 1
-        cursor = db.cursor()
-        sql = "UPDATE Nodes SET ConnectionID = '{}' WHERE NodeID={}".format(response2,self.id)
+        cursor = conn_db.cursor()
+        cursor.execute("SELECT connections FROM Nodes WHERE nodeID = {}".format(self.id))
+        result = cursor.fetchone()[0]
+
+        if result == None:
+            data = {}
+            data[id] = response2
+            data = json.dumps(data)
+        else:
+            data = json.loads(result)
+            data[id] = response2
+            data = json.dumps(data)
+        
+
+        cursor = conn_db.cursor()
+        sql = "UPDATE Nodes SET connections = '{}' WHERE nodeID={}".format(data,self.id)
         cursor.execute(sql)
-        db.commit()
+        conn_db.commit()
 
         # Register into DB - Node 2
-        cursor = db.cursor()
-        sql = "UPDATE Nodes SET ConnectionID = '{}' WHERE NodeID={}".format(response4,id)
-        cursor.execute(sql)
-        db.commit()
+        cursor = conn_db.cursor()
+        cursor.execute("SELECT connections FROM Nodes WHERE nodeID = {}".format(id))
+        result = cursor.fetchone()[0]
 
-class SupplyChain:
-    def __init__(self,id):
-        try:
-            cursor = db.cursor()
-            cursor.execute("SELECT NodeID FROM Nodes WHERE NodeID!={} AND NodeID!={}".format(id,GetServerID()))
-            result1 = [i[0] for i in cursor.fetchall()]
-            result2 = []
-            for id in result1:
-                result2.append(Node(id))
-
-            self.companies = result2
-        except Exception as e:
-            print(str(e))
-
-    def CompaniestoList(self):
-        temp = []
-        for element in self.companies:
-            temp.append([element.id,element.name,element.ip,element.port_ui,element.port_acapy1,element.port_acapy2,element.endpoint_ui,element.products,len(element.products)])
-        return temp
-    
-    def ProductstoList(self):
-        temp1 = []
-        temp2 = []
-        for productsofcompany in self.companies:
-            temp1.append(productsofcompany.products)
-        for productsofcompany in temp1:
-            for product in productsofcompany:
-                temp2.append([product.id,product.name,product.pcf,product.company,Node(product.company).name])
-        return temp2
-
-def Endpoints():
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM Nodes")
-    results = cursor.fetchall()
-    
-    temp = []
-
-    for result in results:
-        if result[5] == "N/A":
-            temp.append([result[0],
-                        result[1],
-                        result[2],
-                        result[3],
-                        "http://{}:{}".format(result[3],result[4]),
-                        "N/A",
-                        "http://{}:{}".format(result[3],result[6]),
-                        "http://{}:{}".format(result[3],result[7])])
+        if result == None:
+            data = {}
+            data[self.id] = response4
+            data = json.dumps(data)
         else:
-            temp.append([result[0],
-                        result[1],
-                        result[2],
-                        result[3],
-                        "http://{}:{}".format(result[3],result[4]),
-                        "http://{}:{}".format(result[3],result[5]),
-                        "http://{}:{}".format(result[3],result[6]),
-                        "http://{}:{}".format(result[3],result[7])])
+            data = json.loads(result)
+            data[self.id] = response4
+            data = json.dumps(data)
+        
 
-    return temp
+        cursor = conn_db.cursor()
+        sql = "UPDATE Nodes SET connections = '{}' WHERE nodeID={}".format(data,id)
+        cursor.execute(sql)
+        conn_db.commit()
 
-def GetServerID():
-    cursor = db.cursor()
-    cursor.execute("SELECT NodeID FROM Nodes WHERE NodeType='server'")
-    result = cursor.fetchone()[0]
+class Server(Node):
+    def __init__(self,id):
+        super().__init__(id)
     
-    return result
+    def getProducts(self):
+        cursor = conn_db.cursor()
+        cursor.execute("SELECT * FROM Products".format(self.id))
+        return [list(i) for i in list(cursor.fetchall())]
+    
+    def IssueCredential(self,product):
+        cursor = conn_db.cursor()
+        cursor.execute("SELECT * FROM Products".format(self.id))
+        temp = cursor.fetchall()[0]
+        
+        connectionid = self.connections['{}'.format(temp[3])]
+        
+        body = """
+            {
+            "auto_issue": false,
+            "connection_id": "$",
+            "credential_preview": {
+                "@type": "issue-credential/2.0/credential-preview",
+                "attributes": [
+                {"name": "data", "value": "test"}
+                ]
+            },
+            "filter": {
+                "indy": {
+                "cred_def_id": "#1#"
+                }
+            }
+            }
+        """
+
+        body = body.replace("$",connectionid)
+        body = body.replace("#1#",self.creddefid)
+        print(json.dumps(json.loads(body),indent=4))
+        r=requests.post(url = self.endpoints["aries2"]+'/issue-credential-2.0/send', json=json.loads(body))
+        
+        
+        
+        response1 = json.loads(r.content)['cred_ex_id']
+        
+        print(json.dumps(json.loads(r.content),indent=4))
+
+        print(response1)
+    
+class Client(Node):
+    def __init__(self,id):
+        super().__init__(id)
+    
+    def scCompanies(self):
+        cursor = conn_db.cursor()
+        cursor.execute("SELECT * FROM Nodes WHERE nodeID!={} AND nodeID!={}".format(self.id,GetServerID()))
+        return [list(i) for i in list(cursor.fetchall())]
+    
+    def scProducts(self):
+        cursor = conn_db.cursor()
+        cursor.execute("SELECT * FROM Products WHERE nodeID!={}".format(self.id))
+        temp = []
+        for element in list(cursor.fetchall()):
+            if '{}'.format(element[3]) in list(self.connections.keys()):
+                temp.append(element)
+        return temp
+        
+    def getProducts(self):
+        cursor = conn_db.cursor()
+        cursor.execute("SELECT * FROM Products WHERE nodeID = {}".format(self.id))
+        return [list(i) for i in list(cursor.fetchall())]
+            
+    def newProduct(self,name,description,version,data):        
+        cursor = conn_db.cursor()
+        sql = "INSERT INTO Products (productName, productDescription, nodeID, status, created, version, data) VALUES ('{}', '{}', {}, '{}', '{}', '{}', '{}')".format(name,description,self.id,"active",round(time.time()),version,data)
+        cursor.execute(sql)
+        conn_db.commit()
