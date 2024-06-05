@@ -8,6 +8,8 @@ echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 source ~/.bashrc
 export DEBIAN_FRONTEND=noninteractive
 
+# Add Repositories
+
 # Update & Upgrade
 apt install apt-transport-https -y
 apt clean -y
@@ -60,4 +62,3 @@ rm mysql-apt-config_0.8.29-1_all.deb
 apt install redis -y
 /etc/init.d/redis-server stop
 update-rc.d redis-server disable
-

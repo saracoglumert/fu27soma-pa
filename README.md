@@ -36,9 +36,14 @@ Other possible commands are,
 ```
 
 # 2. Notes
-## Roles
-- Issuer (One issues for own product)
-- Holder & Verifier (One asks proof for others' products)
+## Procedure
+- Register TÜV
+- Register Nodes
+- Register Product
+- Connect Node
+- Issue Credential
+- Request Proof
+
 
 # 3. To-Do
 
@@ -50,7 +55,7 @@ Other possible commands are,
 - OpenAPI Tutorial -> Issue credential / Request proof -- p3
 - Change Schema as PCF or EPD -- p4
 - SD-JWT with PCF in Payload -- p6
-
+- Telegraf / InfluxDB Open Source
 ## New UI
 
 - TÜV
@@ -82,6 +87,11 @@ Other possible commands are,
 - Prettify logs.
 - remove MAC address definition
 
+## Future
+- Version control of data
+- InfluxDB
+- OOP manage.py
+
 ## Further Reading
 - https://github.com/hyperledger/aries-cloudagent-python/issues/1263
 - http://aca-py.org
@@ -96,6 +106,10 @@ Other possible commands are,
 - https://github.com/bcgov/openshift-aries-mediator-service/tree/main/openshift/templates/aries-mediator-agent
 - https://github.com/bcgov/openshift-aries-mediator-service/tree/main/openshift/templates/redis
 - https://github.com/bcgov/openshift-aries-mediator-service/blob/main/openshift/templates/redis/redis-cluster-deploy.yaml#L1-L37
+
+# To New aca-py Version
+https://ldej.nl/post/becoming-a-hyperledger-aries-developer-part-3-connecting-using-didcomm-exchange/
+Basically, the /connections/create-invitation and /connections/receive-invitation endpoints have been replaced with the Out-of-Band endpoints /out-of-band/create-invitation and /out-of-band/receive-invitation. Similarly, the /connections/{conn_id}/accept-invitation and /connections/{conn_id}/accept-request endpoints have been replaced with the DID Exchange endpoints /didexchange/{conn_id}/accept-invitation and /didexchange/{conn_id}/accept-request. This makes that the other /connections endpoints are just there to manage connections.
 
 ## Notes To Self
 Possible Public Ledgers

@@ -1,0 +1,13 @@
+{
+    "nodeID":       200,
+    "nodeName":     "TÜV SÜD",
+    "nodeType":     "server", 
+    "nodeIP":       "10.10.10.200",
+    "endpoints":   {"ui":80,
+                    "indy":8000,
+                    "aries1":9000,
+                    "aries2":10000},
+    "did":          "this is did",
+    "connections": {"201":"connid1",
+                    "202":"connid1"}
+}

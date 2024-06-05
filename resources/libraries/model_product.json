@@ -1,0 +1,11 @@
+{
+    "productID":2011,
+    "productName":"Name",
+    "productDesc":"Description",
+    "nodeID":201,
+    "status":true,
+    "created":1948293829,
+    "version":"1.0",
+    "data": "exampleData",
+    "results": {"gwp": 1234,"gwpMaterial":1234,"gwpManufacturing":1235}
+}

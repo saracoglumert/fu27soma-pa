@@ -1,0 +1,21 @@
+{
+    "materials":   {"_comment": "[kg,km,(road,rail,sea,flightLong,flightShort)]",
+                    "iron":[23.4],
+                    "copper":[5],
+                    "steel": [24.2],
+                    "plastic": [0.6],
+                    "cardboard": [2.2]},
+    
+    "manufacturing":{"water":0,
+                    "naturalGas":0,
+                    "electricity":55,
+                    "oil":0,
+                    "gasoline":0,
+                    "diesel":0},
+
+    "factors":{     "transportation": {"road":0.06,"rail":0.02,"sea":0.01,"flightShort":2.2,"flightLong":1.1},
+                    "materials":{"iron":1.9, "copper":6.94, "steel":4.98, "plastic":9.34,"cardboard":0.93},
+                    "manufacturing":{"water":0.38,"naturalGas":1.88,"electricity":0.37,"oil":2.69,"gasoline":2.27,"diesel":2.67}},
+
+    "comment":      "This is a test comment."
+}

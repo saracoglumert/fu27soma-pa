@@ -27,19 +27,15 @@ CREATE TABLE %db_name%.Notifications (
 CREATE TABLE %db_name%.Products (
     ProductID int,
     ProductName varchar(255),
-    PCF varchar(255),
+    ProductDescription varchar(255),
+    PCFDataExchange TEXT,
     NodeID int,
+    CredentialID varchar(255),
     PRIMARY KEY (ProductID),
     FOREIGN KEY (NodeID) REFERENCES Nodes(NodeID)
 );
 
 INSERT INTO %db_name%.Nodes (NodeID, NodeName, NodeType, NodeIP, NodePortUI, NodePortIndy, NodePortAries1, NodePortAries2, DID, SchemaID, CredDefID, Connections) VALUES 
-(%server_id%, "%server_name%","server","%server_ip%","%server_ui_port%","%server_ledger_port%","%server_acapy_port_1%","%server_acapy_port_2%","N/A","N/A","N/A","N/A"),
-(%node1_id%, "%node1_name%","client","%node1_ip%","%node1_ui_port%","N/A","%node1_acapy_port_1%","%node1_acapy_port_2%","N/A","N/A","N/A","N/A"),
-(%node2_id%, "%node2_name%","client","%node2_ip%","%node2_ui_port%","N/A","%node2_acapy_port_1%","%node1_acapy_port_2%","N/A","N/A","N/A","N/A");
-
---INSERT INTO %db_name%.Products (ProductID, ProductName, PCF, NodeID) VALUES
---(%node1_id%1, "Product A1", "TestPCF-A1",%node1_id%),
---(%node1_id%2, "Product A2", "TestPCF-A2",%node1_id%),
---(%node2_id%1, "Product B1", "TestPCF-B1",%node2_id%),
---(%node2_id%2, "Product B2", "TestPCF-B2",%node2_id%);
+(%server_id%, "%server_name%","server","%server_ip%","%server_ui_port%","%server_ledger_port%","%server_acapy_port_1%","%server_acapy_port_2%","N/A","N/A","N/A","[]"),
+(%node1_id%, "%node1_name%","client","%node1_ip%","%node1_ui_port%","N/A","%node1_acapy_port_1%","%node1_acapy_port_2%","N/A","N/A","N/A","[]"),
+(%node2_id%, "%node2_name%","client","%node2_ip%","%node2_ui_port%","N/A","%node2_acapy_port_1%","%node1_acapy_port_2%","N/A","N/A","N/A","[]");
