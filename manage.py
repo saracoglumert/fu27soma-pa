@@ -260,6 +260,7 @@ class Files:
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%port_ledger%",str(CONF_YAML['server']['port_ledger']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%name%",str(CONF_YAML['server']['name']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%port_ui%",str(CONF_YAML['server']['port_ui']))
+        Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%port_tails%",str(CONF_YAML['server']['port_tails']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%log_acapy%",str(CONF_YAML['server']['log_acapy']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%log_redis%",str(CONF_YAML['server']['log_redis']))
         Tools.ReplaceInplace(CONF_TEMP_PATH+"/server_start.sh","%log_indy%",str(CONF_YAML['server']['log_indy']))

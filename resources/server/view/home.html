@@ -65,7 +65,8 @@
     <table class="table table-hover mt-3" style="width:93.5%;margin-left: auto;margin-right: auto;">
       <thead class="thead-dark">
         <tr>
-          <th class="align-middle" scope="col">Node ID</th>
+          <th class="align-middle" scope="col">Client ID</th>
+          <th class="align-middle" scope="col">Name</th>
           <th class="align-middle" scope="col">Connection ID</th>
         </tr>
       </thead>
@@ -73,6 +74,7 @@
         {% for key, value in node.connections.items() %}  
         <tr>
           <th class="align-middle">{{key}}</th>
+          <th class="align-middle">{{controller.Client(key).name}}</th>
           <td class="align-middle">{{value}}</td>
         </tr>
         {% endfor %}

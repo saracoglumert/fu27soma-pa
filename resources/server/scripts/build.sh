@@ -43,7 +43,6 @@ curl -4sSL https://get.docker.com/ | sh
 mkdir /resources
 cd resources
 git clone https://github.com/bcgov/von-network
-git clone https://github.com/bcgov/indy-tails-server.git
 cd -L
 /resources/von-network/manage build
 

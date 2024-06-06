@@ -63,7 +63,7 @@ class Node:
 
         # Register DID into ledger
         body = json.loads('{"role":"ENDORSER","alias":null,"did":"#","verkey":"%"}'.replace("#",did).replace("%",verkey))
-        r = requests.post(url = Node(GetServerID()).endpoints["indy"]+"/register", json = body)
+        r = requests.post(url = Node(getServerID()).endpoints["indy"]+"/register", json = body)
         did = json.loads(r.content)['did']
 
         # Publish DID
@@ -93,7 +93,9 @@ class Node:
             cursor.execute("SELECT schemaID FROM Nodes WHERE nodeID={}".format(self.id))
             schema_id = cursor.fetchone()[0]
 
-            body = json.loads('{"revocation_registry_size": 1000,"schema_id": "#","support_revocation": true,"tag": "default"}'.replace("#",schema_id))
+            #cred def revocation
+            body = json.loads('{"schema_id": "#","support_revocation": false,"tag": "default"}'.replace("#",schema_id))
+            #body = json.loads('{"revocation_registry_size": 1000,"schema_id": "#","support_revocation": true,"tag": "default"}'.replace("#",schema_id))
             r=requests.post(url = self.endpoints["aries2"]+'/credential-definitions', json=body)
             credential_definition_id = json.loads(r.content)['sent']['credential_definition_id']
 
@@ -104,7 +106,7 @@ class Node:
             conn_db.commit()
 
         elif self.type == "client":
-            self.connect(GetServerID())
+            self.connect(getServerID())
 
     def connect(self,id):
         target = Node(id)
@@ -134,7 +136,7 @@ class Node:
         x = target.endpoints["aries2"]+'/connections/{}/accept-request?my_endpoint={}'.format(response4,target.endpoints["aries1"])
         r=requests.post(url = x)
         response5 = r.content
-        time.sleep(5)
+        time.sleep(1.5)
 
         # Register into DB - Node 1
         cursor = conn_db.cursor()
@@ -187,38 +189,57 @@ class Server(Node):
     
     def IssueCredential(self,product):
         cursor = conn_db.cursor()
-        cursor.execute("SELECT * FROM Products".format(self.id))
+        cursor.execute("SELECT * FROM Products WHERE productID={}".format(product))
         temp = cursor.fetchall()[0]
         
+        print("Issue credential for: {}".format(temp))
+
         connectionid = self.connections['{}'.format(temp[3])]
+
         body = """
-        {
+            {
+            "auto_issue": true,
             "auto_remove": true,
-            "comment": "string",
+            "auto_offer": true,
             "connection_id": "$",
             "credential_preview": {
                 "@type": "issue-credential/2.0/credential-preview",
                 "attributes": [
-                {"name": "data", "value": "test"}
+                {"name": "data", "value": "$$"}
                 ]
             },
             "filter": {
                 "indy": {
-                "cred_def_id": "#1#",
-                "issuer_did": "#2#",
-                "schema_id": "#3#",
-                "schema_issuer_did": "#2#",
-                "schema_name": "#4#",
-                "schema_version": "#5#"
+                "cred_def_id": "#1#"
                 }
+            },
+            "trace": true
             }
-        }
         """
+
         body = body.replace("$",connectionid)
-        body = body.replace("#1#",self.creddefid).replace("#2#",self.did).replace("#3#",self.schemaid).replace("#4#",self.schemaid.split(":")[2]).replace("#5#",self.schemaid.split(":")[3])
-        print(json.dumps(json.loads(body),indent=4))
-        r=requests.post(url = self.endpoints["aries2"]+'/issue-credential-2.0/send', json=body)
-        print(json.dumps(json.loads(r.content)))
+        body = body.replace("#1#",self.creddefid)
+        body = body.replace("$$",temp[7])
+        r=requests.post(url = self.endpoints["aries2"]+'/issue-credential-2.0/send', json=json.loads(body))
+        
+        response1 = json.loads(r.content)['cred_ex_id']
+        time.sleep(1.5)
+        response2 = json.loads(conn_redis.lrange(str.encode('acapy-record-with-state-base'), -1, -1)[0].decode("utf-8"))['payload']['payload']['cred_ex_id']
+
+        # send request to 201 /cred_ex/send-request with response 2
+        r = requests.post(url = Client(int(temp[3])).endpoints["aries2"]+'/issue-credential-2.0/records/{}/send-request'.format(response2))
+        # burdan sonra response 2 ile storela
+        time.sleep(1.5)
+        # send request to 201 /store with reponse 2
+        r = requests.post(url = Client(int(temp[3])).endpoints["aries2"]+'/issue-credential-2.0/records/{}/store'.format(response2),data=json.loads('{"credential_id": "%"}'.replace("%",temp[1])))
+        response5 = r.content
+        credid = json.loads(response5)['indy']['cred_id_stored']
+
+        cursor = conn_db.cursor()
+        sql = "UPDATE Products SET credID = '{}' WHERE productID = {}".format(credid,temp[0])
+        cursor.execute(sql)
+        conn_db.commit()
+       
     
 class Client(Node):
     def __init__(self,id):
@@ -226,17 +247,16 @@ class Client(Node):
     
     def scCompanies(self):
         cursor = conn_db.cursor()
-        cursor.execute("SELECT * FROM Nodes WHERE nodeID!={} AND nodeID!={}".format(self.id,GetServerID()))
+        cursor.execute("SELECT * FROM Nodes WHERE nodeID!={} AND nodeID!={}".format(self.id,getServerID()))
         return [list(i) for i in list(cursor.fetchall())]
     
     def scProducts(self):
         cursor = conn_db.cursor()
-        cursor.execute("SELECT * FROM Products WHERE nodeID!={}".format(self.id))
+        cursor.execute("SELECT * FROM Products WHERE nodeID!={} AND credID IS NOT NULL".format(self.id))
         temp = []
         for element in list(cursor.fetchall()):
             if '{}'.format(element[3]) in list(self.connections.keys()):
                 temp.append(element)
-        
         return temp
         
     def getProducts(self):

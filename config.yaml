@@ -25,11 +25,11 @@ server:
   network_ip: 10.10.10.200
   network_mac: AA:BB:CC:DD:EE:00
   port_ui: 80
-  port_ledger: 8000
-  port_acapy_1: 9000
-  port_acapy_2: 10000
+  port_ledger: 9000
+  port_acapy_1: 8000
+  port_acapy_2: 8001
   port_redis: 7000
-  port_tails: 6543
+  port_tails: 6500
   db_user: root
   db_pass: 12345
   db_name: fu27soma
@@ -46,10 +46,10 @@ node1:
   network_ip: 10.10.10.201
   network_mac: AA:BB:CC:DD:EE:01
   port_ui: 80
-  port_acapy_1: 9000
-  port_acapy_2: 10000
+  port_acapy_1: 8000
+  port_acapy_2: 8001
   port_redis: 7000
-  port_tails: 6543
+  port_tails: 6500
   log_acapy: aca-py.log
   log_redis: redis.log
   log_web: app.log
@@ -61,10 +61,10 @@ node2:
   network_ip: 10.10.10.202
   network_mac: AA:BB:CC:DD:EE:02
   port_ui: 80
-  port_acapy_1: 9000
-  port_acapy_2: 10000
+  port_acapy_1: 8000
+  port_acapy_2: 8001
   port_redis: 7000
-  port_tails: 6543
+  port_tails: 6500
   log_acapy: aca-py.log
   log_redis: redis.log
   log_web: app.log

@@ -14,7 +14,7 @@ app = Flask(__name__,template_folder='/root/view')
 @app.route('/')
 def main():
     node.update()
-    return render_template('home.html',node=node)
+    return render_template('home.html',node=node,controller=controller)
 
 @app.route('/products')
 def handler_products():
