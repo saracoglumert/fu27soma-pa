@@ -1,0 +1,17 @@
+{
+  "auto_remove": true,
+  "indy": {
+    "requested_attributes": {
+      "property": {
+        "name": "data",
+        "cred_id": "ceb5a1f5-045e-4f61-b974-49c137b551c7",
+        "revealed": true
+      }
+    },
+    "requested_predicates": {
+    },
+    "self_attested_attributes": {
+    }
+  },
+  "trace": true
+}

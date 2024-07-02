@@ -60,24 +60,19 @@ Other possible commands are,
 # 3. To-Do
 
 ## Must
-- New UI -- p1
+- Request proof -- p1
+- SD-JWT -- p2
+- Indy Tails -- p3
+- manage/status-endpoints
 - autopep8
-- manage script - status/endpoints -- p2
-- OpenAPI Tutorial -> Issue credential / Request proof -- p3
-- SD-JWT with PCF in Payload -- p6
 - Telegraf / InfluxDB Open Source
-
-
-## Optional
 - change time_sleep name to step
+- Do I need MAC adress definition?
 - use disown instead of sshpass
-- Update to aca-py v0.12.1
-- remove Tails? (build, start, manage, config)
-- Prettify logs.
-- remove MAC address definition
+
+
 
 ## Future
-- Telegraf and InfluxDB
 - OOP manage.py
 
 ## Further Reading

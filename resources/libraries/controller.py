@@ -269,3 +269,81 @@ class Client(Node):
         sql = "INSERT INTO Products (productName, productDescription, nodeID, status, created, version, data) VALUES ('{}', '{}', {}, '{}', '{}', '{}', '{}')".format(name,description,self.id,"active",round(time.time()),version,data)
         cursor.execute(sql)
         conn_db.commit()
+
+    def requestProof(self,id,value):
+        cursor = conn_db.cursor()
+        cursor.execute("SELECT * FROM Products WHERE productID = {}".format(id))
+        temp = cursor.fetchone()
+        target = Client(temp[3])
+        connid = self.connections['{}'.format(temp[3])]
+        creddefid = Server(getServerID()).creddefid
+        credid = temp[8]
+
+        #v1.0
+        #body = '{"auto_remove": true,"auto_present": true,  "connection_id": "#","proof_request": {"name": "proofRequest","nonce": "1234567890","requested_attributes": {"property":{"name": "data"}},"requested_predicates" :{}},"presentation_request": {"indy": {"name": "proofRequest","requested_attributes": {"property": {"name": "data","restrictions": [{"cred_def_id": "%"},{"attr:data:value": "$"}]}},"requested_predicates": {}}}}'
+        #v2.0
+        body = """
+
+{
+  "auto_remove": true,
+  "auto_present": true,
+  "name": "thisisatest",  
+    "connection_id": "#",
+    "presentation_request": {
+      "indy": {
+        "requested_attributes": {
+          "property": {
+            "name": "data",
+            "restrictions": [
+              {
+                "cred_def_id": "%"
+              }
+            ]
+          }
+        },
+        "requested_predicates": {
+
+        }
+      }
+    }
+}
+
+"""
+
+        body = body.replace("#",connid)
+        body = body.replace("%",creddefid)
+        body = body.replace("$",value)
+        body = json.loads(body)
+        
+
+
+        r=requests.post(url = self.endpoints["aries2"]+'/present-proof-2.0/send-request', json=body)
+        
+        print(json.dumps(body,indent=2))
+        print()
+        print(json.dumps(json.loads(r.content),indent=2))
+        input()
+
+        pres_ex_id_1 = json.loads(r.content)['pres_ex_id']
+        time.sleep(1.5)
+        pres_ex_id_2 = json.loads(conn_redis.lrange(str.encode('acapy-record-with-state-base'), -1, -1)[0].decode("utf-8"))['payload']['payload']['pres_ex_id']
+
+        print()
+        print(pres_ex_id_1)
+        print(pres_ex_id_2)
+        input()
+
+        body = '{"auto_remove": false,"auto_present": true, "requested_attributes": {"property": {"cred_id": "#","revealed": true}},"requested_predicates": {},"self_attested_attributes": {},"trace": false}'
+        body = body.replace("#",credid)
+        body = json.loads(body)
+
+        print(pres_ex_id_2)
+        print()
+        print(json.dumps(body,indent=2))
+
+        # siemens presents proof
+        #r=requests.post(url = target.endpoints["aries2"]+'/present-proof-2.0/records/{}/send-presentation'.format(pres_ex_id_2), json=body)
+        #print(r.content)
+
+        #connid with owner
+        #cred_def_id from server

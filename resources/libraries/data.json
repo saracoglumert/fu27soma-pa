@@ -1,21 +1,41 @@
 {
-    "materials":   {"_comment": "[kg,km,(road,rail,sea,flightLong,flightShort)]",
-                    "iron":[23.4,300,"road"],
-                    "copper":[5,445,"rail"],
-                    "steel": [24.2,1600,"sea"],
-                    "plastic": [0.6,550,"flightShort"],
-                    "cardboard": [2.2,4400,"flightLong"]},
+    "materials":{
+        "iron":[23.4,300,"road"],
+        "copper":[5,445,"rail"],
+        "steel": [24.2,1600,"sea"],
+        "plastic": [0.6,550,"flightShort"],
+        "cardboard": [2.2,4400,"flightLong"]},
     
-    "manufacturing":{"water":55,
-                    "naturalGas":34.9,
-                    "electricity":55.2,
-                    "oil":26.8,
-                    "gasoline":22.4,
-                    "diesel":14.7},
+    "resources":{
+        "water":55,
+        "naturalGas":34.9,
+        "electricity":55.2,
+        "oil":26.8,
+        "gasoline":22.4,
+        "diesel":14.7},
 
-    "factors":{     "transportation": {"road":0.06,"rail":0.02,"sea":0.01,"flightShort":2.2,"flightLong":1.1},
-                    "materials":{"iron":1.9, "copper":6.94, "steel":4.98, "plastic":9.34,"cardboard":0.93},
-                    "manufacturing":{"water":0.38,"naturalGas":1.88,"electricity":0.37,"oil":2.69,"gasoline":2.27,"diesel":2.67}},
+    "factors":{     
+        "transportation": 
+            {"road":0.06,
+            "rail":0.02,
+            "sea":0.01,
+            "flightShort":2.2,
+            "flightLong":1.1},
+                    
+        "materials":
+            {"iron":1.9, 
+            "copper":6.94, 
+            "steel":4.98, 
+            "plastic":9.34,
+            "cardboard":0.93},
+                    
+        "resources":
+            {"water":0.38,
+            "naturalGas":1.88,
+            "electricity":0.37,
+            "oil":2.69,
+            "gasoline":2.27,
+            "diesel":2.67}},
 
     "comment":      "This is a test comment."
 }
