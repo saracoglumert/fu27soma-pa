@@ -24,6 +24,7 @@ CREATE TABLE %db_name%.Products (
     `version` varchar(255),
     `data` TEXT,
     `credID` varchar(255),
+    `JWT` TEXT,
     PRIMARY KEY (`productID`),
     FOREIGN KEY (`nodeID`) REFERENCES Nodes(`nodeID`)
 );

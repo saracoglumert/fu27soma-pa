@@ -29,6 +29,13 @@ def handler_register():
     node.update()
     return redirect("/", code=302)
 
+@app.route('/jwt', methods = ['POST'])
+def handler_jwt():
+    node.IssueCredentialJWT(request.form["ProductID"])
+    
+    node.update()
+    return redirect("/products", code=302)
+
 @app.route('/issue', methods = ['POST'])
 def handler_issue():
     node.IssueCredential(request.form["ProductID"])

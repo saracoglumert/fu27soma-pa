@@ -1,16 +1,7 @@
 # fu27soma-pa
 
-# 0. Test Procedure
-- TÜV - Register
-- Siemens - Register
-- Siemens - New Product
-- TÜV - Inspect Product
-- ATS - Connect
-- ATS - Cannot See
-- TÜV - Issue Credential
-- Siemens - Receive Credential
-- ATS - Sees Product
-- ATS - Request Proof
+# Swagger to Python3 Library
+https://pypi.org/project/swagger-to/
 
 # 1. Installation
 After a clean installation of Proxmox on a host machine, SSH into it and run the following code block.

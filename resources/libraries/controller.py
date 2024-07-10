@@ -8,6 +8,9 @@ from redis import Redis
 import ast
 import pprint
 import sys
+import jwt
+import time
+from flask import redirect
 
 conn_db = mysql.connector.connect(
   host="10.10.10.200",
@@ -240,7 +243,23 @@ class Server(Node):
         cursor.execute(sql)
         conn_db.commit()
        
-    
+    def IssueCredentialJWT(self,product):
+        cursor = conn_db.cursor()
+        cursor.execute("SELECT * FROM Products WHERE productID={}".format(product))
+        temp = cursor.fetchall()[0]
+
+        encoded_jwt = jwt.encode({"iss": self.name,
+                                "sub": temp[1],
+                                "exp":round(time.time())+31536000,
+                                "iat":round(time.time()),
+                                "data":temp[7]},
+                                "secret", algorithm="HS256")
+        
+        cursor = conn_db.cursor()
+        sql = "UPDATE Products SET JWT = '{}' WHERE productID = {}".format(encoded_jwt,temp[0])
+        cursor.execute(sql)
+        conn_db.commit()
+   
 class Client(Node):
     def __init__(self,id):
         super().__init__(id)
@@ -269,6 +288,20 @@ class Client(Node):
         sql = "INSERT INTO Products (productName, productDescription, nodeID, status, created, version, data) VALUES ('{}', '{}', {}, '{}', '{}', '{}', '{}')".format(name,description,self.id,"active",round(time.time()),version,data)
         cursor.execute(sql)
         conn_db.commit()
+
+    def requestProofJWT(self,id,data):
+        cursor = conn_db.cursor()
+        cursor.execute("SELECT * FROM Products WHERE productID = {}".format(id))
+        temp = cursor.fetchone()
+        db_jwt = temp[9]
+
+        result = jwt.decode(db_jwt, "secret", algorithms=["HS256"])
+        data_db = result['data']
+
+        if data == data_db:
+            return True
+        else:
+            return False
 
     def requestProof(self,id,value):
         cursor = conn_db.cursor()

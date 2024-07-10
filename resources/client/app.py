@@ -27,8 +27,18 @@ def handler_supplychain():
     node.update()
     return render_template('supplychain.html',node=node,controller=controller,list=list)
 
-@app.route('/request', methods = ['POST'])
-def handler_request():
+@app.route('/request_jwt', methods = ['POST'])
+def handler_request_jwt():
+    result = node.requestProofJWT(request.form["id"],request.form["data"])
+    print(result)
+    node.update()
+    if result:
+        return redirect("http://www.example.com", code=302)
+    else:
+        return redirect("/supplychain", code=302)
+
+@app.route('/request_acapy', methods = ['POST'])
+def handler_request_acapy():
     ProductID = request.form["ProductID"]
     #return redirect("/", code=302)
     return ('', 204)

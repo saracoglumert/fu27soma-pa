@@ -13,7 +13,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">{{node.name}}</a>
+      <a class="navbar-brand" style="width:10%;" href="#">{{node.name}}</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -50,9 +50,27 @@
               {% if not '{}'.format(company[0]) in list(node.connections.keys()) %}
               <td class="align-middle"><form method=post action=/connect><input type="hidden" name="CompanyID" value="{{company[0]}}"><input class="btn btn-primary" type="submit" value="Connect"></form></td>
               {% else %}
-              <td class="align-middle">{{node.connections['{}'.format(company[0])]}}</td>
+              <td class="align-middle"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal{{company[0]}}">Show</button></td>
               {% endif %}
             </tr>
+            <div class="modal fade" id="modal{{company[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Connection ID with {{company[1]}} (#{{company[0]}})</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body" style="white-space: pre-line;">
+                    {{node.connections['{}'.format(company[0])]}}
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           {% endfor %}
         </tbody>
       </table>
@@ -66,7 +84,8 @@
             <th class="align-middle" scope="col">Product ID</th>
             <th class="align-middle" scope="col">Company Name</th>
             <th class="align-middle" scope="col">Product Name</th>
-            <th class="align-middle" scope="col">Action</th>
+            <th class="align-middle" scope="col">aca-py</th>
+            <th class="align-middle" scope="col">JWT</th>
           </tr>
         </thead>
         <tbody>
@@ -75,11 +94,69 @@
               <th class="align-middle">{{product[0]}}</th>
               <th class="align-middle">{{controller.Client(product[3]).name}}</th>
               <td class="align-middle">{{product[1]}}</td>
-              <td class="align-middle"><form method=post action=/request><input type="hidden" name="ProductID" value="{{product[0]}}"><input class="btn btn-primary" type="submit" value="Request Proof"></form></td>
+              <td class="align-middle"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#requestacapy{{product[0]}}">Request Proof</button></td>
+              <td class="align-middle"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#requestJWT{{product[0]}}">Request Proof</button></td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
+
+      {% for product in node.scProducts() %}
+      <div class="modal fade" id="requestacapy{{product[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Request Proof by aca-py {{product[1]}} (#{{product[0]}})</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="white-space: pre-line;">
+              <div class="container mt-5">
+                <form method="post" action="/request_acapy">
+                    <div class="mb-3">
+                        <label for="data" class="form-label">Data</label>
+                        <input type="hidden" id="id" name="id" value="{{product[0]}}">
+                        <textarea class="form-control" id="data" name="data" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="requestJWT{{product[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Request Proof by JWT {{product[1]}} (#{{product[0]}})</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="white-space: pre-line;">
+              <div class="container mt-5">
+                <form method="post" action="/request_jwt">
+                    <div class="mb-3">
+                      <label for="data" class="form-label">Data</label>
+                      <input type="hidden" id="id" name="id" value="{{product[0]}}">
+                      <textarea class="form-control" id="data" name="data" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

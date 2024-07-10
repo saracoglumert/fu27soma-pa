@@ -13,7 +13,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">{{node.name}}</a>
+      <a class="navbar-brand" style="width:10%;" href="#">{{node.name}}</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -39,6 +39,7 @@
             <th class="align-middle" scope="col">Product Name</th>
             <th class="align-middle" scope="col">Data</th>
             <th class="align-middle" scope="col">Credential ID</th>
+            <th class="align-middle" scope="col">JWT Token</th>
           </tr>
         </thead>
         <tbody>
@@ -48,11 +49,16 @@
               <th class="align-middle">{{controller.Client(product[3]).name}}</th>
               <td class="align-middle">{{product[1]}}</td>
               
-              <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{product[0]}}">Show</button></td>
+              <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal1{{product[0]}}">Show</button></td>
               {% if product[8] == None %}
               <td class="align-middle"><form method=post action=/issue><input type="hidden" name="ProductID" value="{{product[0]}}"><input class="btn btn-primary" type="submit" value="Issue Credential"></form></td>
               {% else %}
-              <td class="align-middle">{{product[8]}}</td>
+              <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal2{{product[0]}}">Show</button></td>
+              {% endif %}
+              {% if product[9] == None %}
+              <td class="align-middle"><form method=post action=/jwt><input type="hidden" name="ProductID" value="{{product[0]}}"><input class="btn btn-primary" type="submit" value="Issue Credential"></form></td>
+              {% else %}
+              <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal3{{product[0]}}">Show</button></td>
               {% endif %}
             </tr>
           {% endfor %}
@@ -60,7 +66,7 @@
       </table>
 
       {% for product in node.getProducts() %}
-      <div class="modal fade" id="Modal{{product[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="Modal1{{product[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -71,6 +77,42 @@
             </div>
             <div class="modal-body" style="white-space: pre-line;">
               {{product[7]}}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="Modal2{{product[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Credential ID for {{product[1]}} (#{{product[0]}})</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="white-space: pre-line;">
+              {{product[8]}}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="Modal3{{product[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">JWT Token for {{product[1]}} (#{{product[0]}})</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="white-space: pre-line;">
+              {{product[9]}}
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
