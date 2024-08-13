@@ -1,0 +1,39 @@
+{
+    "materials":{
+        "iron":[[23.4,"kg"],[[300,"km"],"road"]],
+        "copper":[[5,"kg"],[[445,"km"],"rail"]],
+        "steel": [[24.2,"kg"],[[1600,"km"],"sea"]],
+        "plastic": [[0.6,"kg"],[[550,"km"],"flightShort"]],
+        "cardboard": [[2.2,"kg"],[[4400,"km"],"flightLong"]]},
+    
+    "resources":{
+        "water":[55,"liter"],
+        "naturalGas":[34.9,"cubic-meter"],
+        "electricity":[55.2,"kilowatt-hour"],
+        "oil":[26.8,"liter"],
+        "gasoline":[22.4,"liter"],
+        "diesel":[14.7,"liter"]},
+
+    "factors":{     
+        "transportation": 
+            {"road":0.06,
+            "rail":0.02,
+            "sea":0.01,
+            "flightShort":2.2,
+            "flightLong":1.1},
+                    
+        "materials":
+            {"iron":1.9, 
+            "copper":6.94, 
+            "steel":4.98, 
+            "plastic":9.34,
+            "cardboard":0.93},
+                    
+        "resources":
+            {"water":0.38,
+            "naturalGas":1.88,
+            "electricity":0.37,
+            "oil":2.69,
+            "gasoline":2.27,
+            "diesel":2.67}}
+}

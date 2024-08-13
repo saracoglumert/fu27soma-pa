@@ -1,3 +1,5 @@
 temp/
-development/env
-development/__pycache__
+test/
+development/
+env/
+NOTES.md

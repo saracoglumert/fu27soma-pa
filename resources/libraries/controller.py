@@ -299,9 +299,10 @@ class Client(Node):
         data_db = result['data']
 
         if data == data_db:
-            return True
+            return True 
         else:
             return False
+
 
     def requestProof(self,id,value):
         cursor = conn_db.cursor()

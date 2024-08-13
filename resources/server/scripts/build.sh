@@ -8,8 +8,6 @@ echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 source ~/.bashrc
 export DEBIAN_FRONTEND=noninteractive
 
-# Add Repositories
-
 # Update & Upgrade
 apt install apt-transport-https -y
 apt clean -y
